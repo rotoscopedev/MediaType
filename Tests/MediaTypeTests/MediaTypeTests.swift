@@ -225,7 +225,7 @@ class MediaTypeTests: XCTestCase {
   }
   
   func testParameters() {
-    let type: MediaType = "text/html; charset=UTF-8; linebreak=lf;"
+    let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
     let expected = [
       "charset" : "UTF-8",
       "linebreak" : "lf",
