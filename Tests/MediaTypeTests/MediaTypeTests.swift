@@ -248,4 +248,51 @@ class MediaTypeTests: XCTestCase {
     ]
     XCTAssertEqual(type.parameters, expected)
   }
+  
+  // MARK: - Subtype Factory Methods
+  
+  func testApplicationSubtype() {
+    let type: MediaType = .application(.pkcs8)
+    XCTAssertEqual(type.rawValue, "application/pkcs8")
+  }
+  
+  func testAudioSubtype() {
+    let type: MediaType = .audio(.mpeg)
+    XCTAssertEqual(type.rawValue, "audio/mpeg")
+  }
+  
+  func testFontSubtype() {
+    let type: MediaType = .font(.otf)
+    XCTAssertEqual(type.rawValue, "font/otf")
+  }
+  
+  func testImageSubtype() {
+    let type: MediaType = .image(.png)
+    XCTAssertEqual(type.rawValue, "image/png")
+  }
+  
+  func testMessageSubtype() {
+    let type: MediaType = .message(.http)
+    XCTAssertEqual(type.rawValue, "message/http")
+  }
+  
+  func testModelSubtype() {
+    let type: MediaType = .model(.obj)
+    XCTAssertEqual(type.rawValue, "model/obj")
+  }
+  
+  func testMultipartSubtype() {
+    let type: MediaType = .multipart(.digest)
+    XCTAssertEqual(type.rawValue, "multipart/digest")
+  }
+  
+  func testTextSubtype() {
+    let type: MediaType = .text(.css)
+    XCTAssertEqual(type.rawValue, "text/css")
+  }
+  
+  func testVideoSubtype() {
+    let type: MediaType = .video(.h264)
+    XCTAssertEqual(type.rawValue, "video/H264")
+  }
 }
