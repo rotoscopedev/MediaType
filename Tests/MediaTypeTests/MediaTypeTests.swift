@@ -249,6 +249,40 @@ class MediaTypeTests: XCTestCase {
     XCTAssertEqual(type.parameters, expected)
   }
   
+  // MARK: -
+  
+  func testAddParameter() {
+    let type: MediaType = "text/markdown"
+    XCTAssertEqual(type.adding("UTF-8", for: "charset"), "text/markdown; charset=UTF-8")
+  }
+  
+  func testReplaceParameter() {
+    let type: MediaType = "text/markdown; charset=US-ASCII"
+    XCTAssertEqual(type.adding("UTF-8", for: "charset"), "text/markdown; charset=UTF-8")
+  }
+
+  // MARK: -
+  
+  func testRemoveParameter() {
+    let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
+    XCTAssertEqual(type.removing("charset"), "text/html; linebreak=lf")
+  }
+  
+  func testRemoveNonExistentParameter() {
+    let type: MediaType = "text/html; charset=UTF-8"
+    XCTAssertEqual(type.removing("linebreak"), "text/html; charset=UTF-8")
+  }
+
+  func testRemoveParameters() {
+    let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
+    XCTAssertEqual(type.removingParameters(), "text/html")
+  }
+  
+  func testRemoveNoParameters() {
+    let type: MediaType = "text/html"
+    XCTAssertEqual(type.removingParameters(), "text/html")
+  }
+
   // MARK: - Subtype Factory Methods
   
   func testApplicationSubtype() {

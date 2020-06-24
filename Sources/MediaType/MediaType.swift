@@ -217,6 +217,74 @@ extension MediaType {
   }
 }
 
+// MARK: -
+
+extension MediaType {
+  
+  /// Returns a new media type with an additional parameter with the given
+  /// name and value, replacing the existing parameter with the same name if
+  /// present.
+  ///
+  /// - parameters:
+  ///   - value: The property's value.
+  ///   - name: The property's name.
+  public func adding(_ value: String, for name: String) -> MediaType {
+    let comps = components
+    
+    let type = Type(String(comps.type))
+    let tree = comps.tree.flatMap { Tree(rawValue: String($0)) }
+    let subtype = comps.subtype.map { String($0) }
+    let suffix = comps.suffix.map { String($0) }
+    var params: [String: String] = [:]
+    
+    if let parameters = components.parameters {
+      firstParameter(in: parameters) { (name: Substring, value: Substring) -> Substring? in
+        params[name.trimmed().lowercased()] = value.trimmed()
+        return nil
+      }
+    }
+    params[name] = value
+    
+    return MediaType(type: type, tree: tree, subtype: subtype, suffix: suffix, parameters: params)
+  }
+  
+  /// Returns a new media type without the parameter with the given name.
+  ///
+  /// - parameters:
+  ///   - name: The property's name.
+  public func removing(_ name: String) -> MediaType {
+    let comps = components
+    
+    let type = Type(String(comps.type))
+    let tree = comps.tree.flatMap { Tree(rawValue: String($0)) }
+    let subtype = comps.subtype.map { String($0) }
+    let suffix = comps.suffix.map { String($0) }
+    var params: [String: String] = [:]
+    
+    if let parameters = components.parameters {
+      firstParameter(in: parameters) { (name: Substring, value: Substring) -> Substring? in
+        params[name.trimmed().lowercased()] = value.trimmed()
+        return nil
+      }
+    }
+    params.removeValue(forKey: name)
+    
+    return MediaType(type: type, tree: tree, subtype: subtype, suffix: suffix, parameters: params)
+  }
+
+  /// Returns a media type without the receiver's parameters.
+  public func removingParameters() -> MediaType {
+    let comps = components
+    
+    let type = Type(String(comps.type))
+    let tree = comps.tree.flatMap { Tree(rawValue: String($0)) }
+    let subtype = comps.subtype.map { String($0) }
+    let suffix = comps.suffix.map { String($0) }
+    
+    return MediaType(type: type, tree: tree, subtype: subtype, suffix: suffix)
+  }
+}
+
 // MARK: - ExpressibleByStringLiteral
 
 extension MediaType: ExpressibleByStringLiteral {
