@@ -233,8 +233,12 @@ extension MediaType {
   }
   
   /// Returns the value of the parameter with the given name, or `nil` if no
-  /// such parameter exists. Parameter names are compared in case-insensitive
-  /// manner.
+  /// such parameter exists. Parameter names are compared in a case-
+  /// insensitive manner.
+  ///
+  /// - note:
+  ///   If multiple parameters with matching names are found then the value
+  ///   of the first match is returned.
   ///
   /// - parameters:
   ///   - name: The name of the parameter.
