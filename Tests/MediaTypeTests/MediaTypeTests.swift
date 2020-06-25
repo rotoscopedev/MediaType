@@ -14,6 +14,13 @@ import XCTest
 
 class MediaTypeTests: XCTestCase {
   
+  // MARK: - Initialization
+  
+  func testInitializer() {
+    let type = MediaType("text/plain")
+    XCTAssertEqual(type, "text/plain")
+  }
+  
   // MARK: - RawRepresentable
   
   func testRawValue() {
