@@ -11,6 +11,36 @@
 
 import Foundation
 
+/// A media type, also known as MIME type and, colloquially as a content type
+/// when used in relation to the `Content-Type` HTTP header.
+///
+/// Media types are composed of the following components:
+///
+/// - **type** Also termed the *top-level-type*, e.g. `text`.
+/// - **subtype** e.g. `plain`.
+/// - **facet** An optional period-delimited prefix, e.g. `vnd` that specifies
+///   the registration tree for the subtype.
+/// - **suffix** An optional structured syntax suffix that specifies the
+///   structured of the media type, e.g. `xml` or `json`.
+/// - **parameters** A sequence of name/value pairs e.g. `charset=UTF-8`
+///   delimited by semi-colons.
+///
+/// Most of the above components should be interpreted in a case-insensitive
+/// manner. The exception to this rule is parameter values, which may be
+/// interpreted in a case-sensitive, or case-insensitive manner, depending
+/// on the semantics of the property.
+///
+/// Instances of `MediaType` preserve the case of their input. They also
+/// preserve whitespace between components such as parameters. Care should
+/// therefore be taken when comparing instances.
+///
+/// For example, `text/SGML` and `text/sgml` do not compare the same. The
+/// `normalized()` method can be used to convert a `MediaType` to a normalized
+/// representation that can be used to compare two media types in a case-
+/// and whitespace-insensitive manner.
+///
+/// See The IETF [RFC 6838](https://tools.ietf.org/html/rfc6838) for more
+/// information.
 public struct MediaType: RawRepresentable {
   public let rawValue: String
   
