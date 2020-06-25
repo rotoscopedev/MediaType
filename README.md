@@ -22,9 +22,9 @@ if type.rawValue == "application/ld+json; charset=UTF-8" {
 
 # Why Use MediaType?
 
-Why use the `MediaType` type rather than simple `String`?
+Why use the `MediaType` type rather than a simple `String`?
 
-### Ease-of-Use
+### Ease-of-use
 
 A media type's contents can be easily inspected.
 
@@ -34,7 +34,7 @@ Declaring a variable as `MediaType` is more expressive than `String`, better com
 
 ### Type-safety
 
-The use of the `MediaType` type reduces the likelihood that non-media type strings will be inadvertently passed as or assigned to them.
+Declaring a variable as `MediaType` reduces the likelihood that non-media type strings will be inadvertently passed as or assigned to it.
 
 ### Case-sensitivity
 
