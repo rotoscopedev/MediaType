@@ -84,7 +84,7 @@ extension MediaType {
       return sub
     } ?? ""
     str += parameters.map {
-      $0.reduce("") { $0 + "; \($1.key.trimmed().lowercased())=\($1.value)" }
+      $0.sorted { $0.0 < $1.0 }.reduce("") { $0 + "; \($1.0.trimmed())=\($1.1)" }
     } ?? ""
 
     self.rawValue = str

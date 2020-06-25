@@ -59,6 +59,19 @@ class MediaTypeTests: XCTestCase {
     XCTAssertEqual(type.rawValue, "text/html; charset=UTF-8")
   }
   
+
+  func testInitializeParametersSorting() {
+    let params = [
+      "first" : "1st",
+      "second" : "2nd",
+      "third" : "3rd",
+      "fourth" : "4th",
+      "fifth" : "5th",
+    ]
+    let type = MediaType(type: .text, subtype: "html", parameters: params)
+    XCTAssertEqual(type.rawValue, "text/html; fifth=5th; first=1st; fourth=4th; second=2nd; third=3rd")
+  }
+
   func testInitializeEmptyParameters() {
     let type = MediaType(type: .text, subtype: "html", parameters: [:])
     XCTAssertEqual(type.rawValue, "text/html")
