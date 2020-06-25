@@ -180,6 +180,11 @@ extension MediaType {
       return parse().subtype?.trimmed()
     }
   }
+}
+
+// MARK: - Suffixes
+
+extension MediaType {
   
   /// Returns the subtype's suffix, or `nil` if the media type does not have
   /// a suffix.
@@ -187,6 +192,54 @@ extension MediaType {
     get {
       return parse().suffix?.trimmed()
     }
+  }
+  
+  /// Adds the given suffix to the receiver's media type and returns a new
+  /// `MediaType` instance. If the receiver has a suffix then it is replaced
+  /// with the specified suffix.
+  ///
+  /// - parameters:
+  ///   - suffix: A suffix
+  public func adding(suffix: String) -> MediaType {
+    guard suffix.count > 0 else {
+      return self
+    }
+    let comps = parse()
+    
+    let type = Type(String(comps.type))
+    let facet = comps.facet.map { String($0) }
+    let subtype = comps.subtype.map { String($0) }
+    var params: [String: String] = [:]
+    
+    forEach {
+      let name = $0.lowercased()
+      if params[name] == nil {
+        params[name] = $1
+      }
+    }
+
+    return MediaType(type: type, facet: facet, subtype: subtype, suffix: suffix, parameters: params)
+  }
+  
+  /// Removes the suffix from the receiver's media type and returns a new
+  /// `MediaType` instance. If the receiver has no suffix then the receiver is
+  /// returned.
+  public func removingSuffix() -> MediaType {
+    let comps = parse()
+    
+    let type = Type(String(comps.type))
+    let facet = comps.facet.map { String($0) }
+    let subtype = comps.subtype.map { String($0) }
+    var params: [String: String] = [:]
+    
+    forEach {
+      let name = $0.lowercased()
+      if params[name] == nil {
+        params[name] = $1
+      }
+    }
+
+    return MediaType(type: type, facet: facet, subtype: subtype, suffix: nil, parameters: params)
   }
 }
 

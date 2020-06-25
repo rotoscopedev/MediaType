@@ -268,6 +268,21 @@ class MediaTypeTests: XCTestCase {
     XCTAssertEqual(type.suffix, "JSON")
   }
   
+  func testAddSuffix() {
+    let type: MediaType = "application/ld"
+    XCTAssertEqual(type.adding(suffix: "json"), "application/ld+json")
+  }
+  
+  func testReplaceSuffix() {
+    let type: MediaType = "application/ld+xml"
+    XCTAssertEqual(type.adding(suffix: "json"), "application/ld+json")
+  }
+  
+  func testRemoveSuffix() {
+    let type: MediaType = "application/ld+json"
+    XCTAssertEqual(type.removingSuffix(), "application/ld")
+  }
+
   // MARK: - Parameters
   
   func testParameter() {
