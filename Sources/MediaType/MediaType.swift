@@ -27,14 +27,6 @@ public struct MediaType: RawRepresentable {
   }
 }
 
-// MARK: - Helpers
-
-extension StringProtocol {
-  fileprivate func trimmed() -> String {
-    return trimmingCharacters(in: .whitespaces)
-  }
-}
-
 // MARK: - Initialization
 
 extension MediaType {
