@@ -64,23 +64,23 @@ extension MediaType {
   /// Initializes the receiver with the given components.
   ///
   /// - parameters:
-  ///   - type: The top-level type.
-  ///   - tree: The optional registration *tree*. The tree is ignored if a
-  ///     subtype is not specified. Defaults to `standards` if a subtree is
-  ///     provided by a tree is not specified.
+  ///   - type: The top-level type. The type is converted to 
+  ///   - facet: The optional subtype facet that identifies the registration
+  ///     tree. The facet is ignored if a subtype is not specified.
   ///   - subtype: The optional subtype.
   ///   - suffix: The optional suffix. The suffix is ignored if a subtype is
   ///     not specified.
-  ///   - parameters: An optional dictionary of parameters.
-  public init(type: Type, tree: Tree? = nil, subtype: String? = nil, suffix: String? = nil, parameters: [String: String]? = nil) {
+  ///   - parameters: An optional dictionary of parameters. The parameters are
+  ///     serialized in alphanumeric order.
+  public init(type: Type, facet: String? = nil, subtype: String? = nil, suffix: String? = nil, parameters: [String: String]? = nil) {
     var str = ""
 
-    str += type.rawValue.trimmed().lowercased()
+    str += type.rawValue.trimmed()
     str += subtype.map {
       var sub = "/"
-      sub += tree.map { $0 != .standards ? "\($0.rawValue)." : "" } ?? ""
+      sub += facet.map { "\($0)." } ?? ""
       sub += $0.trimmed()
-      sub += (suffix.map { "+\($0.trimmed().lowercased())" } ?? "")
+      sub += (suffix.map { "+\($0.trimmed())" } ?? "")
       return sub
     } ?? ""
     str += parameters.map {
@@ -96,37 +96,35 @@ extension MediaType {
 extension MediaType: Hashable {
 }
 
-// MARK: - Components
+// MARK: - Parsing
 
 extension MediaType {
   
   /// Parses the media type to return a set of component substrings.
-  private var components: (type: Substring, tree: Substring?, subtype: Substring?, suffix: Substring?, parameters: Substring?) {
-    get {
-      var type = Substring(rawValue)
-      var tree: Substring? = nil
-      var subtype: Substring? = nil
-      var suffix: Substring? = nil
-      var parameters: Substring? = nil
-      
-      if let i = type.firstIndex(of: ";") {
-        parameters = type.suffix(from: type.index(after: i))
-        type = type.prefix(upTo: i)
-      }
-      if let i = type.firstIndex(of: "/") {
-        subtype = type.suffix(from: type.index(after: i))
-        type = type.prefix(upTo: i)
-      }
-      if let i = subtype?.firstIndex(of: ".") {
-        tree = subtype!.prefix(upTo: i)
-        subtype = subtype!.suffix(from: subtype!.index(after: i))
-      }
-      if let i = subtype?.lastIndex(of: "+") {
-        suffix = subtype!.suffix(from: subtype!.index(after: i))
-        subtype = subtype!.prefix(upTo: i)
-      }
-      return (type, tree, subtype, suffix, parameters)
+  private func parse() -> (type: Substring, facet: Substring?, subtype: Substring?, suffix: Substring?, parameters: Substring?) {
+    var type = Substring(rawValue)
+    var facet: Substring? = nil
+    var subtype: Substring? = nil
+    var suffix: Substring? = nil
+    var parameters: Substring? = nil
+    
+    if let i = type.firstIndex(of: ";") {
+      parameters = type.suffix(from: type.index(after: i))
+      type = type.prefix(upTo: i)
     }
+    if let i = type.firstIndex(of: "/") {
+      subtype = type.suffix(from: type.index(after: i))
+      type = type.prefix(upTo: i)
+    }
+    if let i = subtype?.firstIndex(of: ".") {
+      facet = subtype!.prefix(upTo: i)
+      subtype = subtype!.suffix(from: subtype!.index(after: i))
+    }
+    if let i = subtype?.lastIndex(of: "+") {
+      suffix = subtype!.suffix(from: subtype!.index(after: i))
+      subtype = subtype!.prefix(upTo: i)
+    }
+    return (type, facet, subtype, suffix, parameters)
   }
 }
 
@@ -137,22 +135,40 @@ extension MediaType {
   /// Returns the top-level type.
   public var type: Type {
     get {
-      return Type(components.type.trimmed())
+      return Type(parse().type.trimmed())
     }
   }
   
-  /// Returns the subtype's tree, or `nil` if the receiver does not have a
-  /// subtype.
-  public var tree: Tree? {
+  /// Returns the subtype facet that identifies the type's registration tree,
+  /// or `nil` if no facet is present. Will also return `nil` if the type does
+  /// not have a subtype.
+  public var facet: String? {
     get {
-      let comps = components
+      let comps = parse()
       if comps.subtype == nil {
         return nil
-      }
-      if let tree = comps.tree {
-        return Tree(rawValue: tree.lowercased())
       } else {
+        return comps.facet?.trimmed()
+      }
+    }
+  }
+  
+  /// Returns the subtype's registration tree. Will return `standards` if
+  /// no subtype is present.
+  public var tree: Tree {
+    get {
+      guard let facet = self.facet else {
         return .standards
+      }
+      switch facet.lowercased() {
+      case "vnd":
+        return .vendor
+      case "prs":
+        return .personal
+      case "x":
+        return .unregistered
+      default:
+        return .other(facet)
       }
     }
   }
@@ -161,7 +177,7 @@ extension MediaType {
   /// media type does not contain a subtype.
   public var subtype: String? {
     get {
-      return components.subtype?.trimmed()
+      return parse().subtype?.trimmed()
     }
   }
   
@@ -169,7 +185,7 @@ extension MediaType {
   /// a suffix.
   public var suffix: String? {
     get {
-      return components.suffix?.trimmed()
+      return parse().suffix?.trimmed()
     }
   }
 }
@@ -206,7 +222,7 @@ extension MediaType {
   public var parameters: [String: String] {
     get {
       var params: [String: String] = [:]
-      if let parameters = components.parameters {
+      if let parameters = parse().parameters {
         firstParameter(in: parameters) { (name: Substring, value: Substring) -> Substring? in
           params[name.trimmed().lowercased()] = value.trimmed()
           return nil
@@ -224,7 +240,7 @@ extension MediaType {
   ///   - name: The name of the parameter.
   public subscript(_ name: String) -> String? {
     get {
-      guard let parameters = components.parameters else {
+      guard let parameters = parse().parameters else {
         return nil
       }
       let key = name.lowercased()
@@ -251,23 +267,27 @@ extension MediaType {
   ///   - value: The property's value.
   ///   - name: The property's name.
   public func adding(_ value: String, for name: String) -> MediaType {
-    let comps = components
+    let key = name.trimmed()
+    let comps = parse()
     
     let type = Type(String(comps.type))
-    let tree = comps.tree.flatMap { Tree(rawValue: String($0)) }
+    let facet = comps.facet.map { String($0) }
     let subtype = comps.subtype.map { String($0) }
     let suffix = comps.suffix.map { String($0) }
     var params: [String: String] = [:]
     
-    if let parameters = components.parameters {
+    if let parameters = comps.parameters {
       firstParameter(in: parameters) { (name: Substring, value: Substring) -> Substring? in
-        params[name.trimmed().lowercased()] = value.trimmed()
+        let trimmedName = name.trimmed()
+        if trimmedName.caseInsensitiveCompare(key) != .orderedSame {
+          params[trimmedName] = value.trimmed()
+        }
         return nil
       }
     }
     params[name] = value
     
-    return MediaType(type: type, tree: tree, subtype: subtype, suffix: suffix, parameters: params)
+    return MediaType(type: type, facet: facet, subtype: subtype, suffix: suffix, parameters: params)
   }
   
   /// Returns a new media type without the parameter with the given name.
@@ -275,35 +295,86 @@ extension MediaType {
   /// - parameters:
   ///   - name: The property's name.
   public func removing(_ name: String) -> MediaType {
-    let comps = components
+    let key = name.trimmed()
+    let comps = parse()
     
     let type = Type(String(comps.type))
-    let tree = comps.tree.flatMap { Tree(rawValue: String($0)) }
+    let facet = comps.facet.map { String($0) }
     let subtype = comps.subtype.map { String($0) }
     let suffix = comps.suffix.map { String($0) }
     var params: [String: String] = [:]
     
-    if let parameters = components.parameters {
+    if let parameters = comps.parameters {
+      firstParameter(in: parameters) { (name: Substring, value: Substring) -> Substring? in
+        let trimmedName = name.trimmed()
+        if trimmedName.caseInsensitiveCompare(key) != .orderedSame {
+          params[trimmedName] = value.trimmed()
+        }
+        return nil
+      }
+    }
+    
+    return MediaType(type: type, facet: facet, subtype: subtype, suffix: suffix, parameters: params)
+  }
+
+  /// Returns a media type without the receiver's parameters.
+  public func removingParameters() -> MediaType {
+    let comps = parse()
+    
+    let type = Type(String(comps.type))
+    let facet = comps.facet.map { String($0) }
+    let subtype = comps.subtype.map { String($0) }
+    let suffix = comps.suffix.map { String($0) }
+    
+    return MediaType(type: type, facet: facet, subtype: subtype, suffix: suffix)
+  }
+}
+
+// MARK: - Normalization
+
+extension MediaType {
+  
+  /// Returns a normalized version of the receiver, which can be used to
+  /// compare media types regardless of casing and whitespace.
+  ///
+  /// The following transformations are applied during transformation:
+  ///
+  /// - The type is converted to lower case.
+  /// - The subtype, including facet and suffix are converted to lower case.
+  /// - The names of parameters are converted to lowercase.
+  /// - Whitespace is normalized.
+  /// - The order of parameters is normalized to being alphabetical sorted by
+  ///   name.
+  /// - Trailing delimiters are removed.
+  ///
+  /// e.g.
+  ///
+  /// ```
+  /// text/SGML; CharSet = UTF-8;
+  /// ```
+  ///
+  /// is normalized to
+  ///
+  /// ```
+  /// text/sgml; charset=UTF-8
+  /// ```
+  func normalized() -> MediaType {
+    let comps = parse()
+    
+    let type = Type(comps.type.trimmed().lowercased())
+    let facet = comps.facet.map { $0.trimmed().lowercased() }
+    let subtype = comps.subtype.map { $0.trimmed().lowercased() }
+    let suffix = comps.suffix.map { $0.trimmed().lowercased() }
+    var params: [String: String] = [:]
+    
+    if let parameters = comps.parameters {
       firstParameter(in: parameters) { (name: Substring, value: Substring) -> Substring? in
         params[name.trimmed().lowercased()] = value.trimmed()
         return nil
       }
     }
-    params.removeValue(forKey: name)
     
-    return MediaType(type: type, tree: tree, subtype: subtype, suffix: suffix, parameters: params)
-  }
-
-  /// Returns a media type without the receiver's parameters.
-  public func removingParameters() -> MediaType {
-    let comps = components
-    
-    let type = Type(String(comps.type))
-    let tree = comps.tree.flatMap { Tree(rawValue: String($0)) }
-    let subtype = comps.subtype.map { String($0) }
-    let suffix = comps.suffix.map { String($0) }
-    
-    return MediaType(type: type, tree: tree, subtype: subtype, suffix: suffix)
+    return MediaType(type: type, facet: facet, subtype: subtype, suffix: suffix, parameters: params)
   }
 }
 

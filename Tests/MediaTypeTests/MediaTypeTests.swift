@@ -40,7 +40,7 @@ class MediaTypeTests: XCTestCase {
   }
   
   func testInitializeTree() {
-    let type = MediaType(type: .audio, tree: .vendor, subtype: "dolby.pl2")
+    let type = MediaType(type: .audio, facet: Tree.vendor.facet, subtype: "dolby.pl2")
     XCTAssertEqual(type.rawValue, "audio/vnd.dolby.pl2")
   }
   
@@ -50,7 +50,7 @@ class MediaTypeTests: XCTestCase {
   }
   
   func testInitializeTreeAndSuffix() {
-    let type = MediaType(type: .application, tree: .vendor, subtype: "3gpp.bsf", suffix: "xml")
+    let type = MediaType(type: .application, facet: Tree.vendor.facet, subtype: "3gpp.bsf", suffix: "xml")
     XCTAssertEqual(type.rawValue, "application/vnd.3gpp.bsf+xml")
   }
   
@@ -58,7 +58,6 @@ class MediaTypeTests: XCTestCase {
     let type = MediaType(type: .text, subtype: "html", parameters: [ "charset" : "UTF-8" ])
     XCTAssertEqual(type.rawValue, "text/html; charset=UTF-8")
   }
-  
 
   func testInitializeParametersSorting() {
     let params = [
@@ -77,6 +76,28 @@ class MediaTypeTests: XCTestCase {
     XCTAssertEqual(type.rawValue, "text/html")
   }
   
+  // MARK: -
+  
+  func testInitializeTypeCasing() {
+    let type = MediaType(type: .other("Movie"), subtype: "avi")
+    XCTAssertEqual(type.rawValue, "Movie/avi")
+  }
+
+  func testInitializeSubtypeCasing() {
+    let type = MediaType(type: .text, subtype: "SGML")
+    XCTAssertEqual(type.rawValue, "text/SGML")
+  }
+
+  func testInitializeSuffixCasing() {
+    let type = MediaType(type: .application, subtype: "ld", suffix: "JSON")
+    XCTAssertEqual(type.rawValue, "application/ld+JSON")
+  }
+
+  func testInitializeParametersCasing() {
+    let type = MediaType(type: .text, subtype: "html", parameters: [ "CharSet" : "UTF-8" ])
+    XCTAssertEqual(type.rawValue, "text/html; CharSet=UTF-8")
+  }
+
   // MARK: - Type
   
   func testType() {
@@ -132,7 +153,45 @@ class MediaTypeTests: XCTestCase {
     XCTAssertEqual(type.subtype, "SGML")
   }
   
-  // MARK: - Subtree
+  // MARK: - Facet
+  
+  func testFacet() {
+    let type: MediaType = "application/vnd.amazon.ebook"
+    XCTAssertEqual(type.facet, "vnd")
+  }
+  
+  func testNoFacet() {
+    let type: MediaType = "text/plain"
+    XCTAssertNil(type.facet)
+  }
+  
+  func testFacetNoSubtype() {
+    let type: MediaType = "text"
+    XCTAssertNil(type.facet)
+  }
+  
+  func testFacetWithSubtypeWithMultiplePeriods() {
+    let type: MediaType = "text/vnd.rtf.dir"
+    XCTAssertEqual(type.subtype, "rtf.dir")
+    XCTAssertEqual(type.facet, "vnd")
+  }
+
+  func testFacetWithTrailingDelimiter1() {
+    let type: MediaType = "application/vnd.amazon.ebook;"
+    XCTAssertEqual(type.facet, "vnd")
+  }
+  
+  func testFacetWithTrailingDelimiter2() {
+    let type: MediaType = "application/vnd.amazon.ebook+"
+    XCTAssertEqual(type.facet, "vnd")
+  }
+  
+  func testFacetCasing() {
+    let type: MediaType = "application/VND.amazon.ebook"
+    XCTAssertEqual(type.facet, "VND")
+  }
+
+  // MARK: - Tree
   
   func testTree() {
     let type: MediaType = "application/vnd.amazon.ebook"
@@ -146,7 +205,7 @@ class MediaTypeTests: XCTestCase {
   
   func testTreeNoSubtype() {
     let type: MediaType = "text"
-    XCTAssertNil(type.tree)
+    XCTAssertEqual(type.tree, .standards)
   }
   
   func testTreeWithSubtypeWithMultiplePeriods() {
@@ -168,7 +227,6 @@ class MediaTypeTests: XCTestCase {
   func testTreeCasing() {
     let type: MediaType = "application/VND.amazon.ebook"
     XCTAssertEqual(type.tree, .vendor)
-    XCTAssertEqual(type.tree?.rawValue, "vnd")
   }
   
   // MARK: - Suffix
@@ -237,6 +295,12 @@ class MediaTypeTests: XCTestCase {
     XCTAssertEqual(type["linebreak"], "lf")
   }
   
+  func testParametersWithExtraneousDelimiters() {
+    let type: MediaType = "text/html; charset=UTF-8;; linebreak=lf;;;"
+    XCTAssertEqual(type["charset"], "UTF-8")
+    XCTAssertEqual(type["linebreak"], "lf")
+  }
+
   func testParameters() {
     let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
     let expected = [
@@ -269,9 +333,19 @@ class MediaTypeTests: XCTestCase {
     XCTAssertEqual(type.adding("UTF-8", for: "charset"), "text/markdown; charset=UTF-8")
   }
   
+  func testAddParameterCasing() {
+    let type: MediaType = "text/markdown"
+    XCTAssertEqual(type.adding("UTF-8", for: "CharSet"), "text/markdown; CharSet=UTF-8")
+  }
+
   func testReplaceParameter() {
     let type: MediaType = "text/markdown; charset=US-ASCII"
     XCTAssertEqual(type.adding("UTF-8", for: "charset"), "text/markdown; charset=UTF-8")
+  }
+  
+  func testReplaceParameterCasing() {
+    let type: MediaType = "text/markdown; CHARSET=US-ASCII"
+    XCTAssertEqual(type.adding("UTF-8", for: "CharSet"), "text/markdown; CharSet=UTF-8")
   }
 
   // MARK: -
@@ -294,6 +368,63 @@ class MediaTypeTests: XCTestCase {
   func testRemoveNoParameters() {
     let type: MediaType = "text/html"
     XCTAssertEqual(type.removingParameters(), "text/html")
+  }
+  
+  func testRemoveParameterCasing() {
+    let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
+    XCTAssertEqual(type.removing("CharSet"), "text/html; linebreak=lf")
+  }
+  
+  // MARK: - Normalization
+  
+  func testNormalizedType() {
+    let type = MediaType(type: .other("VIDEO"), subtype: "avi")
+    XCTAssertEqual(type, "VIDEO/avi")
+    XCTAssertEqual(type.normalized(), "video/avi")
+  }
+  
+  func testNormalizedSubtype() {
+    let type = MediaType(type: .text, subtype: "SGML")
+    XCTAssertEqual(type, "text/SGML")
+    XCTAssertEqual(type.normalized(), "text/sgml")
+  }
+
+  func testNormalizeSubtypeWhitespace() {
+    let type: MediaType = " text / plain"
+    XCTAssertEqual(type.normalized(), "text/plain")
+  }
+
+  func testNormalizeFacet() {
+    let type = MediaType(type: .application, facet: "VND", subtype: "adobe.photoshop")
+    XCTAssertEqual(type, "application/VND.adobe.photoshop")
+    XCTAssertEqual(type.normalized(), "application/vnd.adobe.photoshop")
+  }
+  
+  func testNormalizeSuffix() {
+    let type = MediaType(type: .application, subtype: "ld", suffix: "JSON")
+    XCTAssertEqual(type, "application/ld+JSON")
+    XCTAssertEqual(type.normalized(), "application/ld+json")
+  }
+  
+  func testNormalizeParameterName() {
+    let type = MediaType(type: .text, subtype: "plain", parameters: [ "CharSet" : "UTF-8" ])
+    XCTAssertEqual(type, "text/plain; CharSet=UTF-8")
+    XCTAssertEqual(type.normalized(), "text/plain; charset=UTF-8")
+  }
+  
+  func testNormalizeParameterOrder() {
+    let type: MediaType = "text/plain; first=1st; second=2nd; third=3rd; fourth=4th; fifth=5th"
+    XCTAssertEqual(type.normalized(), "text/plain; fifth=5th; first=1st; fourth=4th; second=2nd; third=3rd")
+  }
+
+  func testNormalizeParameterWhitespace() {
+    let type: MediaType = " text/plain ; charset = UTF-8 ; linebreak = lf "
+    XCTAssertEqual(type.normalized(), "text/plain; charset=UTF-8; linebreak=lf")
+  }
+  
+  func testNormalizeParameterDelimiters() {
+    let type: MediaType = "text/plain; charset = UTF-8; linebreak = lf;"
+    XCTAssertEqual(type.normalized(), "text/plain; charset=UTF-8; linebreak=lf")
   }
 
   // MARK: - Subtype Factory Methods

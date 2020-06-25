@@ -52,7 +52,7 @@ extension Type: RawRepresentable {
       case .video:
         return "video"
       case .other(let string):
-        return string.lowercased()
+        return string
       }
     }
   }
@@ -66,8 +66,7 @@ extension Type: RawRepresentable {
     guard rawValue.count > 0 else {
       return nil
     }
-    let type = rawValue.lowercased()
-    switch type {
+    switch rawValue.lowercased() {
     case "application":
       self = .application
     case "audio":
@@ -89,7 +88,7 @@ extension Type: RawRepresentable {
     case "video":
       self = .video
     default:
-      self = .other(type)
+      self = .other(rawValue.trimmed())
     }
   }
 }
