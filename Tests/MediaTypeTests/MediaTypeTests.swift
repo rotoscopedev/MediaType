@@ -337,34 +337,34 @@ class MediaTypeTests: XCTestCase {
   
   func testAddParameter() {
     let type: MediaType = "text/markdown"
-    XCTAssertEqual(type.adding("UTF-8", for: "charset"), "text/markdown; charset=UTF-8")
+    XCTAssertEqual(type.adding(parameter: "charset", value: "UTF-8"), "text/markdown; charset=UTF-8")
   }
   
   func testAddParameterCasing() {
     let type: MediaType = "text/markdown"
-    XCTAssertEqual(type.adding("UTF-8", for: "CharSet"), "text/markdown; CharSet=UTF-8")
+    XCTAssertEqual(type.adding(parameter: "CharSet", value: "UTF-8"), "text/markdown; CharSet=UTF-8")
   }
 
   func testReplaceParameter() {
     let type: MediaType = "text/markdown; charset=US-ASCII"
-    XCTAssertEqual(type.adding("UTF-8", for: "charset"), "text/markdown; charset=UTF-8")
+    XCTAssertEqual(type.adding(parameter: "charset", value: "UTF-8"), "text/markdown; charset=UTF-8")
   }
   
   func testReplaceParameterCasing() {
     let type: MediaType = "text/markdown; CHARSET=US-ASCII"
-    XCTAssertEqual(type.adding("UTF-8", for: "CharSet"), "text/markdown; CharSet=UTF-8")
+    XCTAssertEqual(type.adding(parameter: "CharSet", value: "UTF-8"), "text/markdown; CharSet=UTF-8")
   }
 
   // MARK: -
   
   func testRemoveParameter() {
     let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
-    XCTAssertEqual(type.removing("charset"), "text/html; linebreak=lf")
+    XCTAssertEqual(type.removing(parameter: "charset"), "text/html; linebreak=lf")
   }
   
   func testRemoveNonExistentParameter() {
     let type: MediaType = "text/html; charset=UTF-8"
-    XCTAssertEqual(type.removing("linebreak"), "text/html; charset=UTF-8")
+    XCTAssertEqual(type.removing(parameter: "linebreak"), "text/html; charset=UTF-8")
   }
 
   func testRemoveParameters() {
@@ -379,7 +379,7 @@ class MediaTypeTests: XCTestCase {
   
   func testRemoveParameterCasing() {
     let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
-    XCTAssertEqual(type.removing("CharSet"), "text/html; linebreak=lf")
+    XCTAssertEqual(type.removing(parameter: "CharSet"), "text/html; linebreak=lf")
   }
   
   // MARK: - Normalization
@@ -432,6 +432,11 @@ class MediaTypeTests: XCTestCase {
   func testNormalizeParameterDelimiters() {
     let type: MediaType = "text/plain; charset = UTF-8; linebreak = lf;"
     XCTAssertEqual(type.normalized(), "text/plain; charset=UTF-8; linebreak=lf")
+  }
+  
+  func testNormalizeDuplicateParameters() {
+    let type: MediaType = "text/plain; charset=UTF-8; charset=US-ASCII; charset: ISO-8859-1"
+    XCTAssertEqual(type.normalized(), "text/plain; charset=UTF-8")
   }
 
   // MARK: - Subtype Factory Methods

@@ -194,15 +194,16 @@ extension MediaType {
 
 extension MediaType {
   
-  /// Calls the given closure for each parameter until the closure returns a
-  /// non-nil value.
+  /// Enumerates the media type's parameters in the order in which they
+  /// appear.
   ///
-  /// - parameters:
-  ///   - body: The closure that receivers the name and value of each
-  ///     parameter.
-  @discardableResult
-  private func firstParameter<T>(in params: Substring, where body: (Substring, Substring) -> T?) -> T? {
-    for param in params.components(separatedBy: ";") {
+  /// If multiple parameters with the same name appear in the media type then
+  /// each name/value pair will be passed to `body`.
+  public func forEach(_ body: (String, String) -> Void) {
+    guard let parameters = parse().parameters else {
+      return
+    }
+    for param in parameters.components(separatedBy: ";") {
       guard let i = param.firstIndex(of: "=") else {
         continue
       }
@@ -210,22 +211,27 @@ extension MediaType {
       let value = param.suffix(from: param.index(after: i))
       
       if name.count > 0 && value.count > 0 {
-        if let result = body(name, value) {
-          return result
-        }
+        body(name.trimmed(), value.trimmed())
       }
     }
-    return nil
   }
   
   /// Returns the media type's parameters.
+  ///
+  /// If multiple parameters with the same name appear in the media type then
+  /// the first parameter is included in the returned dictionary.
+  ///
+  /// The casing of parameter names is preserved.
   public var parameters: [String: String] {
     get {
       var params: [String: String] = [:]
-      if let parameters = parse().parameters {
-        firstParameter(in: parameters) { (name: Substring, value: Substring) -> Substring? in
-          params[name.trimmed().lowercased()] = value.trimmed()
-          return nil
+      var names = Set<String>()
+      
+      forEach {
+        let key = $0.lowercased()
+        if !names.contains(key) {
+          names.insert(key)
+          params[$0] = $1
         }
       }
       return params
@@ -244,17 +250,16 @@ extension MediaType {
   ///   - name: The name of the parameter.
   public subscript(_ name: String) -> String? {
     get {
-      guard let parameters = parse().parameters else {
-        return nil
-      }
-      let key = name.lowercased()
-      return firstParameter(in: parameters) {
-        if key == $0.trimmed().lowercased() {
-          return $1.trimmed()
-        } else {
-          return nil
+      var value: String?
+
+      forEach {
+        if value == nil {
+          if $0.caseInsensitiveCompare(name) == .orderedSame {
+            value = $1
+          }
         }
       }
+      return value
     }
   }
 }
@@ -268,9 +273,9 @@ extension MediaType {
   /// present.
   ///
   /// - parameters:
-  ///   - value: The property's value.
-  ///   - name: The property's name.
-  public func adding(_ value: String, for name: String) -> MediaType {
+  ///   - name: The parameter's name.
+  ///   - value: The parameter's value.
+  public func adding(parameter name: String, value: String) -> MediaType {
     let key = name.trimmed()
     let comps = parse()
     
@@ -280,13 +285,9 @@ extension MediaType {
     let suffix = comps.suffix.map { String($0) }
     var params: [String: String] = [:]
     
-    if let parameters = comps.parameters {
-      firstParameter(in: parameters) { (name: Substring, value: Substring) -> Substring? in
-        let trimmedName = name.trimmed()
-        if trimmedName.caseInsensitiveCompare(key) != .orderedSame {
-          params[trimmedName] = value.trimmed()
-        }
-        return nil
+    forEach {
+      if $0.caseInsensitiveCompare(key) != .orderedSame {
+        params[$0] = $1
       }
     }
     params[name] = value
@@ -297,8 +298,8 @@ extension MediaType {
   /// Returns a new media type without the parameter with the given name.
   ///
   /// - parameters:
-  ///   - name: The property's name.
-  public func removing(_ name: String) -> MediaType {
+  ///   - name: The parameter's name.
+  public func removing(parameter name: String) -> MediaType {
     let key = name.trimmed()
     let comps = parse()
     
@@ -308,13 +309,9 @@ extension MediaType {
     let suffix = comps.suffix.map { String($0) }
     var params: [String: String] = [:]
     
-    if let parameters = comps.parameters {
-      firstParameter(in: parameters) { (name: Substring, value: Substring) -> Substring? in
-        let trimmedName = name.trimmed()
-        if trimmedName.caseInsensitiveCompare(key) != .orderedSame {
-          params[trimmedName] = value.trimmed()
-        }
-        return nil
+    forEach {
+      if $0.caseInsensitiveCompare(key) != .orderedSame {
+        params[$0] = $1
       }
     }
     
@@ -371,10 +368,10 @@ extension MediaType {
     let suffix = comps.suffix.map { $0.trimmed().lowercased() }
     var params: [String: String] = [:]
     
-    if let parameters = comps.parameters {
-      firstParameter(in: parameters) { (name: Substring, value: Substring) -> Substring? in
-        params[name.trimmed().lowercased()] = value.trimmed()
-        return nil
+    forEach {
+      let name = $0.lowercased()
+      if params[name] == nil {
+        params[name] = $1
       }
     }
     
