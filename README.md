@@ -46,7 +46,7 @@ Avoid typos by using the subtype factory methods to create media type instances 
 
 # Pre-Defined Media Types
 
-`MediaType` declares factory methods for each of the IANA-defined top-level enabling media types to be created with expressions such as
+`MediaType` declares factory methods for each of the IANA-defined top-level types enabling media types to be created with expressions such as
 
 ```swift
 static let json: MediaType = .application(.json)
@@ -133,7 +133,7 @@ A media type's parameters can be removed using the `removingParameters()` method
 ```swift
 let contentType = MediaType("text/plain; charset=UTF-8")
 ...
-if contentType.removingParameters() == MediaType("text/plain") {
+if contentType.removingParameters() == "text/plain" {
 }
 ```
 
@@ -141,7 +141,7 @@ if contentType.removingParameters() == MediaType("text/plain") {
 
 ## Case Handling
 
-Several, but not all of the components of a media type should be handled in a case-insensitive manner. For example, the type, subtype and parameter name components are case-insensitive, as are parameter names, whereas parameter values are not.
+Several, but not all of the components of a media type should be handled in a case-insensitive manner. For example, the type, subtype, facet and suffix components are case-insensitive, as are parameter names, whereas parameter values are not.
 
 This makes comparing media types difficult as a case-insensitive comparison of two media type strings fails to take the case-sensitive nature of parameter values into account.
 
