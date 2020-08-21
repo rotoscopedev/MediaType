@@ -512,4 +512,32 @@ class MediaTypeTests: XCTestCase {
     let type: MediaType = .video(.h264)
     XCTAssertEqual(type.rawValue, "video/H264")
   }
+  
+  // MARK: - Coding
+  
+  func testEncoding() {
+    let encoder = JSONEncoder()
+    let type: MediaType = .application(.json)
+    
+    do {
+      let output = try encoder.encode(type)
+      let string = String(bytes: output, encoding: .utf8)!
+      
+      XCTAssertEqual(string, #""application\/json""#)
+    } catch {
+      XCTFail("Exception caught: \(error)")
+    }
+  }
+  
+  func testDecoding() {
+    let decoder = JSONDecoder()
+    let input = #""application\/json""#.data(using: .utf8)!
+    
+    do {
+      let type = try decoder.decode(MediaType.self, from: input)
+      XCTAssertEqual(type, .application(.json))
+    } catch {
+      XCTFail("Exception caught: \(error)")
+    }
+  }
 }

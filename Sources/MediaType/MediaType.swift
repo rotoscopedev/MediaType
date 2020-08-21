@@ -458,3 +458,35 @@ extension MediaType: ExpressibleByStringLiteral {
     self = type
   }
 }
+
+// MARK: - Encodable
+
+extension MediaType: Encodable {
+  
+  /// Encodes this value into the given encoder.
+  ///
+  /// - parameters:
+  ///   - encoder: The encoder to write data to.
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    try container.encode(rawValue)
+  }
+}
+
+// MARK: - Decodable
+
+extension MediaType: Decodable {
+  
+  /// Creates a new instance by decoding from the given decoder.
+  ///
+  /// - parameters:
+  ///   - decoder: The decoder to read data from.
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.singleValueContainer()
+    self.rawValue = try container.decode(String.self)
+    
+    guard self.rawValue.count > 0 else {
+      throw DecodingError.dataCorruptedError(in: container, debugDescription: "Media type may not be empty")
+    }
+  }
+}
