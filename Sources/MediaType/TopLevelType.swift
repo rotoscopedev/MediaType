@@ -21,23 +21,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public enum Type {
-  case application
-  case audio
-  case example
-  case font
-  case image
-  case message
-  case model
-  case multipart
-  case text
-  case video
-  case other(String)
+extension MediaType {
+  public enum TopLevelType {
+    case application
+    case audio
+    case example
+    case font
+    case image
+    case message
+    case model
+    case multipart
+    case text
+    case video
+    case other(String)
+  }
 }
 
 // MARK: -
 
-extension Type: RawRepresentable {
+extension MediaType.TopLevelType: RawRepresentable {
   
   /// Returns a string representation for the receiver.
   public var rawValue: String {
@@ -107,7 +109,7 @@ extension Type: RawRepresentable {
 
 // MARK: - Initialization
 
-extension Type {
+extension MediaType.TopLevelType {
   
   /// Initializes the receiver with the given string. Raises a precondition
   /// failure if `string` is not a valid top-level type.
@@ -124,12 +126,12 @@ extension Type {
 
 // MARK: - Hashable
 
-extension Type: Hashable {
+extension MediaType.TopLevelType: Hashable {
 }
 
 // MARK: - ExpressibleByStringLiteral
 
-extension Type: ExpressibleByStringLiteral {
+extension MediaType.TopLevelType: ExpressibleByStringLiteral {
 
   /// Creates an instance initialized to the given string value.
   ///
@@ -141,7 +143,7 @@ extension Type: ExpressibleByStringLiteral {
 
 // MARK: - CustomStringConvertible
 
-extension Type: CustomStringConvertible {
+extension MediaType.TopLevelType: CustomStringConvertible {
   
   /// Returns a humanly-readable description of the receiver.
   public var description: String {

@@ -84,7 +84,7 @@ extension MediaType {
   ///     not specified.
   ///   - parameters: An optional dictionary of parameters. The parameters are
   ///     serialized in alphanumeric order.
-  public init(type: Type, facet: String? = nil, subtype: String? = nil, suffix: String? = nil, parameters: [String: String]? = nil) {
+  public init(type: TopLevelType, facet: String? = nil, subtype: String? = nil, suffix: String? = nil, parameters: [String: String]? = nil) {
     var str = ""
 
     str += type.rawValue.trimmed()
@@ -145,9 +145,9 @@ extension MediaType {
 extension MediaType {
   
   /// Returns the top-level type.
-  public var type: Type {
+  public var type: TopLevelType {
     get {
-      return Type(parse().type.trimmed())
+      return TopLevelType(parse().type.trimmed())
     }
   }
   
@@ -218,7 +218,7 @@ extension MediaType {
     }
     let comps = parse()
     
-    let type = Type(String(comps.type))
+    let type = TopLevelType(String(comps.type))
     let facet = comps.facet.map { String($0) }
     let subtype = comps.subtype.map { String($0) }
     var params: [String: String] = [:]
@@ -239,7 +239,7 @@ extension MediaType {
   public func removingSuffix() -> MediaType {
     let comps = parse()
     
-    let type = Type(String(comps.type))
+    let type = TopLevelType(String(comps.type))
     let facet = comps.facet.map { String($0) }
     let subtype = comps.subtype.map { String($0) }
     var params: [String: String] = [:]
@@ -344,7 +344,7 @@ extension MediaType {
     let key = name.trimmed()
     let comps = parse()
     
-    let type = Type(String(comps.type))
+    let type = TopLevelType(String(comps.type))
     let facet = comps.facet.map { String($0) }
     let subtype = comps.subtype.map { String($0) }
     let suffix = comps.suffix.map { String($0) }
@@ -368,7 +368,7 @@ extension MediaType {
     let key = name.trimmed()
     let comps = parse()
     
-    let type = Type(String(comps.type))
+    let type = TopLevelType(String(comps.type))
     let facet = comps.facet.map { String($0) }
     let subtype = comps.subtype.map { String($0) }
     let suffix = comps.suffix.map { String($0) }
@@ -387,7 +387,7 @@ extension MediaType {
   public func removingParameters() -> MediaType {
     let comps = parse()
     
-    let type = Type(String(comps.type))
+    let type = TopLevelType(String(comps.type))
     let facet = comps.facet.map { String($0) }
     let subtype = comps.subtype.map { String($0) }
     let suffix = comps.suffix.map { String($0) }
@@ -427,7 +427,7 @@ extension MediaType {
   func normalized() -> MediaType {
     let comps = parse()
     
-    let type = Type(comps.type.trimmed().lowercased())
+    let type = TopLevelType(comps.type.trimmed().lowercased())
     let facet = comps.facet.map { $0.trimmed().lowercased() }
     let subtype = comps.subtype.map { $0.trimmed().lowercased() }
     let suffix = comps.suffix.map { $0.trimmed().lowercased() }
