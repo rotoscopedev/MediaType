@@ -21,17 +21,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public enum Tree: Hashable {
-  case standards
-  case vendor
-  case personal
-  case unregistered
-  case other(String)
+extension MediaType {
+  public enum Tree: Hashable {
+    case standards
+    case vendor
+    case personal
+    case unregistered
+    case other(String)
+  }
 }
 
 // MARK: -
 
-extension Tree {
+extension MediaType.Tree {
   
   /// Returns the subtype facet for this registration tree. Returns `nil` for
   /// `standards`.

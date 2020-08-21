@@ -21,24 +21,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public enum TextSubtype: String {
-  case calendar = "calendar"
-  case css = "css"
-  case csv = "csv"
-  case directory = "directory"
-  case dns = "dns"
-  case ecmaScript = "ecmascript"
-  case html = "html"
-  case javascript = "javascript"
-  case markdown = "markdown"
-  case parameters = "parameters"
-  case plain = "plain"
-  case richtext = "richtext"
-  case rtf = "rtf"
-  case sgml = "SGML"
-  case strings = "strings"
-  case vcard = "vcard"
-  case xml = "xml"
+extension MediaType {
+  public enum TextSubtype: String {
+    case calendar = "calendar"
+    case css = "css"
+    case csv = "csv"
+    case directory = "directory"
+    case dns = "dns"
+    case ecmaScript = "ecmascript"
+    case html = "html"
+    case javascript = "javascript"
+    case markdown = "markdown"
+    case parameters = "parameters"
+    case plain = "plain"
+    case richtext = "richtext"
+    case rtf = "rtf"
+    case sgml = "SGML"
+    case strings = "strings"
+    case vcard = "vcard"
+    case xml = "xml"
+  }
 }
 
 // MARK: -

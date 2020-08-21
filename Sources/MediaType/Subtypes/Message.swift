@@ -21,9 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public enum MessageSubtype: String {
-  case http = "http"
-  case shttp = "s-http"
+extension MediaType {
+  public enum MessageSubtype: String {
+    case http = "http"
+    case shttp = "s-http"
+  }
 }
 
 // MARK: -

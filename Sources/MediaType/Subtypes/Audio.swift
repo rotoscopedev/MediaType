@@ -21,15 +21,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public enum AudioSubtype: String {
-  case aac = "aac"
-  case ac3 = "ac3"
-  case midi = "midi"
-  case mp4 = "mp4"
-  case mpeg = "mpeg"
-  case ogg = "ogg"
-  case pcma = "PCMA"
-  case vorbis = "vorbis"
+extension MediaType {
+  public enum AudioSubtype: String {
+    case aac = "aac"
+    case ac3 = "ac3"
+    case midi = "midi"
+    case mp4 = "mp4"
+    case mpeg = "mpeg"
+    case ogg = "ogg"
+    case pcma = "PCMA"
+    case vorbis = "vorbis"
+  }
 }
 
 // MARK: -

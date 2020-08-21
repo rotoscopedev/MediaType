@@ -21,17 +21,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public enum MultipartSubtype: String {
-  case digest = "digest"
-  case encrypted = "encrypted"
-  case formData = "form-data"
-  case headerSet = "header-set"
-  case mixed = "mixed"
-  case multilingual = "multilingual"
-  case parallel = "parallel"
-  case related = "related"
-  case report = "report"
-  case signed = "signed"
+extension MediaType {
+  public enum MultipartSubtype: String {
+    case digest = "digest"
+    case encrypted = "encrypted"
+    case formData = "form-data"
+    case headerSet = "header-set"
+    case mixed = "mixed"
+    case multilingual = "multilingual"
+    case parallel = "parallel"
+    case related = "related"
+    case report = "report"
+    case signed = "signed"
+  }
 }
 
 // MARK: -

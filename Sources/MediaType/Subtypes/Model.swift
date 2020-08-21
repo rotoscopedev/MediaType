@@ -21,14 +21,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public enum ModelSubtype: String {
-  case dwf = "vnd.dwf"
-  case mesh = "mesh"
-  case mtl = "mtl"
-  case obj = "obj"
-  case stl = "stl"
-  case vrml = "vrml"
-  case x3dXML = "x3d+xml"
+extension MediaType {
+  public enum ModelSubtype: String {
+    case dwf = "vnd.dwf"
+    case mesh = "mesh"
+    case mtl = "mtl"
+    case obj = "obj"
+    case stl = "stl"
+    case vrml = "vrml"
+    case x3dXML = "x3d+xml"
+  }
 }
 
 // MARK: -

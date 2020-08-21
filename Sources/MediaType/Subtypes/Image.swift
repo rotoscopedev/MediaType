@@ -21,15 +21,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public enum ImageSubtype: String {
-  case bmp = "bmp"
-  case gif = "gif"
-  case heic = "heic"
-  case jpeg = "jpeg"
-  case icon = "vnd.microsoft.icon"
-  case png = "png"
-  case tiff = "tiff"
-  case adobePhotoshop = "vnd.adobe.photoshop"
+extension MediaType {
+  public enum ImageSubtype: String {
+    case bmp = "bmp"
+    case gif = "gif"
+    case heic = "heic"
+    case jpeg = "jpeg"
+    case icon = "vnd.microsoft.icon"
+    case png = "png"
+    case tiff = "tiff"
+    case adobePhotoshop = "vnd.adobe.photoshop"
+  }
 }
 
 // MARK: -

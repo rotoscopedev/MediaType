@@ -21,12 +21,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public enum FontSubtype: String {
-  case collection = "collection"
-  case otf = "otf"
-  case ttf = "ttf"
-  case woff = "woff"
-  case woff2 = "woff2"
+extension MediaType {
+  public enum FontSubtype: String {
+    case collection = "collection"
+    case otf = "otf"
+    case ttf = "ttf"
+    case woff = "woff"
+    case woff2 = "woff2"
+  }
 }
 
 // MARK: -

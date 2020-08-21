@@ -59,7 +59,7 @@ class MediaTypeTests: XCTestCase {
   }
   
   func testInitializeTree() {
-    let type = MediaType(type: .audio, facet: Tree.vendor.facet, subtype: "dolby.pl2")
+    let type = MediaType(type: .audio, facet: MediaType.Tree.vendor.facet, subtype: "dolby.pl2")
     XCTAssertEqual(type.rawValue, "audio/vnd.dolby.pl2")
   }
   
@@ -69,7 +69,7 @@ class MediaTypeTests: XCTestCase {
   }
   
   func testInitializeTreeAndSuffix() {
-    let type = MediaType(type: .application, facet: Tree.vendor.facet, subtype: "3gpp.bsf", suffix: "xml")
+    let type = MediaType(type: .application, facet: MediaType.Tree.vendor.facet, subtype: "3gpp.bsf", suffix: "xml")
     XCTAssertEqual(type.rawValue, "application/vnd.3gpp.bsf+xml")
   }
   
