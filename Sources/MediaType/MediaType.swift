@@ -490,3 +490,15 @@ extension MediaType: Decodable {
     }
   }
 }
+
+// MARK: - CustomStringConvertible
+
+extension MediaType: CustomStringConvertible {
+  
+  /// Returns a humanly-readable description of the receiver.
+  public var description: String {
+    get {
+      return rawValue
+    }
+  }
+}
