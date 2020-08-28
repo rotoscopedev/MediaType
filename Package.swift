@@ -23,6 +23,6 @@ let package = Package(
       dependencies: []),
     .testTarget(
       name: "MediaTypeTests",
-      dependencies: ["MediaType"]),
+      dependencies: ["MediaType", "Nimble"]),
   ]
 )
