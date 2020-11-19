@@ -25,11 +25,16 @@ extension MediaType {
   public enum ImageSubtype: String {
     case bmp = "bmp"
     case gif = "gif"
-    case heic = "heic"
     case jpeg = "jpeg"
     case icon = "vnd.microsoft.icon"
     case png = "png"
     case tiff = "tiff"
+    case heif = "heif"
+    case heifSequence = "heif-sequence"
+    case heic = "heic"
+    case heicSequence = "heic-sequence"
+    case avif = "avif"
+    case avifSequence = "avif-sequence"
     case webp = "webp"
     case adobePhotoshop = "vnd.adobe.photoshop"
   }
