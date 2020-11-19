@@ -31,6 +31,7 @@ extension MediaType {
     case ogg = "ogg"
     case pcma = "PCMA"
     case vorbis = "vorbis"
+    case webm = "webm"
   }
 }
 

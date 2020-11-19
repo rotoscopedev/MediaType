@@ -30,6 +30,7 @@ extension MediaType {
     case icon = "vnd.microsoft.icon"
     case png = "png"
     case tiff = "tiff"
+    case webp = "webp"
     case adobePhotoshop = "vnd.adobe.photoshop"
   }
 }

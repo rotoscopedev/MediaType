@@ -37,6 +37,7 @@ extension MediaType {
     case quicktime = "quicktime"
     case raw = "raw"
     case vp8 = "VP8"
+    case webm = "webm"
   }
 }
 
