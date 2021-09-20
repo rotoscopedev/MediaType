@@ -30,57 +30,57 @@ class MediaTypeTests: XCTestCase {
   
   // MARK: - Initialization
   
-  func testInitializer() {
+  func test_initializer() {
     let type = MediaType("text/plain")
     expect(type) == "text/plain"
   }
   
   // MARK: - RawRepresentable
   
-  func testRawValue() {
+  func test_rawValue() {
     let type = MediaType(rawValue: "text/plain")
     expect(type).toNot(beNil())
     expect(type!.rawValue) == "text/plain"
   }
   
-  func testRawValueEmpty() {
+  func test_rawValueEmpty() {
     let type = MediaType(rawValue: "")
     expect(type).to(beNil())
   }
   
   // MARK: - Initialization
   
-  func testInitializeType() {
+  func test_initializeType() {
     let type = MediaType(type: .text)
     expect(type.rawValue) == "text"
   }
   
-  func testInitializeSubtype() {
+  func test_initializeSubtype() {
     let type = MediaType(type: .text, subtype: "plain")
     expect(type.rawValue) == "text/plain"
   }
   
-  func testInitializeTree() {
+  func test_initializeTree() {
     let type = MediaType(type: .audio, facet: MediaType.Tree.vendor.facet, subtype: "dolby.pl2")
     expect(type.rawValue) == "audio/vnd.dolby.pl2"
   }
   
-  func testInitializeSuffix() {
+  func test_initializeSuffix() {
     let type = MediaType(type: .application, subtype: "atom", suffix: "xml")
     expect(type.rawValue) == "application/atom+xml"
   }
   
-  func testInitializeTreeAndSuffix() {
+  func test_initializeTreeAndSuffix() {
     let type = MediaType(type: .application, facet: MediaType.Tree.vendor.facet, subtype: "3gpp.bsf", suffix: "xml")
     expect(type.rawValue) == "application/vnd.3gpp.bsf+xml"
   }
   
-  func testInitializeParameters() {
+  func test_initializeParameters() {
     let type = MediaType(type: .text, subtype: "html", parameters: [ "charset" : "UTF-8" ])
     expect(type.rawValue) == "text/html; charset=UTF-8"
   }
 
-  func testInitializeParametersSorting() {
+  func test_initializeParametersSorting() {
     let params = [
       "first" : "1st",
       "second" : "2nd",
@@ -92,56 +92,56 @@ class MediaTypeTests: XCTestCase {
     expect(type.rawValue) == "text/html; fifth=5th; first=1st; fourth=4th; second=2nd; third=3rd"
   }
 
-  func testInitializeEmptyParameters() {
+  func test_initializeEmptyParameters() {
     let type = MediaType(type: .text, subtype: "html", parameters: [:])
     expect(type.rawValue) == "text/html"
   }
   
   // MARK: -
   
-  func testInitializeTypeCasing() {
+  func test_initializeTypeCasing() {
     let type = MediaType(type: .other("Movie"), subtype: "avi")
     expect(type.rawValue) == "Movie/avi"
   }
 
-  func testInitializeSubtypeCasing() {
+  func test_initializeSubtypeCasing() {
     let type = MediaType(type: .text, subtype: "SGML")
     expect(type.rawValue) == "text/SGML"
   }
 
-  func testInitializeSuffixCasing() {
+  func test_initializeSuffixCasing() {
     let type = MediaType(type: .application, subtype: "ld", suffix: "JSON")
     expect(type.rawValue) == "application/ld+JSON"
   }
 
-  func testInitializeParametersCasing() {
+  func test_initializeParametersCasing() {
     let type = MediaType(type: .text, subtype: "html", parameters: [ "CharSet" : "UTF-8" ])
     expect(type.rawValue) == "text/html; CharSet=UTF-8"
   }
 
   // MARK: - Type
   
-  func testType() {
+  func test_type() {
     let type: MediaType = "text/plain"
     expect(type.type) == .text
   }
   
-  func testTypeOnly() {
+  func test_typeOnly() {
     let type: MediaType = "image"
     expect(type.type) == .image
   }
   
-  func testTypeWithTrailingDelimiter1() {
+  func test_typeWithTrailingDelimiter1() {
     let type: MediaType = "video/"
     expect(type.type) == .video
   }
   
-  func testTypeWithTrailingDelimiter2() {
+  func test_typeWithTrailingDelimiter2() {
     let type: MediaType = "video;"
     expect(type.type) == .video
   }
   
-  func testTypeCasing() {
+  func test_typeCasing() {
     let type: MediaType = "TeXt/plain"
     expect(type.type) == .text
     expect(type.type.rawValue) == "text"
@@ -149,195 +149,195 @@ class MediaTypeTests: XCTestCase {
   
   // MARK: - Subtype
   
-  func testSubtype() {
+  func test_subtype() {
     let type: MediaType = "text/plain"
     expect(type.subtype) == "plain"
   }
   
-  func testNoSubtype() {
+  func test_noSubtype() {
     let type: MediaType = "text"
     expect(type.subtype).to(beNil())
   }
   
-  func testSubtypeWithTrailingDelimiter1() {
+  func test_subtypeWithTrailingDelimiter1() {
     let type: MediaType = "text/plain;"
     expect(type.subtype) == "plain"
   }
   
-  func testSubtypeWithTrailingDelimiter2() {
+  func test_subtypeWithTrailingDelimiter2() {
     let type: MediaType = "text/plain+"
     expect(type.subtype) == "plain"
   }
   
-  func testSubtypeCasing() {
+  func test_subtypeCasing() {
     let type: MediaType = "text/SGML"
     expect(type.subtype) == "SGML"
   }
   
   // MARK: - Facet
   
-  func testFacet() {
+  func test_facet() {
     let type: MediaType = "application/vnd.amazon.ebook"
     expect(type.facet) == "vnd"
   }
   
-  func testNoFacet() {
+  func test_noFacet() {
     let type: MediaType = "text/plain"
     expect(type.facet).to(beNil())
   }
   
-  func testFacetNoSubtype() {
+  func test_facetNoSubtype() {
     let type: MediaType = "text"
     expect(type.facet).to(beNil())
   }
   
-  func testFacetWithSubtypeWithMultiplePeriods() {
+  func test_facetWithSubtypeWithMultiplePeriods() {
     let type: MediaType = "text/vnd.rtf.dir"
     expect(type.subtype) == "rtf.dir"
     expect(type.facet) == "vnd"
   }
 
-  func testFacetWithTrailingDelimiter1() {
+  func test_facetWithTrailingDelimiter1() {
     let type: MediaType = "application/vnd.amazon.ebook;"
     expect(type.facet) == "vnd"
   }
   
-  func testFacetWithTrailingDelimiter2() {
+  func test_facetWithTrailingDelimiter2() {
     let type: MediaType = "application/vnd.amazon.ebook+"
     expect(type.facet) == "vnd"
   }
   
-  func testFacetCasing() {
+  func test_facetCasing() {
     let type: MediaType = "application/VND.amazon.ebook"
     expect(type.facet) == "VND"
   }
 
   // MARK: - Tree
   
-  func testTree() {
+  func test_tree() {
     let type: MediaType = "application/vnd.amazon.ebook"
     expect(type.tree) == .vendor
   }
   
-  func testNoTree() {
+  func test_noTree() {
     let type: MediaType = "text/plain"
     expect(type.tree) == .standards
   }
   
-  func testTreeNoSubtype() {
+  func test_treeNoSubtype() {
     let type: MediaType = "text"
     expect(type.tree) == .standards
   }
   
-  func testTreeWithSubtypeWithMultiplePeriods() {
+  func test_treeWithSubtypeWithMultiplePeriods() {
     let type: MediaType = "text/vnd.rtf.dir"
     expect(type.subtype) == "rtf.dir"
     expect(type.tree) == .vendor
   }
 
-  func testTreeWithTrailingDelimiter1() {
+  func test_treeWithTrailingDelimiter1() {
     let type: MediaType = "application/vnd.amazon.ebook;"
     expect(type.tree) == .vendor
   }
   
-  func testTreeWithTrailingDelimiter2() {
+  func test_treeWithTrailingDelimiter2() {
     let type: MediaType = "application/vnd.amazon.ebook+"
     expect(type.tree) == .vendor
   }
   
-  func testTreeCasing() {
+  func test_treeCasing() {
     let type: MediaType = "application/VND.amazon.ebook"
     expect(type.tree) == .vendor
   }
   
   // MARK: - Suffix
   
-  func testSuffix() {
+  func test_suffix() {
     let type: MediaType = "application/epub+zip"
     expect(type.suffix) == "zip"
   }
   
-  func testNoSuffix() {
+  func test_noSuffix() {
     let type: MediaType = "image/png"
     expect(type.suffix).to(beNil())
   }
   
-  func testSuffixForSubtypeWithMultiplePlusChars() {
+  func test_suffixForSubtypeWithMultiplePlusChars() {
     let type: MediaType = "image/jpeg+2000+q10"
     expect(type.suffix) == "q10"
   }
 
-  func testSuffixNoSubtype() {
+  func test_suffixNoSubtype() {
     let type: MediaType = "image"
     expect(type.suffix).to(beNil())
   }
   
-  func testSuffixWithTrailingDelimiter() {
+  func test_suffixWithTrailingDelimiter() {
     let type: MediaType = "application/ld+json;"
     expect(type.suffix) == "json"
   }
   
-  func testSuffixCasing() {
+  func test_suffixCasing() {
     let type: MediaType = "application/ld+JSON"
     expect(type.suffix) == "JSON"
   }
   
-  func testAddSuffix() {
+  func test_addSuffix() {
     let type: MediaType = "application/ld"
     expect(type.adding(suffix: "json")) == "application/ld+json"
   }
   
-  func testReplaceSuffix() {
+  func test_replaceSuffix() {
     let type: MediaType = "application/ld+xml"
     expect(type.adding(suffix: "json")) == "application/ld+json"
   }
   
-  func testRemoveSuffix() {
+  func test_removeSuffix() {
     let type: MediaType = "application/ld+json"
     expect(type.removingSuffix()) == "application/ld"
   }
 
   // MARK: - Parameters
   
-  func testParameter() {
+  func test_parameter() {
     let type: MediaType = "text/html; charset=UTF-8"
     expect(type["charset"]) == "UTF-8"
   }
   
-  func testNoParameters() {
+  func test_noParameters() {
     let type: MediaType = "text/html"
     expect(type["charset"]).to(beNil())
   }
   
-  func testMissingParameters() {
+  func test_missingParameters() {
     let type: MediaType = "text/html; charset=UTF-8"
     expect(type["linebreak"]).to(beNil())
   }
 
-  func testMultipleParameters() {
+  func test_multipleParameters() {
     let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
     expect(type["charset"]) == "UTF-8"
     expect(type["linebreak"]) == "lf"
   }
   
-  func testDuplicateParameters() {
+  func test_duplicateParameters() {
     let type: MediaType = "text/html; charset=UTF-8; charset=US-ASCII"
     expect(type["charset"]) == "UTF-8"
   }
   
-  func testParametersWithTrailingDelimiter() {
+  func test_parametersWithTrailingDelimiter() {
     let type: MediaType = "text/html; charset=UTF-8; linebreak=lf;"
     expect(type["charset"]) == "UTF-8"
     expect(type["linebreak"]) == "lf"
   }
   
-  func testParametersWithExtraneousDelimiters() {
+  func test_parametersWithExtraneousDelimiters() {
     let type: MediaType = "text/html; charset=UTF-8;; linebreak=lf;;;"
     expect(type["charset"]) == "UTF-8"
     expect(type["linebreak"]) == "lf"
   }
 
-  func testParameters() {
+  func test_parameters() {
     let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
     let expected = [
       "charset" : "UTF-8",
@@ -346,12 +346,12 @@ class MediaTypeTests: XCTestCase {
     expect(type.parameters) == expected
   }
 
-  func testParametersEmpty() {
+  func test_parametersEmpty() {
     let type: MediaType = "text/html"
     expect(type.parameters) == [:]
   }
   
-  func testParametersWithSurroundingWhitespace() {
+  func test_parametersWithSurroundingWhitespace() {
     let type: MediaType = "text/html; charset = UTF-8 ; linebreak = lf "
     expect(type["charset"]) == "UTF-8"
     expect(type["linebreak"]) == "lf"
@@ -364,160 +364,160 @@ class MediaTypeTests: XCTestCase {
   
   // MARK: -
   
-  func testAddParameter() {
+  func test_addParameter() {
     let type: MediaType = "text/markdown"
     expect(type.adding(parameter: "charset", value: "UTF-8")) == "text/markdown; charset=UTF-8"
   }
   
-  func testAddParameterCasing() {
+  func test_addParameterCasing() {
     let type: MediaType = "text/markdown"
     expect(type.adding(parameter: "CharSet", value: "UTF-8")) == "text/markdown; CharSet=UTF-8"
   }
 
-  func testReplaceParameter() {
+  func test_replaceParameter() {
     let type: MediaType = "text/markdown; charset=US-ASCII"
     expect(type.adding(parameter: "charset", value: "UTF-8")) == "text/markdown; charset=UTF-8"
   }
   
-  func testReplaceParameterCasing() {
+  func test_replaceParameterCasing() {
     let type: MediaType = "text/markdown; CHARSET=US-ASCII"
     expect(type.adding(parameter: "CharSet", value: "UTF-8")) == "text/markdown; CharSet=UTF-8"
   }
 
   // MARK: -
   
-  func testRemoveParameter() {
+  func test_removeParameter() {
     let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
     expect(type.removing(parameter: "charset")) == "text/html; linebreak=lf"
   }
   
-  func testRemoveNonExistentParameter() {
+  func test_removeNonExistentParameter() {
     let type: MediaType = "text/html; charset=UTF-8"
     expect(type.removing(parameter: "linebreak")) == "text/html; charset=UTF-8"
   }
 
-  func testRemoveParameters() {
+  func test_removeParameters() {
     let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
     expect(type.removingParameters()) == "text/html"
   }
   
-  func testRemoveNoParameters() {
+  func test_removeNoParameters() {
     let type: MediaType = "text/html"
     expect(type.removingParameters()) == "text/html"
   }
   
-  func testRemoveParameterCasing() {
+  func test_removeParameterCasing() {
     let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
     expect(type.removing(parameter: "CharSet")) == "text/html; linebreak=lf"
   }
   
   // MARK: - Normalization
   
-  func testNormalizedType() {
+  func test_normalizedType() {
     let type = MediaType(type: .other("VIDEO"), subtype: "avi")
     expect(type) == "VIDEO/avi"
     expect(type.normalized()) == "video/avi"
   }
   
-  func testNormalizedSubtype() {
+  func test_normalizedSubtype() {
     let type = MediaType(type: .text, subtype: "SGML")
     expect(type) == "text/SGML"
     expect(type.normalized()) == "text/sgml"
   }
 
-  func testNormalizeSubtypeWhitespace() {
+  func test_normalizeSubtypeWhitespace() {
     let type: MediaType = " text / plain"
     expect(type.normalized()) == "text/plain"
   }
 
-  func testNormalizeFacet() {
+  func test_normalizeFacet() {
     let type = MediaType(type: .application, facet: "VND", subtype: "adobe.photoshop")
     expect(type) == "application/VND.adobe.photoshop"
     expect(type.normalized()) == "application/vnd.adobe.photoshop"
   }
   
-  func testNormalizeSuffix() {
+  func test_normalizeSuffix() {
     let type = MediaType(type: .application, subtype: "ld", suffix: "JSON")
     expect(type) == "application/ld+JSON"
     expect(type.normalized()) == "application/ld+json"
   }
   
-  func testNormalizeParameterName() {
+  func test_normalizeParameterName() {
     let type = MediaType(type: .text, subtype: "plain", parameters: [ "CharSet" : "UTF-8" ])
     expect(type) == "text/plain; CharSet=UTF-8"
     expect(type.normalized()) == "text/plain; charset=UTF-8"
   }
   
-  func testNormalizeParameterOrder() {
+  func test_normalizeParameterOrder() {
     let type: MediaType = "text/plain; first=1st; second=2nd; third=3rd; fourth=4th; fifth=5th"
     expect(type.normalized()) == "text/plain; fifth=5th; first=1st; fourth=4th; second=2nd; third=3rd"
   }
 
-  func testNormalizeParameterWhitespace() {
+  func test_normalizeParameterWhitespace() {
     let type: MediaType = " text/plain ; charset = UTF-8 ; linebreak = lf "
     expect(type.normalized()) == "text/plain; charset=UTF-8; linebreak=lf"
   }
   
-  func testNormalizeParameterDelimiters() {
+  func test_normalizeParameterDelimiters() {
     let type: MediaType = "text/plain; charset = UTF-8; linebreak = lf;"
     expect(type.normalized()) == "text/plain; charset=UTF-8; linebreak=lf"
   }
   
-  func testNormalizeDuplicateParameters() {
+  func test_normalizeDuplicateParameters() {
     let type: MediaType = "text/plain; charset=UTF-8; charset=US-ASCII; charset: ISO-8859-1"
     expect(type.normalized()) == "text/plain; charset=UTF-8"
   }
 
   // MARK: - Subtype Factory Methods
   
-  func testApplicationSubtype() {
+  func test_applicationSubtype() {
     let type: MediaType = .application(.pkcs8)
     expect(type.rawValue) == "application/pkcs8"
   }
   
-  func testAudioSubtype() {
+  func test_audioSubtype() {
     let type: MediaType = .audio(.mpeg)
     expect(type.rawValue) == "audio/mpeg"
   }
   
-  func testFontSubtype() {
+  func test_fontSubtype() {
     let type: MediaType = .font(.otf)
     expect(type.rawValue) == "font/otf"
   }
   
-  func testImageSubtype() {
+  func test_imageSubtype() {
     let type: MediaType = .image(.png)
     expect(type.rawValue) == "image/png"
   }
   
-  func testMessageSubtype() {
+  func test_messageSubtype() {
     let type: MediaType = .message(.http)
     expect(type.rawValue) == "message/http"
   }
   
-  func testModelSubtype() {
+  func test_modelSubtype() {
     let type: MediaType = .model(.obj)
     expect(type.rawValue) == "model/obj"
   }
   
-  func testMultipartSubtype() {
+  func test_multipartSubtype() {
     let type: MediaType = .multipart(.digest)
     expect(type.rawValue) == "multipart/digest"
   }
   
-  func testTextSubtype() {
+  func test_textSubtype() {
     let type: MediaType = .text(.css)
     expect(type.rawValue) == "text/css"
   }
   
-  func testVideoSubtype() {
+  func test_videoSubtype() {
     let type: MediaType = .video(.h264)
     expect(type.rawValue) == "video/H264"
   }
   
   // MARK: - Coding
   
-  func testEncoding() throws {
+  func test_encoding() throws {
     let encoder = JSONEncoder()
     let type: MediaType = .application(.json)
     
@@ -527,7 +527,7 @@ class MediaTypeTests: XCTestCase {
     expect(string) == #""application\/json""#
   }
   
-  func testDecoding() throws {
+  func test_decoding() throws {
     let decoder = JSONDecoder()
     let input = #""application\/json""#.data(using: .utf8)!
     
