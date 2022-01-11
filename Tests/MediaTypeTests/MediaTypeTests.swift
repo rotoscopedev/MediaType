@@ -534,4 +534,11 @@ class MediaTypeTests: XCTestCase {
     let type = try decoder.decode(MediaType.self, from: input)
     expect(type) == .application(.json)
   }
+  
+  // MARK: - Markdown
+  
+  func test_markdownTypes() {
+    expect(MediaType.text(.markdown)) == "text/markdown"
+    expect(MediaType.text(.commonMark)) == "text/markdown; variant=CommonMark"
+  }
 }

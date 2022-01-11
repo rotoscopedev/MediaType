@@ -31,7 +31,6 @@ extension MediaType {
     case ecmaScript = "ecmascript"
     case html = "html"
     case javascript = "javascript"
-    case markdown = "markdown"
     case parameters = "parameters"
     case plain = "plain"
     case richtext = "richtext"
@@ -61,5 +60,37 @@ extension MediaType {
   ///   - subtype: An text subtype string.
   public static func text(_ subtype: String) -> MediaType {
     return MediaType(type: "text", subtype: subtype)
+  }
+}
+
+// MARK: -
+
+extension MediaType {
+  public enum MarkdownVariant: String {
+    case markdown
+    case multiMarkdown = "MultiMarkdown"
+    case gfm = "GFM"
+    case pandoc = "pandoc"
+    case pandoc2RFC = "rfc7328"
+    case fountain = "Fountain"
+    case commonMark = "CommonMark"
+    case kramdown = "kramdown-rfc2629"
+    case markdownExtra = "Extra"
+  }
+}
+
+// MARK: -
+
+extension MediaType {
+
+  /// Returns a Markdown media type with the specified variant. See RFC7764 for
+  /// details on Markdown variants.
+  public static func text(_ variant: MarkdownVariant) -> MediaType {
+    switch variant {
+    case .markdown:
+      return text("markdown")
+    default:
+      return text("markdown").adding(parameter: "variant", value: variant.rawValue)
+    }
   }
 }
