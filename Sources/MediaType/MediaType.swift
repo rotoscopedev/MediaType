@@ -424,7 +424,7 @@ extension MediaType {
   /// ```
   /// text/sgml; charset=UTF-8
   /// ```
-  func normalized() -> MediaType {
+  public func normalized() -> MediaType {
     let comps = parse()
     
     let type = TopLevelType(comps.type.trimmed().lowercased())
