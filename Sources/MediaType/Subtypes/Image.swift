@@ -37,6 +37,7 @@ extension MediaType {
     case avifSequence = "avif-sequence"
     case webp = "webp"
     case adobePhotoshop = "vnd.adobe.photoshop"
+    case svg = "svg+xml"
   }
 }
 
