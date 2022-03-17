@@ -512,8 +512,8 @@ extension MediaType {
   /// `text/plain; charset=UTF-8` would compare the same, whereas `text/plain`
   /// and `text/html` would not.
   public static func ~= (lhs: Self, rhs: Self) -> Bool {
-    let type1 = lhs.normalized().removingParameters()
-    let type2 = rhs.normalized().removingParameters()
+    let type1 = lhs.removingParameters().normalized()
+    let type2 = rhs.removingParameters().normalized()
     return type1 == type2
   }
 }
