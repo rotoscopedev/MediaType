@@ -168,3 +168,15 @@ if contentType.normalized() == json {
   ...
 }
 ```
+
+## Matching
+
+`MediaType` provides the `~=` matching operator that can be used to determine whether two media types are the same after a) removal of parameters, and b) normalization, e.g.
+
+```swift
+let type: MediaType = "text/html; charset=UTF-8"
+
+if type ~= .text(.html) {
+  ...
+}
+```
