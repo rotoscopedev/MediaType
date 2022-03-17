@@ -504,6 +504,8 @@ extension MediaType: CustomStringConvertible {
 
 // MARK: - Matching
 
+infix operator ~= : ComparisonPrecedence
+
 extension MediaType {
   
   /// Determines whether two media types are the same after normalization and
