@@ -502,3 +502,18 @@ extension MediaType: CustomStringConvertible {
     }
   }
 }
+
+// MARK: - Matching
+
+extension MediaType {
+  
+  /// Determines whether two media types are the same after normalization and
+  /// the removal of parameters. For example `text/plain` and
+  /// `text/plain; charset=UTF-8` would compare the same, whereas `text/plain`
+  /// and `text/html` would not.
+  public static func ~= (lhs: Self, rhs: Self) -> Bool {
+    let type1 = lhs.normalized().removingParameters()
+    let type2 = rhs.normalized().removingParameters()
+    return type1 == type2
+  }
+}

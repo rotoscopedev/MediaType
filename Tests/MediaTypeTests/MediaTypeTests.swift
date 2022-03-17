@@ -541,4 +541,62 @@ class MediaTypeTests: XCTestCase {
     expect(MediaType.text(.markdown)) == "text/markdown"
     expect(MediaType.text(.commonMark)) == "text/markdown; variant=CommonMark"
   }
+  
+  // MARK: - Matching
+  
+  func test_matchSame() {
+    let type1: MediaType = "text/plain"
+    let type2: MediaType = "text/plain"
+    expect(type1) == type2
+    expect(type1 ~= type2) == true
+  }
+  
+  func test_matchDifferentType() {
+    let type1: MediaType = "text/plain"
+    let type2: MediaType = "application/octet-stream"
+    expect(type1) != type2
+    expect(type1 ~= type2) == false
+  }
+
+  func test_matchDifferentSubtype() {
+    let type1: MediaType = "text/plain"
+    let type2: MediaType = "text/html"
+    expect(type1) != type2
+    expect(type1 ~= type2) == false
+  }
+
+  func test_matchDifferingByCase() {
+    let type1: MediaType = "text/plain"
+    let type2: MediaType = "TEXT/PLAIN"
+    expect(type1) != type2
+    expect(type1 ~= type2) == true
+  }
+
+  func test_matchDifferingByParameter() {
+    let type1: MediaType = "text/plain"
+    let type2: MediaType = "text/plain; charset=UTF-8"
+    expect(type1) != type2
+    expect(type1 ~= type2) == true
+  }
+
+  func test_matchDifferingByParameterValue() {
+    let type1: MediaType = "text/plain; charset=UTF-8"
+    let type2: MediaType = "text/plain; charset=US-ASCII"
+    expect(type1) != type2
+    expect(type1 ~= type2) == true
+  }
+
+  func test_matchDifferingByParameterCasing() {
+    let type1: MediaType = "text/plain; CHARSET=UTF-8"
+    let type2: MediaType = "text/plain; charset=utf-8"
+    expect(type1) != type2
+    expect(type1 ~= type2) == true
+  }
+
+  func test_matchDifferingByWhitespace() {
+    let type1: MediaType = "text/plain;charset=UTF-8"
+    let type2: MediaType = "text/plain; charset=UTF-8"
+    expect(type1) != type2
+    expect(type1 ~= type2) == true
+  }
 }
