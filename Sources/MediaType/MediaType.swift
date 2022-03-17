@@ -105,8 +105,7 @@ extension MediaType {
 
 // MARK: - Hashable
 
-extension MediaType: Hashable {
-}
+extension MediaType: Hashable {}
 
 // MARK: - Parsing
 
@@ -512,8 +511,15 @@ extension MediaType {
   /// `text/plain; charset=UTF-8` would compare the same, whereas `text/plain`
   /// and `text/html` would not.
   public static func ~= (lhs: Self, rhs: Self) -> Bool {
-    let type1 = lhs.removingParameters().normalized()
-    let type2 = rhs.removingParameters().normalized()
-    return type1 == type2
+    if lhs == rhs {
+      return true
+    }
+    let type1 = lhs.removingParameters()
+    let type2 = rhs.removingParameters()
+    
+    if type1 == type2 {
+      return true
+    }
+    return type1.normalized() == type2.normalized()
   }
 }
