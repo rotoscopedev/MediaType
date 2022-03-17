@@ -212,7 +212,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - suffix: A suffix
-  public func adding(suffix: String) -> MediaType {
+  public func adding(suffix: String) -> Self {
     guard suffix.count > 0 else {
       return self
     }
@@ -230,13 +230,13 @@ extension MediaType {
       }
     }
 
-    return MediaType(type: type, facet: facet, subtype: subtype, suffix: suffix, parameters: params)
+    return Self(type: type, facet: facet, subtype: subtype, suffix: suffix, parameters: params)
   }
   
   /// Removes the suffix from the receiver's media type and returns a new
   /// `MediaType` instance. If the receiver has no suffix then the receiver is
   /// returned.
-  public func removingSuffix() -> MediaType {
+  public func removingSuffix() -> Self {
     let comps = parse()
     
     let type = TopLevelType(String(comps.type))
@@ -251,7 +251,7 @@ extension MediaType {
       }
     }
 
-    return MediaType(type: type, facet: facet, subtype: subtype, suffix: nil, parameters: params)
+    return Self(type: type, facet: facet, subtype: subtype, suffix: nil, parameters: params)
   }
 }
 
@@ -340,7 +340,7 @@ extension MediaType {
   /// - parameters:
   ///   - name: The parameter's name.
   ///   - value: The parameter's value.
-  public func adding(parameter name: String, value: String) -> MediaType {
+  public func adding(parameter name: String, value: String) -> Self {
     let key = name.trimmed()
     let comps = parse()
     
@@ -357,14 +357,14 @@ extension MediaType {
     }
     params[name] = value
     
-    return MediaType(type: type, facet: facet, subtype: subtype, suffix: suffix, parameters: params)
+    return Self(type: type, facet: facet, subtype: subtype, suffix: suffix, parameters: params)
   }
   
   /// Returns a new media type without the parameter with the given name.
   ///
   /// - parameters:
   ///   - name: The parameter's name.
-  public func removing(parameter name: String) -> MediaType {
+  public func removing(parameter name: String) -> Self {
     let key = name.trimmed()
     let comps = parse()
     
@@ -380,11 +380,11 @@ extension MediaType {
       }
     }
     
-    return MediaType(type: type, facet: facet, subtype: subtype, suffix: suffix, parameters: params)
+    return Self(type: type, facet: facet, subtype: subtype, suffix: suffix, parameters: params)
   }
 
   /// Returns a media type without the receiver's parameters.
-  public func removingParameters() -> MediaType {
+  public func removingParameters() -> Self {
     let comps = parse()
     
     let type = TopLevelType(String(comps.type))
@@ -392,7 +392,7 @@ extension MediaType {
     let subtype = comps.subtype.map { String($0) }
     let suffix = comps.suffix.map { String($0) }
     
-    return MediaType(type: type, facet: facet, subtype: subtype, suffix: suffix)
+    return Self(type: type, facet: facet, subtype: subtype, suffix: suffix)
   }
 }
 
