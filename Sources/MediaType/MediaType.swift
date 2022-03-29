@@ -524,4 +524,15 @@ extension MediaType {
     }
     return type1.normalized() == type2.normalized()
   }
+  
+  /// Determines whether the receiver has the given top-level type, enabling
+  /// expressions such as
+  ///
+  /// ```swift
+  /// if mediaType ~= .image {
+  /// }
+  /// ```
+  public static func ~= (lhs: Self, rhs: TopLevelType) -> Bool {
+    return lhs.type == rhs
+  }
 }

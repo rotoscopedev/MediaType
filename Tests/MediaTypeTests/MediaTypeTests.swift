@@ -599,4 +599,10 @@ class MediaTypeTests: XCTestCase {
     expect(type1) != type2
     expect(type1 ~= type2) == true
   }
+  
+  func test_matchTopLevelType() {
+    expect(MediaType.text(.plain) ~= .text) == true
+    expect(MediaType.text(.html) ~= .text) == true
+    expect(MediaType.image(.png) ~= .text) == false
+  }
 }
