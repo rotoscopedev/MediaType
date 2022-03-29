@@ -30,9 +30,9 @@ import UniformTypeIdentifiers
 
 @testable import MediaType
 
+@available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
 class UTTypeTests: XCTestCase {
 
-  @available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
   func test_initializeUTType() {
     expect(UTType(mediaType: .image(.png))) == .png
     expect(UTType(mediaType: .text(.html))) == .html
@@ -43,7 +43,6 @@ class UTTypeTests: XCTestCase {
     expect(UTType(mediaType: MediaType(rawValue: "text/HTML")!)) == .html
   }
 
-  @available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
   func test_initializeUTTypeFromPlainText() {
     expect(UTType(mediaType: .text(.plain))) == .plainText
     expect(UTType(mediaType: .text(.plain).adding(parameter: "charset", value: "UTF-8"))) == .utf8PlainText
@@ -52,7 +51,6 @@ class UTTypeTests: XCTestCase {
     expect(UTType(mediaType: .text(.plain).adding(parameter: "charset", value: "UTF-16BE"))) == .utf16PlainText
   }
 
-  @available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
   func test_initializeUTTypeFromPlainTextCasing() {
     expect(UTType(mediaType: MediaType(rawValue: "Text/Plain")!)) == .plainText
     expect(UTType(mediaType: MediaType(rawValue: "Text/Plain; CharSet=UTF-8")!)) == .utf8PlainText
