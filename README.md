@@ -180,3 +180,17 @@ if type ~= .text(.html) {
   ...
 }
 ```
+
+## UTType
+
+Extensions are provided for `UTType` (available on iOS >= 14, tvOS >= 14, macOS >= 11 and watchOS >= 7) that simplify conversion to and from a `MediaType`, e.g.
+
+```swift
+if let type = UTType(mediaType: .text(.html)) {
+  ...
+}
+```
+
+### Charset Mapping
+
+This initializer extends the built-in `init(mimeType:, conformingTo:)` to map plain-text media types with a `charset` of UTF-8 to `public.utf8-plain-text` and UTF-16, UTF-16LE and UTF-16BE to `public.utf16-plain-text`.
