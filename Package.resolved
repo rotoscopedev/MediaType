@@ -20,12 +20,30 @@
         }
       },
       {
+        "package": "IANACharset",
+        "repositoryURL": "https://github.com/rotoscopedev/IANACharset.git",
+        "state": {
+          "branch": null,
+          "revision": "acfecaede743785cf1043a7b7905944f10bbaac2",
+          "version": "0.9.1"
+        }
+      },
+      {
         "package": "Nimble",
         "repositoryURL": "https://github.com/Quick/Nimble.git",
         "state": {
           "branch": null,
           "revision": "e491a6731307bb23783bf664d003be9b2fa59ab5",
           "version": "9.0.0"
+        }
+      },
+      {
+        "package": "SwiftCSV",
+        "repositoryURL": "https://github.com/swiftcsv/SwiftCSV.git",
+        "state": {
+          "branch": null,
+          "revision": "039cc273dcc91f4c9d85e05a2514bbe63e7dde60",
+          "version": "0.6.1"
         }
       }
     ]
