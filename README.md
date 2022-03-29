@@ -181,6 +181,16 @@ if type ~= .text(.html) {
 }
 ```
 
+The `~=` operator can also be used to match a media type against a top-level type:
+
+```swift
+let type: MediaType = "text/plain"
+
+if type ~= .text {
+  ...
+}
+```
+
 ## UTType
 
 Extensions are provided for `UTType` (available on iOS >= 14, tvOS >= 14, macOS >= 11 and watchOS >= 7) that simplify conversion to and from a `MediaType`, e.g.
