@@ -21,6 +21,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import IANACharset
+
 extension MediaType {
   public enum TextSubtype: String {
     case calendar = "calendar"
@@ -92,5 +94,28 @@ extension MediaType {
     default:
       return text("markdown").adding(parameter: "variant", value: variant.rawValue)
     }
+  }
+}
+
+// MARK: -
+
+extension MediaType {
+
+  /// Returns the value of the `charset` parameter, or `nil` if no such
+  /// parameter exists. Also returns `nil` if the value could not be mapped to
+  /// an `IANACharset` instance.
+  public var charset: IANACharset? {
+    get {
+      return self["charset"]
+        .flatMap {
+          IANACharset(string: $0)
+        }
+    }
+  }
+  
+  /// Returns a media type with the given charset. If a `charset` parameter
+  /// already exists then the value is replaced with that specified.
+  public func charset(_ charset: IANACharset) -> Self {
+    return adding(parameter: "charset", value: charset.preferredName)
   }
 }

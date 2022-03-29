@@ -605,4 +605,17 @@ class MediaTypeTests: XCTestCase {
     expect(MediaType.text(.html) ~= .text) == true
     expect(MediaType.image(.png) ~= .text) == false
   }
+  
+  // MARK: -
+  
+  func test_charset() {
+    expect(MediaType("text/plain").charset).to(beNil())
+    expect(MediaType("text/plain; charset=UTF-8").charset) == .utf8
+    expect(MediaType("text/plain; charset=UTF-8").charset) == .utf8
+  }
+  
+  func test_setCharset() {
+    let type = MediaType("text/plain").charset(.utf8)
+    expect(type) == "text/plain; charset=UTF-8"
+  }
 }
