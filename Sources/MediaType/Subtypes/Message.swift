@@ -36,7 +36,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An message subtype.
-  public static func message(_ subtype: MessageSubtype) -> MediaType {
+  public static func message(_ subtype: MessageSubtype) -> Self {
     return message(subtype.rawValue)
   }
   
@@ -44,7 +44,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An message subtype string.
-  public static func message(_ subtype: String) -> MediaType {
-    return MediaType(type: "message", subtype: subtype)
+  public static func message(_ subtype: String) -> Self {
+    return Self(type: "message", subtype: subtype)
   }
 }

@@ -49,7 +49,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An text subtype.
-  public static func video(_ subtype: VideoSubtype) -> MediaType {
+  public static func video(_ subtype: VideoSubtype) -> Self {
     return video(subtype.rawValue)
   }
   
@@ -57,7 +57,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An text subtype string.
-  public static func video(_ subtype: String) -> MediaType {
-    return MediaType(type: "video", subtype: subtype)
+  public static func video(_ subtype: String) -> Self {
+    return Self(type: "video", subtype: subtype)
   }
 }

@@ -50,7 +50,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An text subtype.
-  public static func text(_ subtype: TextSubtype) -> MediaType {
+  public static func text(_ subtype: TextSubtype) -> Self {
     return text(subtype.rawValue)
   }
   
@@ -58,8 +58,8 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An text subtype string.
-  public static func text(_ subtype: String) -> MediaType {
-    return MediaType(type: "text", subtype: subtype)
+  public static func text(_ subtype: String) -> Self {
+    return Self(type: "text", subtype: subtype)
   }
 }
 
@@ -85,7 +85,7 @@ extension MediaType {
 
   /// Returns a Markdown media type with the specified variant. See RFC7764 for
   /// details on Markdown variants.
-  public static func text(_ variant: MarkdownVariant) -> MediaType {
+  public static func text(_ variant: MarkdownVariant) -> Self {
     switch variant {
     case .markdown:
       return text("markdown")

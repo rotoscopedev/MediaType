@@ -39,7 +39,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An font subtype.
-  public static func font(_ subtype: FontSubtype) -> MediaType {
+  public static func font(_ subtype: FontSubtype) -> Self {
     return font(subtype.rawValue)
   }
 
@@ -47,7 +47,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An font subtype string.
-  public static func font(_ subtype: String) -> MediaType {
-    return MediaType(type: "font", subtype: subtype)
+  public static func font(_ subtype: String) -> Self {
+    return Self(type: "font", subtype: subtype)
   }
 }

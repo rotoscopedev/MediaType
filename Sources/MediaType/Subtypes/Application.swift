@@ -96,7 +96,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An application subtype.
-  public static func application(_ subtype: ApplicationSubtype) -> MediaType {
+  public static func application(_ subtype: ApplicationSubtype) -> Self {
     return application(subtype.rawValue)
   }
 
@@ -104,7 +104,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An application subtype string.
-  public static func application(_ subtype: String) -> MediaType {
-    return MediaType(type: "application", subtype: subtype)
+  public static func application(_ subtype: String) -> Self {
+    return Self(type: "application", subtype: subtype)
   }
 }
