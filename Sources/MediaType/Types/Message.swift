@@ -48,3 +48,12 @@ extension MediaType {
     return Self(type: "message", subtype: subtype)
   }
 }
+
+// MARK: -
+
+extension MediaType {
+  
+  /// Media type for the `message` top-level type. The media type does not have
+  /// a sub-type.
+  public static let message = Self(type: .message)
+}

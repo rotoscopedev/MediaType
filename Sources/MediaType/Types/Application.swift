@@ -108,3 +108,12 @@ extension MediaType {
     return Self(type: "application", subtype: subtype)
   }
 }
+
+// MARK: -
+
+extension MediaType {
+  
+  /// Media type for the `application` top-level type. The media type does not
+  /// have a sub-type.
+  public static let application = Self(type: .application)
+}

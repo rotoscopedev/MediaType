@@ -56,3 +56,12 @@ extension MediaType {
     return Self(type: "multipart", subtype: subtype)
   }
 }
+
+// MARK: -
+
+extension MediaType {
+  
+  /// Media type for the `multipart` top-level type. The media type does not
+  /// have a sub-type.
+  public static let multipart = Self(type: .multipart)
+}

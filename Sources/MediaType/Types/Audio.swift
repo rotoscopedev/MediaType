@@ -55,3 +55,12 @@ extension MediaType {
     return Self(type: "audio", subtype: subtype)
   }
 }
+
+// MARK: -
+
+extension MediaType {
+  
+  /// Media type for the `audio` top-level type. The media type does not have
+  /// a sub-type.
+  public static let audio = Self(type: .audio)
+}

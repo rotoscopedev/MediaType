@@ -61,3 +61,12 @@ extension MediaType {
     return Self(type: "video", subtype: subtype)
   }
 }
+
+// MARK: -
+
+extension MediaType {
+  
+  /// Media type for the `video` top-level type. The media type does not have
+  /// a sub-type.
+  public static let video = Self(type: .video)
+}

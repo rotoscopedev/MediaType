@@ -61,3 +61,12 @@ extension MediaType {
     return Self(type: "image", subtype: subtype)
   }
 }
+
+// MARK: -
+
+extension MediaType {
+  
+  /// Media type for the `image` top-level type. The media type does not have
+  /// a sub-type.
+  public static let image = Self(type: .image)
+}

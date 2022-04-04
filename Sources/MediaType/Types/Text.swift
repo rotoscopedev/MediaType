@@ -68,6 +68,15 @@ extension MediaType {
 // MARK: -
 
 extension MediaType {
+  
+  /// Media type for the `text` top-level type. The media type does not have
+  /// a sub-type.
+  public static let text = Self(type: .text)
+}
+
+// MARK: -
+
+extension MediaType {
   public enum MarkdownVariant: String {
     case markdown
     case multiMarkdown = "MultiMarkdown"

@@ -51,3 +51,12 @@ extension MediaType {
     return Self(type: "font", subtype: subtype)
   }
 }
+
+// MARK: -
+
+extension MediaType {
+  
+  /// Media type for the `font` top-level type. The media type does not have
+  /// a sub-type.
+  public static let font = Self(type: .font)
+}
