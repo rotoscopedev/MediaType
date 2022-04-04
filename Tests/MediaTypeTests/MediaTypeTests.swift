@@ -544,66 +544,45 @@ class MediaTypeTests: XCTestCase {
   
   // MARK: - Matching
   
-  func test_matchSame() {
-    let type1: MediaType = "text/plain"
-    let type2: MediaType = "text/plain"
-    expect(type1) == type2
-    expect(type1 ~= type2) == true
+  func test_matchesTopLevelType() {
+    expect(MediaType("text/plain").matches("text")) == true
+    expect(MediaType("text/plain").matches("image")) == false
+    expect(MediaType("text").matches("text/plain")) == false
+    expect(MediaType("TEXT/PLAIN").matches("text")) == true
   }
   
-  func test_matchDifferentType() {
-    let type1: MediaType = "text/plain"
-    let type2: MediaType = "application/octet-stream"
-    expect(type1) != type2
-    expect(type1 ~= type2) == false
+  func test_matchesFacet() {
+    expect(MediaType("application/vnd.oasis.opendocument.chart").matches("application/vnd.oasis.opendocument.chart")) == true
+    expect(MediaType("application/vnd.oasis.opendocument.chart").matches("application/x.oasis.opendocument.chart")) == false
+    expect(MediaType("Application/VND.Oasis.OpenDocument.Chart").matches("application/vnd.oasis.opendocument.chart")) == true
+    expect(MediaType("application/vnd.oasis.opendocument.chart").matches("application/vnd.oasis.opendocument.chart")) == true
   }
 
-  func test_matchDifferentSubtype() {
-    let type1: MediaType = "text/plain"
-    let type2: MediaType = "text/html"
-    expect(type1) != type2
-    expect(type1 ~= type2) == false
+  func test_matchesSubtype() {
+    expect(MediaType("text/plain").matches("text/plain")) == true
+    expect(MediaType("text/plain").matches("text/html")) == false
+    expect(MediaType("text/html").matches("application/html")) == false
+    expect(MediaType("text/PLAIN").matches("text/plain")) == true
   }
 
-  func test_matchDifferingByCase() {
-    let type1: MediaType = "text/plain"
-    let type2: MediaType = "TEXT/PLAIN"
-    expect(type1) != type2
-    expect(type1 ~= type2) == true
+  func test_matchesSuffix() {
+    expect(MediaType("application/soap+xml").matches("application/soap+xml")) == true
+    expect(MediaType("application/soap+xml").matches("application/soap")) == true
+    expect(MediaType("application/soap+xml").matches("application/soap+json")) == false
+    expect(MediaType("application/soap+xml").matches("application/soap+XML")) == true
   }
 
-  func test_matchDifferingByParameter() {
-    let type1: MediaType = "text/plain"
-    let type2: MediaType = "text/plain; charset=UTF-8"
-    expect(type1) != type2
-    expect(type1 ~= type2) == true
-  }
+  func test_matchesParameters() {
+    expect(MediaType("text/plain; charset=UTF-8").matches("text/plain")) == true
+    expect(MediaType("text/plain; charset=UTF-8").matches("text/plain; charset=UTF-8")) == true
+    expect(MediaType("text/plain; charset=UTF-8").matches("text/plain; charset=UTF-16")) == false
+    expect(MediaType("text/plain").matches("text/plain; charset=UTF-8")) == false
 
-  func test_matchDifferingByParameterValue() {
-    let type1: MediaType = "text/plain; charset=UTF-8"
-    let type2: MediaType = "text/plain; charset=US-ASCII"
-    expect(type1) != type2
-    expect(type1 ~= type2) == true
-  }
-
-  func test_matchDifferingByParameterCasing() {
-    let type1: MediaType = "text/plain; CHARSET=UTF-8"
-    let type2: MediaType = "text/plain; charset=utf-8"
-    expect(type1) != type2
-    expect(type1 ~= type2) == true
-  }
-
-  func test_matchDifferingByWhitespace() {
-    let type1: MediaType = "text/plain;charset=UTF-8"
-    let type2: MediaType = "text/plain; charset=UTF-8"
-    expect(type1) != type2
-    expect(type1 ~= type2) == true
-  }
-  
-  func test_matchTopLevelType() {
-    expect(MediaType.text(.plain) ~= .text) == true
-    expect(MediaType.text(.html) ~= .text) == true
-    expect(MediaType.image(.png) ~= .text) == false
+    expect(MediaType("text/markdown; charset=UTF-8; variant=CommonMark").matches("text/markdown")) == true
+    expect(MediaType("text/markdown; charset=UTF-8; variant=CommonMark").matches("text/markdown; charset=UTF-8")) == true
+    expect(MediaType("text/markdown; charset=UTF-8; variant=CommonMark").matches("text/markdown; charset=UTF-8; variant=CommonMark")) == true
+    expect(MediaType("text/markdown; charset=UTF-8; variant=CommonMark").matches("text/markdown; charset=UTF-16")) == false
+    expect(MediaType("text/markdown; charset=UTF-8; variant=CommonMark").matches("text/markdown; charset=UTF-8; variant=pandoc")) == false
   }
   
   // MARK: -

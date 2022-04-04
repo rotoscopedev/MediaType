@@ -504,35 +504,58 @@ extension MediaType: CustomStringConvertible {
 
 // MARK: - Matching
 
+extension MediaType {
+  
+  /// Determines whether the receiver matches the given template type.
+  ///
+  /// The template's `type`, `subtype`, `suffix` and `parameters` are compared
+  /// against the receiver's. If the receiver is missing a component or the
+  /// value of that component differs from the template's then the method
+  /// returns `false`. Components missing from the template are not compared.
+  ///
+  /// For example, `text/plain; charset=UTF-8` will match `text`, `text/plain`
+  /// and `text/plain; charset=UTF-8` but not `text/html` or
+  /// `text/plain; charset=UTF-16`. Similarly, `application/vcard+json` will
+  /// match `application/vcard` but not `application/sql`.
+  public func matches(_ template: MediaType) -> Bool {
+    if self == template {
+      return true
+    }
+    let t1 = self.normalized()
+    let t2 = template.normalized()
+    
+    let c1 = t1.parse()
+    let c2 = t2.parse()
+    
+    guard c1.type == c2.type else { return false }
+    guard c1.facet == c2.facet else { return false }
+    
+    if let subtype = c2.subtype {
+      guard c1.subtype == subtype else { return false }
+    }
+    if let suffix = c2.suffix {
+      guard c1.suffix == suffix else { return false }
+    }
+    var match = true
+    
+    t2.forEach {
+      if match {
+        match = t1[$0] == $1
+      }
+    }
+    return match
+  }
+}
+
+// MARK: -
+
 infix operator ~= : ComparisonPrecedence
 
 extension MediaType {
   
-  /// Determines whether two media types are the same after normalization and
-  /// the removal of parameters. For example `text/plain` and
-  /// `text/plain; charset=UTF-8` would compare the same, whereas `text/plain`
-  /// and `text/html` would not.
+  /// Returns the result of calling `matches(_)` on the left-hand size, passing
+  /// in the right-hand side as the template media type to match against.
   public static func ~= (lhs: Self, rhs: Self) -> Bool {
-    if lhs == rhs {
-      return true
-    }
-    let type1 = lhs.removingParameters()
-    let type2 = rhs.removingParameters()
-    
-    if type1 == type2 {
-      return true
-    }
-    return type1.normalized() == type2.normalized()
-  }
-  
-  /// Determines whether the receiver has the given top-level type, enabling
-  /// expressions such as
-  ///
-  /// ```swift
-  /// if mediaType ~= .image {
-  /// }
-  /// ```
-  public static func ~= (lhs: Self, rhs: TopLevelType) -> Bool {
-    return lhs.type == rhs
+    return lhs.matches(rhs)
   }
 }
