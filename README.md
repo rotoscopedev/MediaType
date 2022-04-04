@@ -171,20 +171,40 @@ if contentType.normalized() == json {
 
 ## Matching
 
-`MediaType` provides the `~=` matching operator that can be used to determine whether two media types are the same after a) removal of parameters, and b) normalization, e.g.
+`MediaType` provides the `matches(_:)` method that can be used to determine whether a media type matches a template type, e.g.
 
 ```swift
 let type: MediaType = "text/html; charset=UTF-8"
 
-if type ~= .text(.html) {
+if type.matches(.text(.html)) {
   ...
 }
 ```
 
-The `~=` operator can also be used to match a media type against a top-level type:
+A media type can also be matched against a top-level type:
 
 ```swift
 let type: MediaType = "text/plain"
+
+if type.matches(.text) {
+  ...
+}
+```
+
+as well as a template without a suffix:
+
+```swift
+let type: MediaType = "application/ld+json"
+
+if type.matches("application/ld") {
+  ...
+}
+```
+
+The `~=` operator can also be used to perform the above matches, e.g.
+
+```swift
+let type: MediaType = "text/html; charset=UTF-8"
 
 if type ~= .text {
   ...
@@ -197,6 +217,16 @@ Extensions are provided for `UTType` (available on iOS >= 14, tvOS >= 14, macOS 
 
 ```swift
 if let type = UTType(mediaType: .text(.html)) {
+  ...
+}
+```
+
+and
+
+```swift
+let type: UTType = .utfPlainText
+
+if type.preferredMediaType == .text(.plain).charset(.utf8) {
   ...
 }
 ```
