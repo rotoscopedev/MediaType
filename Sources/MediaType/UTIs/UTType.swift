@@ -104,13 +104,17 @@ extension UTType {
     self = type
   }
   
-  /// The preferred MIME/media type for this type.
+  /// The preferred MIME/media type for this type. The media type is normalized
+  /// before being returned.
   public var preferredMediaType: MediaType? {
     get {
       return self
         .preferredMIMEType
         .flatMap {
           MediaType(rawValue: $0)
+        }
+        .map {
+          $0.normalized()
         }
     }
   }

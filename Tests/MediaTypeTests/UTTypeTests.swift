@@ -70,4 +70,16 @@ class UTTypeTests: XCTestCase {
     expect(UTType(mediaType: .text)) == .text
     expect(UTType(mediaType: .video)) == .video
   }
+  
+  // MARK: -
+  
+  func test_preferredMediaType() {
+    expect(UTType.plainText.preferredMediaType) == .text(.plain)
+    expect(UTType.png.preferredMediaType) == .image(.png)
+  }
+  
+  func test_preferredMediaTypeWithCharset() {
+    expect(UTType.utf8PlainText.preferredMediaType) == .text(.plain).charset(.utf8)
+    expect(UTType.utf16PlainText.preferredMediaType) == .text(.plain).charset(.utf16)
+  }
 }
