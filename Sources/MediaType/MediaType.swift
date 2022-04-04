@@ -517,6 +517,9 @@ extension MediaType {
   /// and `text/plain; charset=UTF-8` but not `text/html` or
   /// `text/plain; charset=UTF-16`. Similarly, `application/vcard+json` will
   /// match `application/vcard` but not `application/sql`.
+  ///
+  /// Both the receiver and the template are normalized before matching is
+  /// attempted.
   public func matches(_ template: MediaType) -> Bool {
     if self == template {
       return true
