@@ -611,7 +611,9 @@ class MediaTypeTests: XCTestCase {
 
     expect(MediaType("text/markdown; charset=UTF-8; variant=CommonMark").matches("text/markdown")) == true
     expect(MediaType("text/markdown; charset=UTF-8; variant=CommonMark").matches("text/markdown; charset=UTF-8")) == true
+    expect(MediaType("text/markdown; charset=UTF-8; variant=CommonMark").matches("text/markdown; charset=utf-8")) == true
     expect(MediaType("text/markdown; charset=UTF-8; variant=CommonMark").matches("text/markdown; charset=UTF-8; variant=CommonMark")) == true
+    expect(MediaType("text/markdown; charset=UTF-8; variant=CommonMark").matches("text/markdown; charset=UTF-8; variant=commonmark")) == true
     expect(MediaType("text/markdown; charset=UTF-8; variant=CommonMark").matches("text/markdown; charset=UTF-16")) == false
     expect(MediaType("text/markdown; charset=UTF-8; variant=CommonMark").matches("text/markdown; charset=UTF-8; variant=pandoc")) == false
   }
