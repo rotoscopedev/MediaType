@@ -33,6 +33,7 @@ extension MediaType {
     case ecmaScript = "ecmascript"
     case html = "html"
     case javascript = "javascript"
+    case markdown = "markdown"
     case parameters = "parameters"
     case plain = "plain"
     case richtext = "richtext"
@@ -110,18 +111,25 @@ extension MediaType {
 // MARK: -
 
 extension MediaType {
-
-  /// Returns a Markdown media type with the specified variant. See RFC7764 for
-  /// details on Markdown variants.
-  public static func text(_ variant: MarkdownVariant) -> Self {
-    switch variant {
-    case .markdown:
-      return text("markdown")
-    default:
-      return text("markdown").adding(parameter: "variant", value: variant.rawValue)
+  
+  /// Returns the value of the `variant` parameter, or `nil` if no such
+  /// parameter exists. Also returns `nil` if the value could not be mapped to
+  /// a `MarkdownVariant` instance.
+  public var markdownVariant: MarkdownVariant? {
+    get {
+      return self["variant"]
+        .flatMap {
+          MarkdownVariant(string: $0)
+        }
     }
   }
-
+  
+  /// Returns a media type with the given Markdown variant. If a `variant`
+  /// parameter already exists then the value is replaced with that specified.
+  public func markdownVariant(_ variant: MarkdownVariant) -> Self {
+    return adding(parameter: "variant", value: variant.rawValue)
+  }
+  
   /// Normalizes the given Markdown variant parameter value.
   func normalize(markdownVariant variant: String) -> String {
     if let variant = MarkdownVariant(string: variant) {

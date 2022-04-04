@@ -562,9 +562,15 @@ class MediaTypeTests: XCTestCase {
   
   // MARK: - Markdown
   
-  func test_markdownTypes() {
+  func test_markdownVariant() {
     expect(MediaType.text(.markdown)) == "text/markdown"
-    expect(MediaType.text(.commonMark)) == "text/markdown; variant=CommonMark"
+    expect(MediaType.text(.markdown).markdownVariant(.commonMark)) == "text/markdown; variant=CommonMark"
+  }
+  
+  func test_setMarkdownVariant() {
+    expect(MediaType("text/markdown").markdownVariant).to(beNil())
+    expect(MediaType("text/markdown; variant=CommonMark").markdownVariant) == .commonMark
+    expect(MediaType("text/markdown; variant=unknown").markdownVariant).to(beNil())
   }
   
   // MARK: - Matching
