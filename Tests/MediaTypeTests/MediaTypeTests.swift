@@ -467,6 +467,31 @@ class MediaTypeTests: XCTestCase {
     let type: MediaType = "text/plain; charset=UTF-8; charset=US-ASCII; charset: ISO-8859-1"
     expect(type.normalized()) == "text/plain; charset=UTF-8"
   }
+  
+  func test_normalizeCharset() {
+    let type: MediaType = "text/plain; charset=utf-8"
+    expect(type.normalized()) == "text/plain; charset=UTF-8"
+  }
+  
+  func test_normalizeUnknownCharset() {
+    let type: MediaType = "text/plain; charset=unknown"
+    expect(type.normalized()) == "text/plain; charset=unknown"
+  }
+  
+  func test_normalizeCharsetToPreferredName() {
+    let type: MediaType = "text/plain; charset=ISO_8859-1:1987"
+    expect(type.normalized()) == "text/plain; charset=ISO-8859-1"
+  }
+  
+  func test_normalizeMarkdownVariant() {
+    let type: MediaType = "text/markdown; variant=commonmark"
+    expect(type.normalized()) == "text/markdown; variant=CommonMark"
+  }
+  
+  func test_normalizeUnknownMarkdownVariant() {
+    let type: MediaType = "text/markdown; variant=unknown"
+    expect(type.normalized()) == "text/markdown; variant=unknown"
+  }
 
   // MARK: - Subtype Factory Methods
   

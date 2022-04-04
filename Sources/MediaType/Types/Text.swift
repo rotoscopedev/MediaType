@@ -77,7 +77,7 @@ extension MediaType {
 // MARK: -
 
 extension MediaType {
-  public enum MarkdownVariant: String {
+  public enum MarkdownVariant: String, CaseIterable {
     case markdown
     case multiMarkdown = "MultiMarkdown"
     case gfm = "GFM"
@@ -87,6 +87,23 @@ extension MediaType {
     case commonMark = "CommonMark"
     case kramdown = "kramdown-rfc2629"
     case markdownExtra = "Extra"
+    
+    /// Internal map of case-independent names.
+    private static let map: [String: MarkdownVariant] = {
+      allCases
+        .reduce(into: [:]) {
+          $0[$1.rawValue.lowercased()] = $1
+        }
+    }()
+    
+    /// Initializes the receiver from the given string.
+    public init?(string: String) {
+      if let variant = Self.map[string.lowercased()] {
+        self = variant
+      } else {
+        return nil
+      }
+    }
   }
 }
 
@@ -102,6 +119,15 @@ extension MediaType {
       return text("markdown")
     default:
       return text("markdown").adding(parameter: "variant", value: variant.rawValue)
+    }
+  }
+
+  /// Normalizes the given Markdown variant parameter value.
+  func normalize(markdownVariant variant: String) -> String {
+    if let variant = MarkdownVariant(string: variant) {
+      return variant.rawValue
+    } else {
+      return variant
     }
   }
 }
@@ -126,5 +152,14 @@ extension MediaType {
   /// already exists then the value is replaced with that specified.
   public func charset(_ charset: IANACharset) -> Self {
     return adding(parameter: "charset", value: charset.preferredName)
+  }
+  
+  /// Normalizes the given charset parameter value.
+  func normalize(charset: String) -> String {
+    if let charset = IANACharset(string: charset) {
+      return charset.preferredName
+    } else {
+      return charset
+    }
   }
 }

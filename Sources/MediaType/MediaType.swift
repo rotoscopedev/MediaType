@@ -399,6 +399,18 @@ extension MediaType {
 
 extension MediaType {
   
+  /// Normalizes the value of the given parameter.
+  private func normalize(value: String, for name: String, type: (type: TopLevelType, facet: String?, subtype: String?, suffix: String?)) -> String {
+    switch (type.type, type.facet, type.subtype, type.suffix, name) {
+    case (.text, nil, _, _, "charset"):
+      return normalize(charset: value)
+    case (.text, nil, "markdown", _, "variant"):
+      return normalize(markdownVariant: value)
+    default:
+      return value
+    }
+  }
+  
   /// Returns a normalized version of the receiver, which can be used to
   /// compare media types regardless of casing and whitespace.
   ///
@@ -434,9 +446,7 @@ extension MediaType {
     
     forEach {
       let name = $0.lowercased()
-      if params[name] == nil {
-        params[name] = $1
-      }
+      params[name] = params[name] ?? normalize(value: $1, for: name, type: (type, facet, subtype, suffix))
     }
     
     return MediaType(type: type, facet: facet, subtype: subtype, suffix: suffix, parameters: params)
