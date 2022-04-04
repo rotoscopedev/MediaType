@@ -37,6 +37,11 @@ extension UTType {
   /// The character set/encoding is preserved for `text/plain` media types with
   /// a `charset` parameter of `UTF-8`, `UTF-16`, `UTF16LE` and `UTF16BE`, which
   /// map to `public.utf8-plain-text` and `public.utf16-plain-text`.
+  ///
+  /// Top-level only media types (e.g. `text` or `image`) are mapped to their
+  /// UTI equivalents where possible (e.g. `public.text` and `public.image`).
+  /// Mappings are not available for some top-level types (e.g. `application`,
+  /// `message` etc.)
   public init?(mediaType: MediaType, conformingTo supertype: UTType = .data) {
     let normalized = mediaType.normalized()
 
@@ -51,9 +56,25 @@ extension UTType {
     let stripped = normalized.removingParameters()
     
     guard let type = Self(mimeType: stripped.rawValue, conformingTo: supertype) else {
-      return nil
+      
+      // Is it a top-level only type?
+      switch stripped {
+      case .audio:
+        self = .audio
+      case .font:
+        self = .font
+      case .image:
+        self = .image
+      case .text:
+        self = .text
+      case .video:
+        self = .video
+      default:
+        return nil
+      }
+      return
     }
-
+    
     // Finally, provide special-case mapping for plain text.
     //
     // UTType ignores the character set, returning a dynamic type if a charset
@@ -68,11 +89,11 @@ extension UTType {
     //   unknown with a possible BOM, assuming UTF-16BE if not present),
     //   `UTF-16BE` (big-endian with optional BOM) and `UTF-16LE` (little-endian
     //   with optional BOM) to `.utf16PlainText`.
-    if type == .plainText, let charset = normalized["charset"]?.uppercased() {
+    if type == .plainText, let charset = normalized.charset {
       switch charset {
-      case "UTF-8":
+      case .utf8:
         self = .utf8PlainText
-      case "UTF-16", "UTF-16BE", "UTF-16LE":
+      case .utf16, .utf16BE, .utf16LE:
         self = .utf16PlainText
       default:
         self = type

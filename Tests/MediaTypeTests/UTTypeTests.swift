@@ -58,4 +58,16 @@ class UTTypeTests: XCTestCase {
     expect(UTType(mediaType: MediaType(rawValue: "Text/Plain; CHARSET=Utf-16Le")!)) == .utf16PlainText
     expect(UTType(mediaType: MediaType(rawValue: "Text/Plain; charset=utf-16be")!)) == .utf16PlainText
   }
+
+  func test_initializeUTTypeFromTopLevelType() {
+    expect(UTType(mediaType: .application)).to(beNil())
+    expect(UTType(mediaType: .audio)) == .audio
+    expect(UTType(mediaType: .font)) == .font
+    expect(UTType(mediaType: .image)) == .image
+    expect(UTType(mediaType: .message)).to(beNil())
+    expect(UTType(mediaType: .model)).to(beNil())
+    expect(UTType(mediaType: .multipart)).to(beNil())
+    expect(UTType(mediaType: .text)) == .text
+    expect(UTType(mediaType: .video)) == .video
+  }
 }
