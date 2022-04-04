@@ -621,7 +621,7 @@ class MediaTypeTests: XCTestCase {
   func test_charset() {
     expect(MediaType("text/plain").charset).to(beNil())
     expect(MediaType("text/plain; charset=UTF-8").charset) == .utf8
-    expect(MediaType("text/plain; charset=UTF-8").charset) == .utf8
+    expect(MediaType("text/plain; charset=utf-8").charset) == .utf8
   }
   
   func test_setCharset() {
