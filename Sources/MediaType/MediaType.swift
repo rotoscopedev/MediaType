@@ -459,10 +459,13 @@ extension MediaType: ExpressibleByStringLiteral {
 
   /// Creates an instance initialized to the given string value.
   ///
-  /// - Parameter value: The value of the new instance.
-  public init(stringLiteral value: StaticString) {
-    guard let type = Self(rawValue: "\(value)") else {
-      preconditionFailure("\(value) is not a valid media type")
+  /// - Parameter stringLiteral: A string literal.
+  public init(stringLiteral: StaticString) {
+    let string = stringLiteral.withUTF8Buffer {
+      String(decoding: $0, as: UTF8.self)
+    }
+    guard let type = Self(rawValue: string) else {
+      preconditionFailure("\(string) is not a valid media type")
     }
     self = type
   }
