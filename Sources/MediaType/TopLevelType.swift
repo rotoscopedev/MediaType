@@ -135,9 +135,12 @@ extension MediaType.TopLevelType: ExpressibleByStringLiteral {
 
   /// Creates an instance initialized to the given string value.
   ///
-  /// - Parameter value: The value of the new instance.
-  public init(stringLiteral value: StaticString) {
-    self.init("\(value)")
+  /// - Parameter stringLiteral: A string literal.
+  public init(stringLiteral: StaticString) {
+    let string = stringLiteral.withUTF8Buffer {
+      String(decoding: $0, as: UTF8.self)
+    }
+    self.init(string)
   }
 }
 
