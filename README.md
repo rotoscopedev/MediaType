@@ -1,5 +1,12 @@
 # MediaType
 
+![](https://img.shields.io/badge/License-MIT-informational?style=flat)
+![](https://img.shields.io/badge/Unit%20Tests-Passed-success?style=flat)
+![](https://img.shields.io/badge/Swift-5.3+-red?style=flat)
+![](https://img.shields.io/badge/SPM-Package-red?style=flat)
+![](https://img.shields.io/badge/iOS-grey?style=flat&logo=apple&logoColor=white)
+![](https://img.shields.io/badge/macOS-grey?style=flat&logo=apple&logoColor=white)
+
 MediaType is a Swift package for iOS, iPadOS, watchOS, tvOS and macOS that implements media type parsing and formatting consistent with IETF RFC 6838 ([Media Type Specifications and Registration Procedures](https://tools.ietf.org/html/rfc6838)).
 
 ***
