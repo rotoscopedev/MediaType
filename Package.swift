@@ -13,7 +13,7 @@ let package = Package(
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
-    .package(url: "https://github.com/Quick/Nimble.git", from: "9.0.0"),
+    .package(url: "https://github.com/Quick/Nimble.git", from: "11.2.0"),
     .package(url: "https://github.com/rotoscopedev/IANACharset.git", from: "0.9.2"),
   ],
   targets: [
