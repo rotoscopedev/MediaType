@@ -24,7 +24,7 @@
 import IANACharset
 
 extension MediaType {
-  public enum TextSubtype: String {
+  public enum TextSubtype: String, Hashable, Sendable {
     case calendar = "calendar"
     case css = "css"
     case csv = "csv"

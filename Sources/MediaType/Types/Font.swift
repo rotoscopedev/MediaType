@@ -22,7 +22,7 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum FontSubtype: String {
+  public enum FontSubtype: String, Hashable, Sendable {
     case collection = "collection"
     case otf = "otf"
     case ttf = "ttf"

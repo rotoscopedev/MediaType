@@ -22,7 +22,7 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum ImageSubtype: String {
+  public enum ImageSubtype: String, Hashable, Sendable {
     case bmp = "bmp"
     case gif = "gif"
     case jpeg = "jpeg"

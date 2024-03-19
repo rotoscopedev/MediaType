@@ -22,7 +22,7 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum Tree: Hashable {
+  public enum Tree: Hashable, Sendable {
     case standards
     case vendor
     case personal

@@ -22,7 +22,7 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum VideoSubtype: String {
+  public enum VideoSubtype: String, Hashable, Sendable {
     case avi = "x-msvideo"
     case h261 = "H261"
     case h263 = "H263"

@@ -103,9 +103,10 @@ extension MediaType {
   }
 }
 
-// MARK: - Hashable
+// MARK: - Basic Conformances
 
 extension MediaType: Hashable {}
+extension MediaType: Sendable {}
 
 // MARK: - Parsing
 

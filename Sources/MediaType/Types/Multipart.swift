@@ -22,7 +22,7 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum MultipartSubtype: String {
+  public enum MultipartSubtype: String, Hashable, Sendable {
     case digest = "digest"
     case encrypted = "encrypted"
     case formData = "form-data"

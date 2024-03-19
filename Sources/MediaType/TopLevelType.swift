@@ -124,10 +124,10 @@ extension MediaType.TopLevelType {
   }
 }
 
-// MARK: - Hashable
+// MARK: - Basic Conformances
 
-extension MediaType.TopLevelType: Hashable {
-}
+extension MediaType.TopLevelType: Hashable {}
+extension MediaType.TopLevelType: Sendable {}
 
 // MARK: - ExpressibleByStringLiteral
 

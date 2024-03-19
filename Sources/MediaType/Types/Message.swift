@@ -22,7 +22,7 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum MessageSubtype: String {
+  public enum MessageSubtype: String, Hashable, Sendable {
     case http = "http"
     case shttp = "s-http"
   }

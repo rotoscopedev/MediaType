@@ -22,7 +22,7 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum ApplicationSubtype: String {
+  public enum ApplicationSubtype: String, Hashable, Sendable {
     case appleInstallerPackage = "vnd.apple.installer+xml"
     case appleKeynote = "vnd.apple.keynote"
     case appleNumbers = "vnd.apple.numbers"

@@ -22,7 +22,7 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum ModelSubtype: String {
+  public enum ModelSubtype: String, Hashable, Sendable {
     case dwf = "vnd.dwf"
     case mesh = "mesh"
     case mtl = "mtl"

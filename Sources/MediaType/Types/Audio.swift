@@ -22,7 +22,7 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum AudioSubtype: String {
+  public enum AudioSubtype: String, Hashable, Sendable {
     case aac = "aac"
     case ac3 = "ac3"
     case midi = "midi"
