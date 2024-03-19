@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/swiftcsv/SwiftCSV.git",
         "state": {
           "branch": null,
-          "revision": "96fa14b92e88e0befdbc8bc31c7c2c9594a30060",
-          "version": "0.8.1"
+          "revision": "b61dcd1b2b1120e751cee4cd64a16ff10364885d",
+          "version": "0.9.1"
         }
       }
     ]
