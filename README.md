@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/badge/License-MIT-informational?style=flat)
 ![](https://img.shields.io/badge/Unit%20Tests-Passed-success?style=flat)
-![](https://img.shields.io/badge/Swift-5.3+-red?style=flat)
+![](https://img.shields.io/badge/Swift-6.0+-red?style=flat)
 ![](https://img.shields.io/badge/SPM-Package-red?style=flat)
 ![](https://img.shields.io/badge/iOS-grey?style=flat&logo=apple&logoColor=white)
 ![](https://img.shields.io/badge/macOS-grey?style=flat&logo=apple&logoColor=white)
