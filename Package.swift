@@ -16,7 +16,6 @@ let package = Package(
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
-    .package(url: "https://github.com/Quick/Nimble.git", from: "11.2.0"),
     .package(url: "https://github.com/rotoscopedev/IANACharset.git", branch: "xcode16-swift6"),
   ],
   targets: [
@@ -31,7 +30,6 @@ let package = Package(
       name: "MediaTypeTests",
       dependencies: [
         "MediaType",
-        "Nimble"
       ]),
   ]
 )
