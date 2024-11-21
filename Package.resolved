@@ -1,13 +1,13 @@
 {
-  "originHash" : "2e1af090a8d63199260bb32df174e779d78922001484f4c38b72edd3b3033c95",
+  "originHash" : "527bc9c4f0c14fa6ed80482307559da6ce0f5448d6411a15cce8aedb63d34f27",
   "pins" : [
     {
       "identity" : "ianacharset",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/rotoscopedev/IANACharset.git",
       "state" : {
-        "branch" : "xcode16-swift6",
-        "revision" : "41169d296e08ab852df0df575c0fa4751624cd71"
+        "branch" : "develop",
+        "revision" : "2e72b5929ac772ac6aacc0468396d9046de7cf8b"
       }
     },
     {
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftcsv/SwiftCSV.git",
       "state" : {
-        "revision" : "b61dcd1b2b1120e751cee4cd64a16ff10364885d",
-        "version" : "0.9.1"
+        "revision" : "6ab5d0fe9b6ef3c79d717eefa70862df389e74d9",
+        "version" : "0.10.0"
       }
     }
   ],
