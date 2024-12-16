@@ -25,6 +25,7 @@ extension MediaType {
   public enum FontSubtype: String, Hashable, Sendable {
     case collection = "collection"
     case otf = "otf"
+    case sfnt = "sfnt"
     case ttf = "ttf"
     case woff = "woff"
     case woff2 = "woff2"
