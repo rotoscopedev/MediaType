@@ -1,0 +1,36 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "2D/3D model" : {
+      "comment" : "Description for model media types."
+    },
+    "Application document" : {
+      "comment" : "Description for application media types."
+    },
+    "Audio" : {
+      "comment" : "Description for audio media types."
+    },
+    "Font" : {
+      "comment" : "Description for font media types."
+    },
+    "Haptics" : {
+      "comment" : "Description for haptics media types."
+    },
+    "Image" : {
+      "comment" : "Description for image media types."
+    },
+    "Message" : {
+      "comment" : "Description for message media types."
+    },
+    "Multipart" : {
+      "comment" : "Description for multipart media types."
+    },
+    "Text" : {
+      "comment" : "Description for text media types."
+    },
+    "Video" : {
+      "comment" : "Description for vide media types."
+    }
+  },
+  "version" : "1.0"
+}

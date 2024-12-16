@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "MediaType",
+  defaultLocalization: "en",
   platforms: [
     .macOS(.v11), .iOS(.v14), .tvOS(.v14), .watchOS(.v7), .visionOS(.v1),
   ],
@@ -25,11 +26,16 @@ let package = Package(
       name: "MediaType",
       dependencies: [
         "IANACharset",
-      ]),
+      ],
+      resources: [
+        .process("Resources"),
+      ]
+    ),
     .testTarget(
       name: "MediaTypeTests",
       dependencies: [
         "MediaType",
-      ]),
+      ]
+    ),
   ]
 )
