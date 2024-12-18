@@ -76,6 +76,7 @@ extension MediaType {
     case sgml = "SGML"
     case soapXML = "soap+xml"
     case sql = "sql"
+    case tar = "application/x-tar"
     case vcardJSON = "vcard+json"
     case vcardXML = "vcard+xml"
     case visio = "vnd.visio"
