@@ -1,35 +1,20 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "2D/3D model" : {
-      "comment" : "Description for model media types."
+    "Data" : {
+      "comment" : "Default generic description for types that don't have a more specific description."
     },
-    "Application document" : {
-      "comment" : "Description for application media types."
+    "Document" : {
+      "comment" : "Generic description for user-viewable content."
     },
-    "Audio" : {
-      "comment" : "Description for audio media types."
+    "Email" : {
+      "comment" : "Generic description for email messages."
     },
-    "Font" : {
-      "comment" : "Description for font media types."
+    "File" : {
+      "comment" : "Default generic file system description for types that don't have a more specific description."
     },
-    "Haptics" : {
-      "comment" : "Description for haptics media types."
-    },
-    "Image" : {
-      "comment" : "Description for image media types."
-    },
-    "Message" : {
-      "comment" : "Description for message media types."
-    },
-    "Multipart" : {
-      "comment" : "Description for multipart media types."
-    },
-    "Text" : {
-      "comment" : "Description for text media types."
-    },
-    "Video" : {
-      "comment" : "Description for vide media types."
+    "Publication" : {
+      "comment" : "Generic description for publication types (i.e. books/magazines/articles)."
     }
   },
   "version" : "1.0"
