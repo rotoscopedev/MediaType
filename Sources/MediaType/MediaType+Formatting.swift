@@ -28,8 +28,6 @@ fileprivate extension String {
   /// Capitalizes the string when the string contains no uppercase characters.
   var conditionalCapitalized: Self {
     get {
-      guard let first else { return self }
-      
       let containsUppercase = self
         .first {
           $0.isUppercase
@@ -38,7 +36,7 @@ fileprivate extension String {
       if containsUppercase {
         return self
       } else {
-        return first.uppercased() + dropFirst()
+        return capitalized
       }
     }
   }
