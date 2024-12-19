@@ -24,9 +24,9 @@
 extension MediaType {
   public enum ApplicationSubtype: String, Hashable, Sendable {
     case appleInstallerPackage = "vnd.apple.installer+xml"
-    case appleKeynote = "vnd.apple.keynote"
-    case appleNumbers = "vnd.apple.numbers"
-    case applePages = "vnd.apple.pages"
+    case appleKeynote = "x-iwork-keynote-sffkey"
+    case appleNumbers = "x-iwork-numbers-sffnumbers"
+    case applePages = "x-iwork-pages-sffpages"
     case bzipArchive = "x-bzip"
     case bzip2Archive = "x-bzip2"
     case cshellScript = "x-csh"
