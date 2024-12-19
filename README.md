@@ -223,9 +223,7 @@ if type ~= .text {
 Extensions are provided for `UTType` (available on iOS >= 14, tvOS >= 14, macOS >= 11 and watchOS >= 7) that simplify conversion to and from a `MediaType`, e.g.
 
 ```swift
-if let type = UTType(mediaType: .text(.html)) {
-  ...
-}
+let type = UTType(mediaType: .text(.html))
 ```
 
 and
