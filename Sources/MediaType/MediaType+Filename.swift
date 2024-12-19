@@ -26,12 +26,28 @@
 import UniformTypeIdentifiers
 
 extension MediaType {
+
+  /// Returns the file name extension to use for the given UTI.
+  private func filenameExtension(for type: UTType) -> String? {
+
+    /// First try the types's preferred file name extension.
+    if let ext = type.preferredFilenameExtension, !ext.isEmpty {
+      return ext
+    }
+      
+    /// Apple platforms don't register preferred file name extensions for
+    /// plain text types such as UTF-8, UTF-16 etc.
+    if type.conforms(to: .plainText) {
+      return "txt"
+    }
+    return nil
+  }
   
   /// Returns the preferred file extension to use for this media type.
   public var preferredFilenameExtension: String? {
     get {
-      /// First try the types's file name extension.
-      if let ext = UTType(mediaType: self).filenameExtension {
+      /// First attempt to get the file name for the equivalent UTI.
+      if let ext = filenameExtension(for: UTType(mediaType: self)) {
         return ext
       }
       
@@ -49,7 +65,14 @@ extension MediaType {
   @available(macOS 12, iOS 15, tvOS 15, watchOS 8, visionOS 1, *)
   public var preferredFilename: String {
     get {
-      return UTType(mediaType: self).preferredFilename(defaultExtension: preferredFilenameExtension)
+      let description = GenericFormatStyle().description(for: self)
+      let baseName = description ?? String(localized: "File", bundle: .module, comment: "Default file base name for types without generic description.")
+      
+      if let preferredFilenameExtension {
+        return "\(baseName).\(preferredFilenameExtension)"
+      } else {
+        return baseName
+      }
     }
   }
 }

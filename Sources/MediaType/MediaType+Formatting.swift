@@ -25,6 +25,27 @@
 
 import UniformTypeIdentifiers
 
+fileprivate extension String {
+  
+  /// Capitalizes the string when the string contains no uppercase characters.
+  var conditionalCapitalized: Self {
+    get {
+      let containsUppercase = self
+        .first {
+          $0.isUppercase
+        } != nil
+      
+      if containsUppercase {
+        return self
+      } else {
+        return capitalized
+      }
+    }
+  }
+}
+
+// MARK: -
+
 extension MediaType {
 
   /// Formats a media type as a localized description that is suitable for use
@@ -33,22 +54,56 @@ extension MediaType {
   @available(macOS 12, iOS 15, tvOS 15, watchOS 8, visionOS 1, *)
   public struct GenericFormatStyle: FormatStyle {
     
-    /// Formats a value, using this style.
-    public func format(_ type: MediaType) -> String {
-      if let description = UTType.GenericFormatStyle().description(for: UTType(mediaType: type)) {
+    /// Returns a generic description of the given UTI.
+    func description(for type: UTType) -> String? {
+      if type.conforms(to: .epub) {
+        return String(localized: "Publication", bundle: .module, comment: "Generic description for publication types (i.e. books/magazines/articles).")
+      } else if type.conforms(to: .emailMessage) {
+        return String(localized: "Email", bundle: .module, comment: "Generic description for email messages.")
+      }
+      let types: [UTType] = [
+        .application,
+        .archive,
+        .audio,
+        .contact,
+        .database,
+        .font,
+        .image,
+        .message,
+        .movie,
+        .presentation,
+        .script,
+        .sourceCode,
+        .plainText,
+      ]
+      
+      for t in types {
+        if type.conforms(to: t), let description = t.localizedDescription?.conditionalCapitalized {
+          return description
+        }
+      }
+      if type.conforms(to: .content) {
+        return String(localized: "Document", bundle: .module, comment: "Generic description for user-viewable content.")
+      }
+      return nil
+    }
+    
+    /// Returns a generic description of the given media type. Returns `nil` if
+    /// a description is not available.
+    func description(for type: MediaType) -> String? {
+      if let description = description(for: UTType(mediaType: type)) {
         return description
       } else {
-        return switch type.type {
-        case .audio:          String(localized: "Audio", bundle: .module, comment: "Default description for audio media types.")
-        case .font:           String(localized: "Font", bundle: .module, comment: "Default description for font media types.")
-        case .haptics:        String(localized: "Haptics", bundle: .module, comment: "Default description for haptics media types.")
-        case .image:          String(localized: "Image", bundle: .module, comment: "Default description for image media types.")
-        case .message:        String(localized: "Message", bundle: .module, comment: "Default description for message media types.")
-        case .model:          String(localized: "Model", bundle: .module, comment: "Default description for model media types.")
-        case .text:           String(localized: "Text", bundle: .module, comment: "Default description for model media types.")
-        case .video:          String(localized: "Video", bundle: .module, comment: "Default description for video media types.")
-        default:              String(localized: "Data", bundle: .module, comment: "Default description for media types.")
-        }
+        return description(for: type)
+      }
+    }
+
+    /// Formats a value, using this style.
+    public func format(_ type: MediaType) -> String {
+      if let description = description(for: type) {
+        return description
+      } else {
+        return String(localized: "Data", bundle: .module, comment: "Default description for media types.")
       }
     }
   }
@@ -78,13 +133,24 @@ extension MediaType {
   @available(macOS 12, iOS 15, tvOS 15, watchOS 8, visionOS 1, *)
   public struct SpecificFormatStyle: FormatStyle {
     
+    /// Returns a description for the given UTI. Returns `nil` if a description
+    /// is not available.
+    func description(for type: UTType) -> String? {
+      if let description = type.localizedDescription?.conditionalCapitalized {
+        return description
+      } else {
+        return nil
+      }
+    }
+
     /// Formats a value, using this style.
     public func format(_ type: MediaType) -> String {
       if let type = UTType(mimeType: type.rawValue, conformingTo: .data), !type.isDynamic {
-        return type.formatted(.specific)
-      } else {
-        return type.formatted(.generic)
+        if let description = description(for: type) {
+          return description
+        }
       }
+      return type.formatted(.generic)
     }
   }
 }

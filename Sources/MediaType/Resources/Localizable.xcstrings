@@ -1,11 +1,8 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Audio" : {
-      "comment" : "Default description for audio media types."
-    },
     "Data" : {
-      "comment" : "Default description for media types.\nDefault generic description for UTIs that don't have a more specific description."
+      "comment" : "Default description for media types."
     },
     "Document" : {
       "comment" : "Generic description for user-viewable content."
@@ -16,29 +13,8 @@
     "File" : {
       "comment" : "Default file base name for types without generic description."
     },
-    "Font" : {
-      "comment" : "Default description for font media types."
-    },
-    "Haptics" : {
-      "comment" : "Default description for haptics media types."
-    },
-    "Image" : {
-      "comment" : "Default description for image media types."
-    },
-    "Message" : {
-      "comment" : "Default description for message media types."
-    },
-    "Model" : {
-      "comment" : "Default description for model media types."
-    },
     "Publication" : {
       "comment" : "Generic description for publication types (i.e. books/magazines/articles)."
-    },
-    "Text" : {
-      "comment" : "Default description for model media types."
-    },
-    "Video" : {
-      "comment" : "Default description for video media types."
     }
   },
   "version" : "1.0"
