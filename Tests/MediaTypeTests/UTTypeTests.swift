@@ -55,15 +55,15 @@ struct UTTypeTests {
   }
 
   @Test func initializeUTTypeFromTopLevelType() {
-    #expect(UTType(mediaType: .application) == nil)
+    #expect(UTType(mediaType: .application) == .data)
     #expect(UTType(mediaType: .audio) == .audio)
     #expect(UTType(mediaType: .font) == .font)
     #expect(UTType(mediaType: .image) == .image)
-    #expect(UTType(mediaType: .message) == nil)
-    #expect(UTType(mediaType: .model) == nil)
-    #expect(UTType(mediaType: .multipart) == nil)
+    #expect(UTType(mediaType: .message) == .message)
+    #expect(UTType(mediaType: .model) == .content)
+    #expect(UTType(mediaType: .multipart) == .compositeContent)
     #expect(UTType(mediaType: .text) == .text)
-    #expect(UTType(mediaType: .video) == .video)
+    #expect(UTType(mediaType: .video) == .movie)
   }
   
   // MARK: -
