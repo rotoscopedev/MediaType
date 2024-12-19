@@ -28,7 +28,37 @@ import UniformTypeIdentifiers
 @available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
 extension UTType {
   
+  /// Creates and returns a type that represents the given top-level MIME/media
+  /// type. An
+  ///
+  /// Top-level types for which no clear mapping exists are mapped to the
+  /// closest relevant UTI. For example, `application` maps to `content`. Non-
+  /// document oriented types for which no clear mapping exists are mapped to
+  /// `data`.
+  init(_ topLevelType: MediaType.TopLevelType) {
+    self = switch topLevelType {
+    case .application:    .data
+    case .audio:          .audio
+    case .example:        .data
+    case .font:           .font
+    case .haptics:        .data
+    case .image:          .image
+    case .message:        .message
+    case .model:          .content
+    case .multipart:      .compositeContent
+    case .text:           .text
+    case .video:          .movie
+    case .other:          .data
+    }
+  }
+
   /// Creates and returns a type given a MIME/media type.
+  ///
+  /// If no mapping exists for `mediaType` then a dynamic type will be produced
+  /// that conforms to `supertype`. If no supertype is specified then the
+  /// supertype is derived from the top-level type of the specified `mediaType`.
+  /// The returned dynamic type will use `mediaType` as its preferred MIME type
+  /// but will not have a preferred file extension.
   ///
   /// The media type is normalized before conversion is attempted. If a dynamic
   /// type is returned then the parameters are stripped and the conversion is
@@ -40,38 +70,28 @@ extension UTType {
   ///
   /// Top-level only media types (e.g. `text` or `image`) are mapped to their
   /// UTI equivalents where possible (e.g. `public.text` and `public.image`).
-  /// Mappings are not available for some top-level types (e.g. `application`,
-  /// `message` etc.)
-  public init?(mediaType: MediaType, conformingTo supertype: UTType = .data) {
+  /// Mappings are not available for some top-level types (e.g. `application`),
+  /// which map to `public.data`. Types mapped from a top-level type will not
+  /// have a preferred MIME type or file extension.
+  ///
+  /// - note: The `video` top-level type maps to `public.movie` rather than
+  ///   `public.video` as `video` subtypes can generally contain audio as well
+  ///   as video tracks.
+  public init(mediaType: MediaType, conformingTo supertype: UTType? = nil) {
     let normalized = mediaType.normalized()
 
     // First, look up the media type as-is, i.e. including parameters. Dynamic
     // types are ignored at this stage.
-    if let type = Self(mimeType: normalized.rawValue, conformingTo: supertype), !type.isDynamic {
+    if let type = Self(mimeType: normalized.rawValue, conformingTo: supertype ?? Self(normalized.type)), !type.isDynamic {
       self = type
       return
     }
     
     // Second, strip the parameters and re-attempt.
     let stripped = normalized.removingParameters()
-    
-    guard let type = Self(mimeType: stripped.rawValue, conformingTo: supertype) else {
-      
-      // Is it a top-level only type?
-      switch stripped {
-      case .audio:
-        self = .audio
-      case .font:
-        self = .font
-      case .image:
-        self = .image
-      case .text:
-        self = .text
-      case .video:
-        self = .video
-      default:
-        return nil
-      }
+
+    guard let type = Self(mimeType: stripped.rawValue, conformingTo: supertype ?? Self(stripped.type)) else {
+      self = Self(stripped.type)
       return
     }
     

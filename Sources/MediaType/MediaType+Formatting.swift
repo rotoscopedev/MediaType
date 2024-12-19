@@ -23,27 +23,6 @@
 
 import UniformTypeIdentifiers
 
-fileprivate extension String {
-  
-  /// Capitalizes the string when the string contains no uppercase characters.
-  var conditionalCapitalized: Self {
-    get {
-      let containsUppercase = self
-        .first {
-          $0.isUppercase
-        } != nil
-      
-      if containsUppercase {
-        return self
-      } else {
-        return capitalized
-      }
-    }
-  }
-}
-
-// MARK: -
-
 extension MediaType {
 
   /// Formats a media type as a localized description that is suitable for use
@@ -51,51 +30,23 @@ extension MediaType {
   /// `"Video"` for video types, etc.
   @available(macOS 12, iOS 15, tvOS 15, watchOS 8, visionOS 1, *)
   public struct GenericFormatStyle: FormatStyle {
-    enum Context: Hashable, Codable {
-      case file
-    }
-    let context: Context?
     
     /// Formats a value, using this style.
     public func format(_ type: MediaType) -> String {
-      if let type = UTType(mediaType: type) {
-
-        if type.conforms(to: .epub) {
-          return String(localized: "Publication", bundle: .module, comment: "Generic description for publication types (i.e. books/magazines/articles).")
-        } else if type.conforms(to: .emailMessage) {
-          return String(localized: "Email", bundle: .module, comment: "Generic description for email messages.")
-        }
-        let types: [UTType] = [
-          .application,
-          .archive,
-          .audio,
-          .contact,
-          .database,
-          .font,
-          .image,
-          .message,
-          .movie,
-          .presentation,
-          .script,
-          .sourceCode,
-          .plainText,
-        ]
-        
-        for t in types {
-          if type.conforms(to: t), let description = t.localizedDescription?.conditionalCapitalized {
-            return description
-          }
-        }
-        
-        if type.conforms(to: .content) {
-          return String(localized: "Document", bundle: .module, comment: "Generic description for user-viewable content.")
-        }
-      }
-      
-      if context == .file {
-        return String(localized: "File", bundle: .module, comment: "Default generic file system description for types that don't have a more specific description.")
+      if let description = UTType.GenericFormatStyle().description(for: UTType(mediaType: type)) {
+        return description
       } else {
-        return String(localized: "Data", bundle: .module, comment: "Default generic description for types that don't have a more specific description.")
+        return switch type.type {
+        case .audio:          String(localized: "Audio", bundle: .module, comment: "Default description for audio media types.")
+        case .font:           String(localized: "Font", bundle: .module, comment: "Default description for font media types.")
+        case .haptics:        String(localized: "Haptics", bundle: .module, comment: "Default description for haptics media types.")
+        case .image:          String(localized: "Image", bundle: .module, comment: "Default description for image media types.")
+        case .message:        String(localized: "Message", bundle: .module, comment: "Default description for message media types.")
+        case .model:          String(localized: "Model", bundle: .module, comment: "Default description for model media types.")
+        case .text:           String(localized: "Text", bundle: .module, comment: "Default description for model media types.")
+        case .video:          String(localized: "Video", bundle: .module, comment: "Default description for video media types.")
+        default:              String(localized: "Data", bundle: .module, comment: "Default description for media types.")
+        }
       }
     }
   }
@@ -107,7 +58,7 @@ extension MediaType {
 extension FormatStyle where Self == MediaType.GenericFormatStyle {
   public static var generic: Self {
     get {
-      return Self(context: nil)
+      return Self()
     }
   }
 }
@@ -117,16 +68,20 @@ extension FormatStyle where Self == MediaType.GenericFormatStyle {
 extension MediaType {
   
   /// Formats a media type as a localized description that is suitable for use
-  /// as a specific description of the type, e.g. `"JPEG image"` or `"MP4 Video"`.
+  /// as a specific description of the type, e.g. `"JPEG image"` or
+  /// `"MP4 Video"`.
+  ///
+  /// If a specific description is not available then a generic description is
+  /// used.
   @available(macOS 12, iOS 15, tvOS 15, watchOS 8, visionOS 1, *)
   public struct SpecificFormatStyle: FormatStyle {
     
     /// Formats a value, using this style.
     public func format(_ type: MediaType) -> String {
-      if let type = UTType(mediaType: type), let description = type.localizedDescription?.conditionalCapitalized {
-        return description
+      if let type = UTType(mimeType: type.rawValue, conformingTo: .data), !type.isDynamic {
+        return type.formatted(.specific)
       } else {
-        return type.rawValue
+        return type.formatted(.generic)
       }
     }
   }
@@ -137,64 +92,6 @@ extension MediaType {
 @available(macOS 12, iOS 15, tvOS 15, watchOS 8, visionOS 1, *)
 extension FormatStyle where Self == MediaType.SpecificFormatStyle {
   public static var specific: Self {
-    get {
-      return Self()
-    }
-  }
-}
-
-// MARK: -
-
-extension MediaType {
-  
-  /// Formats a media type as a localized file name suitable for use as a
-  /// default name for files of that type.
-  @available(macOS 12, iOS 15, tvOS 15, watchOS 8, visionOS 1, *)
-  public struct FileNameFormatStyle: FormatStyle {
-    
-    /// Returns the file extension to use for the given media type.
-    private func fileExtension(for type: MediaType) -> String? {
-      
-      /// First try the UTType's preferred file name extension.
-      if let type = UTType(mediaType: type) {
-        if let ext = type.preferredFilenameExtension, !ext.isEmpty {
-          return ext
-        }
-        
-        /// Apple platforms don't register preferred file name extensions for
-        /// plain text types such as UTF-8, UTF-16 etc.
-        if type.conforms(to: .plainText) {
-          return "txt"
-        }
-      }
-        
-      /// Add support for common media types not registered by default on
-      /// Apple platforms.
-      if type.matches(.text(.markdown)) {
-        return "md"
-      } else {
-        return nil
-      }
-    }
-    
-    /// Formats a value, using this style.
-    public func format(_ type: MediaType) -> String {
-      let baseName = type.formatted(GenericFormatStyle(context: .file))
-      
-      if let ext = fileExtension(for: type) {
-        return "\(baseName).\(ext)"
-      } else {
-        return baseName
-      }
-    }
-  }
-}
-
-// MARK: -
-
-@available(macOS 12, iOS 15, tvOS 15, watchOS 8, visionOS 1, *)
-extension FormatStyle where Self == MediaType.FileNameFormatStyle {
-  public static var fileName: Self {
     get {
       return Self()
     }
