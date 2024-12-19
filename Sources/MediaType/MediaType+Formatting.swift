@@ -94,7 +94,17 @@ extension MediaType {
       if let description = description(for: UTType(mediaType: type)) {
         return description
       } else {
-        return description(for: type)
+        return switch type.type {
+        case .audio:          String(localized: "Audio", bundle: .module, comment: "Default description for audio media types.")
+        case .font:           String(localized: "Font", bundle: .module, comment: "Default description for font media types.")
+        case .haptics:        String(localized: "Haptics", bundle: .module, comment: "Default description for haptics media types.")
+        case .image:          String(localized: "Image", bundle: .module, comment: "Default description for image media types.")
+        case .message:        String(localized: "Message", bundle: .module, comment: "Default description for message media types.")
+        case .model:          String(localized: "Model", bundle: .module, comment: "Default description for model media types.")
+        case .text:           String(localized: "Text", bundle: .module, comment: "Default description for model media types.")
+        case .video:          String(localized: "Video", bundle: .module, comment: "Default description for video media types.")
+        default:              nil
+        }
       }
     }
 
@@ -142,15 +152,25 @@ extension MediaType {
         return nil
       }
     }
-
-    /// Formats a value, using this style.
-    public func format(_ type: MediaType) -> String {
+    
+    /// Returns a description for the given media type. Returns `nil` if a
+    /// description is not available.
+    func description(for type: MediaType) -> String? {
       if let type = UTType(mimeType: type.rawValue, conformingTo: .data), !type.isDynamic {
         if let description = description(for: type) {
           return description
         }
       }
-      return type.formatted(.generic)
+      return GenericFormatStyle().description(for: type)
+    }
+
+    /// Formats a value, using this style.
+    public func format(_ type: MediaType) -> String {
+      if let description = description(for: type) {
+        return description
+      } else {
+        return String(localized: "Data", bundle: .module, comment: "Default description for media types.")
+      }
     }
   }
 }
