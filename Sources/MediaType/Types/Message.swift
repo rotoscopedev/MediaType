@@ -23,6 +23,7 @@
 
 extension MediaType {
   public enum MessageSubtype: String, Hashable, Sendable {
+    case email = "rfc822"
     case http = "http"
     case shttp = "s-http"
   }

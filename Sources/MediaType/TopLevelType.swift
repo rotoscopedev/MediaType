@@ -27,6 +27,7 @@ extension MediaType {
     case audio
     case example
     case font
+    case haptics
     case image
     case message
     case model
@@ -53,6 +54,8 @@ extension MediaType.TopLevelType: RawRepresentable {
         return "example"
       case .font:
         return "font"
+      case .haptics:
+        return "haptics"
       case .image:
         return "image"
       case .message:
@@ -89,6 +92,8 @@ extension MediaType.TopLevelType: RawRepresentable {
       self = .example
     case "font":
       self = .font
+    case "haptics":
+      self = .haptics
     case "image":
       self = .image
     case "message":

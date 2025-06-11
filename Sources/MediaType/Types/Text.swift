@@ -78,7 +78,7 @@ extension MediaType {
 // MARK: -
 
 extension MediaType {
-  public enum MarkdownVariant: String, CaseIterable {
+  public enum MarkdownVariant: String, Sendable, CaseIterable {
     case markdown
     case multiMarkdown = "MultiMarkdown"
     case gfm = "GFM"

@@ -1,52 +1,24 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "CwlCatchException",
-        "repositoryURL": "https://github.com/mattgallagher/CwlCatchException.git",
-        "state": {
-          "branch": null,
-          "revision": "3ef6999c73b6938cc0da422f2c912d0158abb0a0",
-          "version": "2.2.0"
-        }
-      },
-      {
-        "package": "CwlPreconditionTesting",
-        "repositoryURL": "https://github.com/mattgallagher/CwlPreconditionTesting.git",
-        "state": {
-          "branch": null,
-          "revision": "2ef56b2caf25f55fa7eef8784c30d5a767550f54",
-          "version": "2.2.1"
-        }
-      },
-      {
-        "package": "IANACharset",
-        "repositoryURL": "https://github.com/rotoscopedev/IANACharset.git",
-        "state": {
-          "branch": null,
-          "revision": "e5887939d561e498d32507f35372d3c89a49404e",
-          "version": "0.9.7"
-        }
-      },
-      {
-        "package": "Nimble",
-        "repositoryURL": "https://github.com/Quick/Nimble.git",
-        "state": {
-          "branch": null,
-          "revision": "eb5e3d717224fa0d1f6aff3fc2c5e8e81fa1f728",
-          "version": "11.2.2"
-        }
-      },
-      {
-        "package": "SwiftCSV",
-        "repositoryURL": "https://github.com/swiftcsv/SwiftCSV.git",
-        "state": {
-          "branch": null,
-          "revision": "b61dcd1b2b1120e751cee4cd64a16ff10364885d",
-          "version": "0.9.1"
-        }
+  "originHash" : "527bc9c4f0c14fa6ed80482307559da6ce0f5448d6411a15cce8aedb63d34f27",
+  "pins" : [
+    {
+      "identity" : "ianacharset",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rotoscopedev/IANACharset.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "2e72b5929ac772ac6aacc0468396d9046de7cf8b"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "swiftcsv",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftcsv/SwiftCSV.git",
+      "state" : {
+        "revision" : "6ab5d0fe9b6ef3c79d717eefa70862df389e74d9",
+        "version" : "0.10.0"
+      }
+    }
+  ],
+  "version" : 3
 }

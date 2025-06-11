@@ -21,65 +21,60 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Nimble
-import XCTest
-
-#if canImport(UniformTypeIdentifiers)
+import Testing
 import UniformTypeIdentifiers
-#endif
 
 @testable import MediaType
 
-@available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
-class UTTypeTests: XCTestCase {
+struct UTTypeTests {
 
-  func test_initializeUTType() {
-    expect(UTType(mediaType: .image(.png))) == .png
-    expect(UTType(mediaType: .text(.html))) == .html
+  @Test func initializeUTType() {
+    #expect(UTType(mediaType: .image(.png)) == .png)
+    #expect(UTType(mediaType: .text(.html)) == .html)
   }
   
-  func test_initializeUTTypeCasing() {
-    expect(UTType(mediaType: MediaType(rawValue: "IMAGE/PNG")!)) == .png
-    expect(UTType(mediaType: MediaType(rawValue: "text/HTML")!)) == .html
+  @Test func initializeUTTypeCasing() {
+    #expect(UTType(mediaType: MediaType(rawValue: "IMAGE/PNG")!) == .png)
+    #expect(UTType(mediaType: MediaType(rawValue: "text/HTML")!) == .html)
   }
 
-  func test_initializeUTTypeFromPlainText() {
-    expect(UTType(mediaType: .text(.plain))) == .plainText
-    expect(UTType(mediaType: .text(.plain).adding(parameter: "charset", value: "UTF-8"))) == .utf8PlainText
-    expect(UTType(mediaType: .text(.plain).adding(parameter: "charset", value: "UTF-16"))) == .utf16PlainText
-    expect(UTType(mediaType: .text(.plain).adding(parameter: "charset", value: "UTF-16LE"))) == .utf16PlainText
-    expect(UTType(mediaType: .text(.plain).adding(parameter: "charset", value: "UTF-16BE"))) == .utf16PlainText
+  @Test func initializeUTTypeFromPlainText() {
+    #expect(UTType(mediaType: .text(.plain)) == .plainText)
+    #expect(UTType(mediaType: .text(.plain).adding(parameter: "charset", value: "UTF-8")) == .utf8PlainText)
+    #expect(UTType(mediaType: .text(.plain).adding(parameter: "charset", value: "UTF-16")) == .utf16PlainText)
+    #expect(UTType(mediaType: .text(.plain).adding(parameter: "charset", value: "UTF-16LE")) == .utf16PlainText)
+    #expect(UTType(mediaType: .text(.plain).adding(parameter: "charset", value: "UTF-16BE")) == .utf16PlainText)
   }
 
-  func test_initializeUTTypeFromPlainTextCasing() {
-    expect(UTType(mediaType: MediaType(rawValue: "Text/Plain")!)) == .plainText
-    expect(UTType(mediaType: MediaType(rawValue: "Text/Plain; CharSet=UTF-8")!)) == .utf8PlainText
-    expect(UTType(mediaType: MediaType(rawValue: "Text/Plain; charset=utf-16")!)) == .utf16PlainText
-    expect(UTType(mediaType: MediaType(rawValue: "Text/Plain; CHARSET=Utf-16Le")!)) == .utf16PlainText
-    expect(UTType(mediaType: MediaType(rawValue: "Text/Plain; charset=utf-16be")!)) == .utf16PlainText
+  @Test func initializeUTTypeFromPlainTextCasing() {
+    #expect(UTType(mediaType: MediaType(rawValue: "Text/Plain")!) == .plainText)
+    #expect(UTType(mediaType: MediaType(rawValue: "Text/Plain; CharSet=UTF-8")!) == .utf8PlainText)
+    #expect(UTType(mediaType: MediaType(rawValue: "Text/Plain; charset=utf-16")!) == .utf16PlainText)
+    #expect(UTType(mediaType: MediaType(rawValue: "Text/Plain; CHARSET=Utf-16Le")!) == .utf16PlainText)
+    #expect(UTType(mediaType: MediaType(rawValue: "Text/Plain; charset=utf-16be")!) == .utf16PlainText)
   }
 
-  func test_initializeUTTypeFromTopLevelType() {
-    expect(UTType(mediaType: .application)).to(beNil())
-    expect(UTType(mediaType: .audio)) == .audio
-    expect(UTType(mediaType: .font)) == .font
-    expect(UTType(mediaType: .image)) == .image
-    expect(UTType(mediaType: .message)).to(beNil())
-    expect(UTType(mediaType: .model)).to(beNil())
-    expect(UTType(mediaType: .multipart)).to(beNil())
-    expect(UTType(mediaType: .text)) == .text
-    expect(UTType(mediaType: .video)) == .video
+  @Test func initializeUTTypeFromTopLevelType() {
+    #expect(UTType(mediaType: .application) == .data)
+    #expect(UTType(mediaType: .audio) == .audio)
+    #expect(UTType(mediaType: .font) == .font)
+    #expect(UTType(mediaType: .image) == .image)
+    #expect(UTType(mediaType: .message) == .message)
+    #expect(UTType(mediaType: .model) == .content)
+    #expect(UTType(mediaType: .multipart) == .compositeContent)
+    #expect(UTType(mediaType: .text) == .text)
+    #expect(UTType(mediaType: .video) == .movie)
   }
   
   // MARK: -
   
-  func test_preferredMediaType() {
-    expect(UTType.plainText.preferredMediaType) == .text(.plain)
-    expect(UTType.png.preferredMediaType) == .image(.png)
+  @Test func preferredMediaType() {
+    #expect(UTType.plainText.preferredMediaType == .text(.plain))
+    #expect(UTType.png.preferredMediaType == .image(.png))
   }
   
-  func test_preferredMediaTypeWithCharset() {
-    expect(UTType.utf8PlainText.preferredMediaType) == .text(.plain).charset(.utf8)
-    expect(UTType.utf16PlainText.preferredMediaType) == .text(.plain).charset(.utf16)
+  @Test func preferredMediaTypeWithCharset() {
+    #expect(UTType.utf8PlainText.preferredMediaType == .text(.plain).charset(.utf8))
+    #expect(UTType.utf16PlainText.preferredMediaType == .text(.plain).charset(.utf16))
   }
 }

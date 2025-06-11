@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2020 Rotoscope GmbH
+// Copyright (c) 2024 Rotoscope GmbH
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,34 +22,10 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum FontSubtype: String, Hashable, Sendable {
-    case collection = "collection"
-    case otf = "otf"
-    case sfnt = "sfnt"
-    case ttf = "ttf"
-    case woff = "woff"
-    case woff2 = "woff2"
-  }
-}
-
-// MARK: -
-
-extension MediaType {
-
-  /// Returns an font media type with the specified subtype.
-  ///
-  /// - parameters:
-  ///   - subtype: An font subtype.
-  public static func font(_ subtype: FontSubtype) -> Self {
-    return font(subtype.rawValue)
-  }
-
-  /// Returns an font media type with the specified subtype string.
-  ///
-  /// - parameters:
-  ///   - subtype: An font subtype string.
-  public static func font(_ subtype: String) -> Self {
-    return Self(type: "font", subtype: subtype)
+  public enum HapticsSubtype: String, Hashable, Sendable {
+    case ivs = "ivs"
+    case hjif = "hjif"
+    case hmpg = "hmpg"
   }
 }
 
@@ -57,7 +33,28 @@ extension MediaType {
 
 extension MediaType {
   
-  /// Media type for the `font` top-level type. The media type does not have
+  /// Returns a haptics media type with the specified subtype.
+  ///
+  /// - parameters:
+  ///   - subtype: A haptics subtype.
+  public static func haptics(_ subtype: HapticsSubtype) -> Self {
+    return haptics(subtype.rawValue)
+  }
+  
+  /// Returns a haptics media type with the specified subtype string.
+  ///
+  /// - parameters:
+  ///   - subtype: A haptics subtype string.
+  public static func haptics(_ subtype: String) -> Self {
+    return Self(type: "haptics", subtype: subtype)
+  }
+}
+
+// MARK: -
+
+extension MediaType {
+  
+  /// Media type for the `haptics` top-level type. The media type does not have
   /// a sub-type.
-  public static let font = Self(type: .font)
+  public static let haptics = Self(type: .haptics)
 }
