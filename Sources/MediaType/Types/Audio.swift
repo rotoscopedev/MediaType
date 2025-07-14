@@ -25,12 +25,16 @@ extension MediaType {
   public enum AudioSubtype: String, Hashable, Sendable {
     case aac = "aac"
     case ac3 = "ac3"
+    case aiff = "aiff"
+    case caf = "x-caf"
+    case l17 = "L16"
     case midi = "midi"
     case mp4 = "mp4"
     case mpeg = "mpeg"
     case ogg = "ogg"
     case pcma = "PCMA"
     case vorbis = "vorbis"
+    case wav = "wav"
     case webm = "webm"
   }
 }
