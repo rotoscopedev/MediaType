@@ -703,4 +703,40 @@ struct MediaTypeTests {
       }
     #expect(type == "text/plain; charset=UTF-8")
   }
+  
+  // MARK: - Codecs
+  
+  @Test func codecsSingle() {
+    let type: MediaType = .audio(.mp4)
+      .map(\.parameters) {
+        $0.adding(.codecs([ "mp4a.40.2" ]))
+      }
+    #expect(type == "audio/mp4; codecs=mp4a.40.2")
+    #expect(
+      MediaType(rawValue: "audio/mp4; codecs=mp4a.40.2")!
+        .parameters
+        .codecs == [
+          "mp4a.40.2"
+        ]
+    )
+  }
+  
+  @Test func codecsMultiple() {
+    let type: MediaType = .audio(.mp4)
+      .map(\.parameters) {
+        $0.adding(.codecs([
+          "avc1.42E01E",
+          "mp4a.40.2",
+        ]))
+      }
+    #expect(type == "audio/mp4; codecs=\"avc1.42E01E, mp4a.40.2\"")
+    #expect(
+      MediaType(rawValue: "audio/mp4; codecs=\"avc1.42E01E, mp4a.40.2\"")!
+        .parameters
+        .codecs == [
+          "avc1.42E01E",
+          "mp4a.40.2"
+        ]
+    )
+  }
 }
