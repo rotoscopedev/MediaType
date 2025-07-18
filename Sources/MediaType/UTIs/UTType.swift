@@ -88,7 +88,10 @@ extension UTType {
     }
     
     // Second, strip the parameters and re-attempt.
-    let stripped = normalized.removingParameters()
+    let stripped = normalized
+      .map(\.parameters) { _ in
+        .none
+      }
 
     guard let type = Self(mimeType: stripped.rawValue, conformingTo: supertype ?? Self(stripped.type)) else {
       self = Self(stripped.type)
@@ -109,7 +112,7 @@ extension UTType {
     //   unknown with a possible BOM, assuming UTF-16BE if not present),
     //   `UTF-16BE` (big-endian with optional BOM) and `UTF-16LE` (little-endian
     //   with optional BOM) to `.utf16PlainText`.
-    if type == .plainText, let charset = normalized.charset {
+    if type == .plainText, let charset = normalized.parameters.charset {
       switch charset {
       case .utf8:
         self = .utf8PlainText

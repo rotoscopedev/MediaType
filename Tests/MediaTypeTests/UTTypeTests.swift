@@ -39,11 +39,41 @@ struct UTTypeTests {
   }
 
   @Test func initializeUTTypeFromPlainText() {
-    #expect(UTType(mediaType: .text(.plain)) == .plainText)
-    #expect(UTType(mediaType: .text(.plain).adding(parameter: "charset", value: "UTF-8")) == .utf8PlainText)
-    #expect(UTType(mediaType: .text(.plain).adding(parameter: "charset", value: "UTF-16")) == .utf16PlainText)
-    #expect(UTType(mediaType: .text(.plain).adding(parameter: "charset", value: "UTF-16LE")) == .utf16PlainText)
-    #expect(UTType(mediaType: .text(.plain).adding(parameter: "charset", value: "UTF-16BE")) == .utf16PlainText)
+    #expect(
+      UTType(mediaType: .text(.plain)) == .plainText
+    )
+    #expect(
+      UTType(
+        mediaType: .text(.plain)
+          .map(\.parameters) {
+            $0.adding("UTF-8", for: "charset")
+          }
+      ) == .utf8PlainText
+    )
+    #expect(
+      UTType(
+        mediaType: .text(.plain)
+          .map(\.parameters) {
+            $0.adding("UTF-16", for: "charset")
+          }
+      ) == .utf16PlainText
+    )
+    #expect(
+      UTType(
+        mediaType: .text(.plain)
+          .map(\.parameters) {
+            $0.adding("UTF-16LE", for: "charset")
+          }
+      ) == .utf16PlainText
+    )
+    #expect(
+      UTType(
+        mediaType: .text(.plain)
+          .map(\.parameters) {
+            $0.adding("UTF-16BE", for: "charset")
+          }
+      ) == .utf16PlainText
+    )
   }
 
   @Test func initializeUTTypeFromPlainTextCasing() {
@@ -74,7 +104,17 @@ struct UTTypeTests {
   }
   
   @Test func preferredMediaTypeWithCharset() {
-    #expect(UTType.utf8PlainText.preferredMediaType == .text(.plain).charset(.utf8))
-    #expect(UTType.utf16PlainText.preferredMediaType == .text(.plain).charset(.utf16))
+    #expect(
+      UTType.utf8PlainText.preferredMediaType == .text(.plain)
+        .map(\.parameters) {
+          $0.adding(.charset(.utf8))
+        }
+    )
+    #expect(
+      UTType.utf16PlainText.preferredMediaType == .text(.plain)
+        .map(\.parameters) {
+          $0.adding(.charset(.utf16))
+        }
+    )
   }
 }

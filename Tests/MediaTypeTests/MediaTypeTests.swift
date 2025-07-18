@@ -76,12 +76,18 @@ struct MediaTypeTests {
   }
   
   @Test func initializeParameters() {
-    let type = MediaType(type: .text, subtype: "html", parameters: [ "charset" : "UTF-8" ])
+    let type = MediaType(
+      type: .text,
+      subtype: "html",
+      parameters: [
+        "charset" : "UTF-8"
+      ]
+    )
     #expect(type.rawValue == "text/html; charset=UTF-8")
   }
 
   @Test func initializeParametersSorting() {
-    let params = [
+    let params: MediaType.Parameters = [
       "first" : "1st",
       "second" : "2nd",
       "third" : "3rd",
@@ -93,7 +99,7 @@ struct MediaTypeTests {
   }
 
   @Test func initializeEmptyParameters() {
-    let type = MediaType(type: .text, subtype: "html", parameters: [:])
+    let type = MediaType(type: .text, subtype: "html", parameters: [])
     #expect(type.rawValue == "text/html")
   }
   
@@ -115,7 +121,13 @@ struct MediaTypeTests {
   }
 
   @Test func initializeParametersCasing() {
-    let type = MediaType(type: .text, subtype: "html", parameters: [ "CharSet" : "UTF-8" ])
+    let type = MediaType(
+      type: .text,
+      subtype: "html",
+      parameters: [
+        "CharSet" : "UTF-8"
+      ]
+    )
     #expect(type.rawValue == "text/html; CharSet=UTF-8")
   }
 
@@ -283,134 +295,161 @@ struct MediaTypeTests {
   }
   
   @Test func addSuffix() {
-    let type: MediaType = "application/ld"
-    #expect(type.adding(suffix: "json") == "application/ld+json")
+    var type: MediaType = "application/ld"
+    type.suffix = "json"
+    #expect(type == "application/ld+json")
   }
   
   @Test func replaceSuffix() {
-    let type: MediaType = "application/ld+xml"
-    #expect(type.adding(suffix: "json") == "application/ld+json")
+    var type: MediaType = "application/ld+xml"
+    type.suffix = "json"
+    #expect(type == "application/ld+json")
   }
   
   @Test func removeSuffix() {
-    let type: MediaType = "application/ld+json"
-    #expect(type.removingSuffix() == "application/ld")
+    var type: MediaType = "application/ld+json"
+    type.suffix = nil
+    #expect(type == "application/ld")
   }
 
   // MARK: - Parameters
   
   @Test func parameter() {
     let type: MediaType = "text/html; charset=UTF-8"
-    #expect(type["charset"] == "UTF-8")
+    #expect(type.parameters["charset"] == "UTF-8")
   }
   
+  @Test func parameterWithQuotedValue() {
+    let type: MediaType = "application/x-custom; q=\"abc def ghi\""
+    #expect(type.parameters["q"] == "abc def ghi")
+    #expect(
+      MediaType(type: .application, subtype: "x-custom")
+        .map(\.parameters) {
+          $0.adding("abc def ghi", for: "q")
+        } == "application/x-custom; q=\"abc def ghi\""
+    )
+  }
+  
+  @Test func parameterWithEscapedQuotes() {
+    let type: MediaType = "application/x-custom; q=\"abc \\\"def\\\" ghi\""
+    #expect(type.parameters["q"] == "abc \"def\" ghi")
+  }
+
   @Test func noParameters() {
     let type: MediaType = "text/html"
-    #expect(type["charset"] == nil)
+    #expect(type.parameters["charset"] == nil)
   }
   
   @Test func missingParameters() {
     let type: MediaType = "text/html; charset=UTF-8"
-    #expect(type["linebreak"] == nil)
+    #expect(type.parameters["linebreak"] == nil)
   }
 
   @Test func multipleParameters() {
     let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
-    #expect(type["charset"] == "UTF-8")
-    #expect(type["linebreak"] == "lf")
+    #expect(type.parameters["charset"] == "UTF-8")
+    #expect(type.parameters["linebreak"] == "lf")
   }
   
   @Test func duplicateParameters() {
     let type: MediaType = "text/html; charset=UTF-8; charset=US-ASCII"
-    #expect(type["charset"] == "UTF-8")
+    #expect(type.parameters["charset"] == "UTF-8")
   }
   
   @Test func parametersWithTrailingDelimiter() {
     let type: MediaType = "text/html; charset=UTF-8; linebreak=lf;"
-    #expect(type["charset"] == "UTF-8")
-    #expect(type["linebreak"] == "lf")
+    #expect(type.parameters["charset"] == "UTF-8")
+    #expect(type.parameters["linebreak"] == "lf")
   }
   
   @Test func parametersWithExtraneousDelimiters() {
     let type: MediaType = "text/html; charset=UTF-8;; linebreak=lf;;;"
-    #expect(type["charset"] == "UTF-8")
-    #expect(type["linebreak"] == "lf")
+    #expect(type.parameters["charset"] == "UTF-8")
+    #expect(type.parameters["linebreak"] == "lf")
   }
 
   @Test func parameters() {
     let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
-    let expected = [
-      "charset" : "UTF-8",
-      "linebreak" : "lf",
-    ]
-    #expect(type.parameters == expected)
+
+    #expect(type.parameters == [
+      MediaType.Parameter(name: "charset", value: "UTF-8"),
+      MediaType.Parameter(name: "linebreak", value : "lf"),
+    ])
   }
 
   @Test func parametersEmpty() {
     let type: MediaType = "text/html"
-    #expect(type.parameters == [:])
+    #expect(type.parameters == [])
   }
   
   @Test func parametersWithSurroundingWhitespace() {
     let type: MediaType = "text/html; charset = UTF-8 ; linebreak = lf "
-    #expect(type["charset"] == "UTF-8")
-    #expect(type["linebreak"] == "lf")
-    let expected = [
-      "charset" : "UTF-8",
-      "linebreak" : "lf",
-    ]
-    #expect(type.parameters == expected)
+    #expect(type.parameters["charset"] == "UTF-8")
+    #expect(type.parameters["linebreak"] == "lf")
+    #expect(type.parameters == [
+      MediaType.Parameter(name: "charset", value: "UTF-8"),
+      MediaType.Parameter(name: "linebreak", value: "lf"),
+    ])
   }
   
   // MARK: -
   
   @Test func addParameter() {
-    let type: MediaType = "text/markdown"
-    #expect(type.adding(parameter: "charset", value: "UTF-8") == "text/markdown; charset=UTF-8")
+    var type: MediaType = "text/markdown"
+    type.parameters["charset"] = "UTF-8"
+    #expect(type == "text/markdown; charset=UTF-8")
   }
   
   @Test func addParameterCasing() {
-    let type: MediaType = "text/markdown"
-    #expect(type.adding(parameter: "CharSet", value: "UTF-8") == "text/markdown; CharSet=UTF-8")
+    var type: MediaType = "text/markdown"
+    type.parameters["CharSet"] = "UTF-8"
+    #expect(type == "text/markdown; CharSet=UTF-8")
   }
 
   @Test func replaceParameter() {
-    let type: MediaType = "text/markdown; charset=US-ASCII"
-    #expect(type.adding(parameter: "charset", value: "UTF-8") == "text/markdown; charset=UTF-8")
+    var type: MediaType = "text/markdown; charset=US-ASCII"
+    type.parameters["charset"] = "UTF-8"
+    #expect(type == "text/markdown; charset=UTF-8")
   }
   
   @Test func replaceParameterCasing() {
-    let type: MediaType = "text/markdown; CHARSET=US-ASCII"
-    #expect(type.adding(parameter: "CharSet", value: "UTF-8") == "text/markdown; CharSet=UTF-8")
+    var type: MediaType = "text/markdown; CHARSET=US-ASCII"
+    type.parameters["CharSet"] = "UTF-8"
+    #expect(type == "text/markdown; CharSet=UTF-8")
   }
 
   // MARK: -
   
   @Test func removeParameter() {
-    let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
-    #expect(type.removing(parameter: "charset") == "text/html; linebreak=lf")
+    var type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
+    type.parameters.remove("charset")
+    #expect(type == "text/html; linebreak=lf")
   }
   
   @Test func removeNonExistentParameter() {
-    let type: MediaType = "text/html; charset=UTF-8"
-    #expect(type.removing(parameter: "linebreak") == "text/html; charset=UTF-8")
+    var type: MediaType = "text/html; charset=UTF-8"
+    type.parameters.remove("linebreak")
+    #expect(type == "text/html; charset=UTF-8")
   }
 
   @Test func removeParameters() {
-    let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
-    #expect(type.removingParameters() == "text/html")
+    var type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
+    type.parameters.removeAll()
+    #expect(type == "text/html")
   }
   
   @Test func removeNoParameters() {
-    let type: MediaType = "text/html"
-    #expect(type.removingParameters() == "text/html")
+    var type: MediaType = "text/html"
+    type.parameters.removeAll()
+    #expect(type == "text/html")
   }
   
   @Test func removeParameterCasing() {
-    let type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
-    #expect(type.removing(parameter: "CharSet") == "text/html; linebreak=lf")
+    var type: MediaType = "text/html; charset=UTF-8; linebreak=lf"
+    type.parameters.remove("CharSet")
+    #expect(type == "text/html; linebreak=lf")
   }
-  
+
   // MARK: - Normalization
   
   @Test func normalizedType() {
@@ -465,6 +504,8 @@ struct MediaTypeTests {
   
   @Test func normalizeDuplicateParameters() {
     let type: MediaType = "text/plain; charset=UTF-8; charset=US-ASCII; charset: ISO-8859-1"
+    let normalized = type.normalized()
+    print("\(normalized)")
     #expect(type.normalized() == "text/plain; charset=UTF-8")
   }
   
@@ -564,13 +605,30 @@ struct MediaTypeTests {
   
   @Test func markdownVariant() {
     #expect(MediaType.text(.markdown) == "text/markdown")
-    #expect(MediaType.text(.markdown).markdownVariant(.commonMark) == "text/markdown; variant=CommonMark")
+    #expect(
+      MediaType.text(.markdown)
+        .map(\.parameters) {
+          $0.adding(.markdownVariant(.commonMark))
+        } == "text/markdown; variant=CommonMark"
+    )
   }
   
   @Test func setMarkdownVariant() {
-    #expect(MediaType("text/markdown").markdownVariant == nil)
-    #expect(MediaType("text/markdown; variant=CommonMark").markdownVariant == .commonMark)
-    #expect(MediaType("text/markdown; variant=unknown").markdownVariant == nil)
+    #expect(
+      MediaType("text/markdown")
+        .parameters
+        .markdownVariant == nil
+    )
+    #expect(
+      MediaType("text/markdown; variant=CommonMark")
+        .parameters
+        .markdownVariant == .commonMark
+    )
+    #expect(
+      MediaType("text/markdown; variant=unknown")
+        .parameters
+        .markdownVariant == nil
+    )
   }
   
   // MARK: - Matching
@@ -618,16 +676,31 @@ struct MediaTypeTests {
     #expect(MediaType("text/markdown; charset=UTF-8; variant=CommonMark").matches("text/markdown; charset=UTF-8; variant=pandoc") == false)
   }
   
-  // MARK: -
+  // MARK: - Charset
   
   @Test func charset() {
-    #expect(MediaType("text/plain").charset == nil)
-    #expect(MediaType("text/plain; charset=UTF-8").charset == .utf8)
-    #expect(MediaType("text/plain; charset=utf-8").charset == .utf8)
+    #expect(
+      MediaType("text/plain")
+        .parameters
+        .charset == nil
+    )
+    #expect(
+      MediaType("text/plain; charset=UTF-8")
+        .parameters
+        .charset == .utf8
+    )
+    #expect(
+      MediaType("text/plain; charset=utf-8")
+        .parameters
+        .charset == .utf8
+    )
   }
   
   @Test func setCharset() {
-    let type = MediaType("text/plain").charset(.utf8)
+    let type = MediaType("text/plain")
+      .map(\.parameters) {
+        $0.adding(.charset(.utf8))
+      }
     #expect(type == "text/plain; charset=UTF-8")
   }
 }

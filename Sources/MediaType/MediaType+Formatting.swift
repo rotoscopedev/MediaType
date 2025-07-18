@@ -25,6 +25,59 @@
 
 import UniformTypeIdentifiers
 
+fileprivate extension CharacterSet {
+  static let invalidParameterValueCharacters = Self(charactersIn: "()<>@,;:\"/[]?=")
+    .union(.whitespaces)
+}
+
+// MARK: -
+
+extension MediaType {
+  
+  /// Formats a parameter value from the given string.
+  static func format(value: String) -> String {
+    
+    /// Escapes double quotes in the given string.
+    func escapeQuotes(in string: String) -> String {
+      return value.replacingOccurrences(of: "\"", with: "\\\"")
+    }
+    
+    /// Wraps the given string in double quotes.
+    func quote(_ string: String) -> String {
+      return "\"\(string)\""
+    }
+    
+    if value.rangeOfCharacter(from: .invalidParameterValueCharacters) != nil {
+      return quote(escapeQuotes(in: value))
+    } else if value.isEmpty {
+      return "\"\""
+    } else {
+      return value
+    }
+  }
+  
+  /// Formats the given parameters.
+  static func format(parameters: some Sequence<Parameter>) -> String? {
+    let string = parameters
+      .sorted {
+        $0.name < $1.name
+      }
+      .map {
+        "\($0.name)=\(Self.format(value: $0.value))"
+      }
+      .joined(separator: "; ")
+    
+    return !string.isEmpty ? string : nil
+  }
+  
+  /// Formats the given parameters.
+  func format(parameters: some Sequence<Parameter>) -> String? {
+    return Self.format(parameters: parameters)
+  }
+}
+
+// MARK: -
+
 fileprivate extension String {
   
   /// Capitalizes the string when the string contains no uppercase characters.

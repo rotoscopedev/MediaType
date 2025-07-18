@@ -77,72 +77,20 @@ extension MediaType {
 
 // MARK: -
 
-extension MediaType {
-  public enum MarkdownVariant: String, Sendable, CaseIterable {
-    case markdown
-    case multiMarkdown = "MultiMarkdown"
-    case gfm = "GFM"
-    case pandoc = "pandoc"
-    case pandoc2RFC = "rfc7328"
-    case fountain = "Fountain"
-    case commonMark = "CommonMark"
-    case kramdown = "kramdown-rfc2629"
-    case markdownExtra = "Extra"
-    
-    /// Internal map of case-independent names.
-    private static let map: [String: MarkdownVariant] = {
-      allCases
-        .reduce(into: [:]) {
-          $0[$1.rawValue.lowercased()] = $1
-        }
-    }()
-    
-    /// Initializes the receiver from the given string.
-    public init?(string: String) {
-      if let variant = Self.map[string.lowercased()] {
-        self = variant
-      } else {
-        return nil
-      }
-    }
+extension MediaType.Parameter {
+  
+  /// Returns a parameter with the given `charset` value.
+  public static func charset(_ value: IANACharset) -> Self {
+    return Self(
+      name: "charset",
+      value: value.preferredName
+    )
   }
 }
 
 // MARK: -
 
-extension MediaType {
-  
-  /// Returns the value of the `variant` parameter, or `nil` if no such
-  /// parameter exists. Also returns `nil` if the value could not be mapped to
-  /// a `MarkdownVariant` instance.
-  public var markdownVariant: MarkdownVariant? {
-    get {
-      return self["variant"]
-        .flatMap {
-          MarkdownVariant(string: $0)
-        }
-    }
-  }
-  
-  /// Returns a media type with the given Markdown variant. If a `variant`
-  /// parameter already exists then the value is replaced with that specified.
-  public func markdownVariant(_ variant: MarkdownVariant) -> Self {
-    return adding(parameter: "variant", value: variant.rawValue)
-  }
-  
-  /// Normalizes the given Markdown variant parameter value.
-  func normalize(markdownVariant variant: String) -> String {
-    if let variant = MarkdownVariant(string: variant) {
-      return variant.rawValue
-    } else {
-      return variant
-    }
-  }
-}
-
-// MARK: -
-
-extension MediaType {
+extension MediaType.Parameters {
 
   /// Returns the value of the `charset` parameter, or `nil` if no such
   /// parameter exists. Also returns `nil` if the value could not be mapped to
@@ -154,13 +102,15 @@ extension MediaType {
           IANACharset(string: $0)
         }
     }
+    set {
+      self["charset"] = newValue?.preferredName
+    }
   }
-  
-  /// Returns a media type with the given charset. If a `charset` parameter
-  /// already exists then the value is replaced with that specified.
-  public func charset(_ charset: IANACharset) -> Self {
-    return adding(parameter: "charset", value: charset.preferredName)
-  }
+}
+
+// MARK: -
+
+extension MediaType {
   
   /// Normalizes the given charset parameter value.
   func normalize(charset: String) -> String {
