@@ -20,8 +20,8 @@ import MediaType
 
 var type = MediaType("application/ld")
 
-type = type.adding(suffix: "json")
-type = type.adding(parameter: "charset", value: "UTF-8")
+type.suffix = "json"
+type.parameters["charset"] = "UTF-8"
 
 if type.rawValue == "application/ld+json; charset=UTF-8" {
 }
@@ -95,53 +95,44 @@ if contentType == "text/plain" {
 
 # Parameters
 
-A media type may include parameters such as `text/plain; charset=UTF-8`.
-
-A single parameter's value can be accessed using the subscript, e.g.
+A media type's parameters, such as the `charset` parameter in `text/plain; charset=UTF-8`, are exposed as a view through the `parameters` property. This view can be used to inspect and mutate a media type's parameters.
 
 ```swift
 let contentType = ...
 
-if contentType["charset"] == "UTF-8" {
+if contentType.parameters["charset"] == "UTF-8" {
 }
 ```
 
-A media type's parameters can be enumerated using the `forEach(_:)` method:
-
-```swift
-let contentType = ...
-
-contentType.forEach {
-  if $0 == "charset" {
-    ...
-  }
-}
-```
-
-The `parameters` property can be used to obtain a dictionary of the media type's parameters:
+A media type's `parameters` can be enumerated:
 
 ```swift
 let contentType = ...
 
 for parameter in contentType.parameters {
-  print("name: \(parameter.key)")
-  print("value: \(parameter.value)")
+  if parameter.name == "charset" {
+    ...
+  }
 }
 ```
 
-A parameter can be added through use of the `adding(parameter:, value:)` method:
+A parameter can be added or replaced using the parameter view's subscript, e.g.
 
 ```swift
-let contentType = MediaType("text/plain").adding("UTF-8", for: "charset")
+var contentType = MediaType("text/plain")
+contentType.parameters["charset"] = "UTF-8"
 ```
 
-A media type's parameters can be removed using the `removingParameters()` method:
+A parameter can also be removed by assigning `nil` using the same subscript:
 
 ```swift
-let contentType = MediaType("text/plain; charset=UTF-8")
-...
-if contentType.removingParameters() == "text/plain" {
-}
+contentType.parameters["charset"] = nil
+```
+
+All parameters can be removed using the `parameters` view:
+
+```swift
+contentType.parameters.removeAll()
 ```
 
 # Comparison
