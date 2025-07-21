@@ -159,6 +159,12 @@ struct MediaTypeTests {
     #expect(type.type.rawValue == "text")
   }
   
+  @Test func setType() {
+    var type: MediaType = "text/plain"
+    type.type = .example
+    #expect(type == "example/plain")
+  }
+  
   // MARK: - Subtype
   
   @Test func subtype() {
@@ -186,6 +192,30 @@ struct MediaTypeTests {
     #expect(type.subtype == "SGML")
   }
   
+  @Test func addSubtype() {
+    var type: MediaType = "text"
+    type.subtype = "plain"
+    #expect(type == "text/plain")
+  }
+
+  @Test func replaceSubtype() {
+    var type: MediaType = "text/plain"
+    type.subtype = "xml"
+    #expect(type == "text/xml")
+  }
+
+  @Test func replaceSubtypeWithEmpty() {
+    var type: MediaType = "text/plain"
+    type.subtype = ""
+    #expect(type == "text")
+  }
+
+  @Test func removeSubtype() {
+    var type: MediaType = "text/plain"
+    type.subtype = nil
+    #expect(type == "text")
+  }
+
   // MARK: - Facet
   
   @Test func facet() {
@@ -222,6 +252,36 @@ struct MediaTypeTests {
   @Test func facetCasing() {
     let type: MediaType = "application/VND.amazon.ebook"
     #expect(type.facet == "VND")
+  }
+  
+  @Test func addFacet() {
+    var type: MediaType = "application/amazon-ebook"
+    type.facet = "vnd"
+    #expect(type == "application/vnd.amazon-ebook")
+  }
+  
+  @Test func addEmptyFacet() {
+    var type: MediaType = "application/amazon-ebook"
+    type.facet = ""
+    #expect(type == "application/amazon-ebook")
+  }
+
+  @Test func replaceFacet() {
+    var type: MediaType = "application/vnd.amazon-ebook"
+    type.facet = "rnd"
+    #expect(type == "application/rnd.amazon-ebook")
+  }
+
+  @Test func replaceFacetWithEmpty() {
+    var type: MediaType = "application/vnd.amazon-ebook"
+    type.facet = ""
+    #expect(type == "application/amazon-ebook")
+  }
+
+  @Test func removeFacet() {
+    var type: MediaType = "application/vnd.amazon-ebook"
+    type.facet = nil
+    #expect(type == "application/amazon-ebook")
   }
 
   // MARK: - Tree
@@ -300,12 +360,24 @@ struct MediaTypeTests {
     #expect(type == "application/ld+json")
   }
   
+  @Test func addEmptySuffix() {
+    var type: MediaType = "application/ld"
+    type.suffix = ""
+    #expect(type == "application/ld")
+  }
+
   @Test func replaceSuffix() {
     var type: MediaType = "application/ld+xml"
     type.suffix = "json"
     #expect(type == "application/ld+json")
   }
   
+  @Test func replaceSuffixWithEmpty() {
+    var type: MediaType = "application/ld+xml"
+    type.suffix = ""
+    #expect(type == "application/ld")
+  }
+
   @Test func removeSuffix() {
     var type: MediaType = "application/ld+json"
     type.suffix = nil
@@ -416,6 +488,12 @@ struct MediaTypeTests {
     var type: MediaType = "text/markdown; CHARSET=US-ASCII"
     type.parameters["CharSet"] = "UTF-8"
     #expect(type == "text/markdown; CharSet=UTF-8")
+  }
+
+  @Test func replaceParametersWithNone() {
+    var type: MediaType = "text/markdown; charset=US-ASCII"
+    type.parameters = .none
+    #expect(type == "text/markdown")
   }
 
   // MARK: -
