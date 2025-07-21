@@ -56,7 +56,7 @@ extension MediaType {
         }
     }
 
-    static let none = Self()
+    public static let none = Self()
   }
 }
 
