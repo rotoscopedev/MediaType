@@ -152,3 +152,22 @@ extension MediaType {
     return copy
   }
 }
+
+// MARK: -
+
+extension MediaType {
+  
+  /// Returns the result of setting the given key path to `nil`.
+  public func removing<T>(_ keyPath: WritableKeyPath<Self, T?>) -> Self {
+    var copy = self
+    copy[keyPath: keyPath] = nil
+    return copy
+  }
+  
+  /// Returns the result of setting the parameters to `none`.
+  public func removing(_ keyPath: WritableKeyPath<Self, Parameters>) -> Self {
+    var copy = self
+    copy[keyPath: keyPath] = .none
+    return copy
+  }
+}
