@@ -22,97 +22,18 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum TopLevelType {
-    case application
-    case audio
-    case example
-    case font
-    case haptics
-    case image
-    case message
-    case model
-    case multipart
-    case text
-    case video
-    case other(String)
+  public struct TopLevelType: RawRepresentable {
+    public let rawValue: String
+    
+    public init?(rawValue: String) {
+      let rawValue = rawValue.trimmed()
+      guard !rawValue.isEmpty else { return nil }
+      self.rawValue = rawValue
+    }
   }
 }
 
 // MARK: -
-
-extension MediaType.TopLevelType: RawRepresentable {
-  
-  /// Returns a string representation for the receiver.
-  public var rawValue: String {
-    get {
-      switch self {
-      case .application:
-        return "application"
-      case .audio:
-        return "audio"
-      case .example:
-        return "example"
-      case .font:
-        return "font"
-      case .haptics:
-        return "haptics"
-      case .image:
-        return "image"
-      case .message:
-        return "message"
-      case .model:
-        return "model"
-      case .multipart:
-        return "multipart"
-      case .text:
-        return "text"
-      case .video:
-        return "video"
-      case .other(let string):
-        return string
-      }
-    }
-  }
-  
-  /// Initializes the receiver with the given string value. Returns `nil` if
-  /// the raw value is not a valid top-level type.
-  ///
-  /// - parameters:
-  ///   - rawValue: A top-level type.
-  public init?(rawValue: String) {
-    guard rawValue.count > 0 else {
-      return nil
-    }
-    switch rawValue.lowercased() {
-    case "application":
-      self = .application
-    case "audio":
-      self = .audio
-    case "example":
-      self = .example
-    case "font":
-      self = .font
-    case "haptics":
-      self = .haptics
-    case "image":
-      self = .image
-    case "message":
-      self = .message
-    case "model":
-      self = .model
-    case "multipart":
-      self = .multipart
-    case "text":
-      self = .text
-    case "video":
-      self = .video
-    default:
-      self = .other(rawValue.trimmed())
-    }
-  }
-}
-
-// MARK: - Initialization
 
 extension MediaType.TopLevelType {
   
@@ -129,12 +50,12 @@ extension MediaType.TopLevelType {
   }
 }
 
-// MARK: - Basic Conformances
+// MARK: -
 
 extension MediaType.TopLevelType: Hashable {}
 extension MediaType.TopLevelType: Sendable {}
 
-// MARK: - ExpressibleByStringLiteral
+// MARK: -
 
 extension MediaType.TopLevelType: ExpressibleByStringLiteral {
 
@@ -149,7 +70,7 @@ extension MediaType.TopLevelType: ExpressibleByStringLiteral {
   }
 }
 
-// MARK: - CustomStringConvertible
+// MARK: -
 
 extension MediaType.TopLevelType: CustomStringConvertible {
   
@@ -159,4 +80,20 @@ extension MediaType.TopLevelType: CustomStringConvertible {
       return rawValue
     }
   }
+}
+
+// MARK: -
+
+extension MediaType.TopLevelType {
+  public static let application: Self = "application"
+  public static let audio: Self = "audio"
+  public static let example: Self = "example"
+  public static let font: Self = "font"
+  public static let haptics: Self = "haptics"
+  public static let image: Self = "image"
+  public static let message: Self = "message"
+  public static let model: Self = "model"
+  public static let multipart: Self = "multipart"
+  public static let text: Self = "text"
+  public static let video: Self = "video"
 }

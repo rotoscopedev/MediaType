@@ -106,7 +106,7 @@ struct MediaTypeTests {
   // MARK: -
   
   @Test func initializeTypeCasing() {
-    let type = MediaType(type: .other("Movie"), subtype: "avi")
+    let type = MediaType(type: "Movie", subtype: "avi")
     #expect(type.rawValue == "Movie/avi")
   }
 
@@ -155,8 +155,8 @@ struct MediaTypeTests {
   
   @Test func typeCasing() {
     let type: MediaType = "TeXt/plain"
-    #expect(type.type == .text)
-    #expect(type.type.rawValue == "text")
+    #expect(type.type == "TeXt")
+    #expect(type.type.rawValue == "TeXt")
   }
   
   @Test func setType() {
@@ -690,7 +690,7 @@ struct MediaTypeTests {
   // MARK: - Normalization
   
   @Test func normalizedType() {
-    let type = MediaType(type: .other("VIDEO"), subtype: "avi")
+    let type = MediaType(type: "VIDEO", subtype: "avi")
     #expect(type == "VIDEO/avi")
     #expect(type.normalized() == "video/avi")
   }

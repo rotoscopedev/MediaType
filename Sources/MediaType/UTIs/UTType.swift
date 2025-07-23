@@ -48,7 +48,7 @@ extension UTType {
     case .multipart:      .compositeContent
     case .text:           .text
     case .video:          .movie
-    case .other:          .data
+    default:              .data
     }
   }
 
