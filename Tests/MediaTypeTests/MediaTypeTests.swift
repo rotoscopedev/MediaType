@@ -255,33 +255,33 @@ struct MediaTypeTests {
   }
   
   @Test func addFacet() {
-    var type: MediaType = "application/amazon-ebook"
+    var type: MediaType = "application/ebook"
     type.facet = "vnd"
-    #expect(type == "application/vnd.amazon-ebook")
+    #expect(type == "application/vnd.ebook")
   }
   
   @Test func addEmptyFacet() {
-    var type: MediaType = "application/amazon-ebook"
+    var type: MediaType = "application/ebook"
     type.facet = ""
-    #expect(type == "application/amazon-ebook")
+    #expect(type == "application/ebook")
   }
 
   @Test func replaceFacet() {
-    var type: MediaType = "application/vnd.amazon-ebook"
+    var type: MediaType = "application/vnd.ebook"
     type.facet = "rnd"
-    #expect(type == "application/rnd.amazon-ebook")
+    #expect(type == "application/rnd.ebook")
   }
 
   @Test func replaceFacetWithEmpty() {
-    var type: MediaType = "application/vnd.amazon-ebook"
+    var type: MediaType = "application/vnd.ebook"
     type.facet = ""
-    #expect(type == "application/amazon-ebook")
+    #expect(type == "application/ebook")
   }
 
   @Test func removeFacet() {
-    var type: MediaType = "application/vnd.amazon-ebook"
+    var type: MediaType = "application/vnd.ebook"
     type.facet = nil
-    #expect(type == "application/amazon-ebook")
+    #expect(type == "application/ebook")
   }
 
   // MARK: - Tree
