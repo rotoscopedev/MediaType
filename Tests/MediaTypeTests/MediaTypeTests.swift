@@ -527,6 +527,116 @@ struct MediaTypeTests {
     type.parameters.remove("CharSet")
     #expect(type == "text/html; linebreak=lf")
   }
+  
+  // MARK: - Mapping
+  
+  @Test func mapType() {
+    var type: MediaType = "text/plain"
+    type = type.map(\.type) {
+      #expect($0 == "text")
+      return "example"
+    }
+    #expect(type == "example/plain")
+  }
+  
+  @Test func mapFacet() {
+    var type: MediaType = "application/vnd.adobe.photoshop"
+    type = type.map(\.facet) {
+      #expect($0 == "vnd")
+      return "x"
+    }
+    #expect(type == "application/x.adobe.photoshop")
+  }
+  
+  @Test func mapNilFacet() {
+    var type: MediaType = "application/ebook"
+    type = type.map(\.facet) {
+      #expect($0 == nil)
+      return "x"
+    }
+    #expect(type == "application/x.ebook")
+  }
+  
+  @Test func mapFacetToNil() {
+    var type: MediaType = "application/vnd.ebook"
+    type = type.map(\.facet) {
+      #expect($0 == "vnd")
+      return nil
+    }
+    #expect(type == "application/ebook")
+  }
+  
+  @Test func mapSubtype() {
+    var type: MediaType = "text/plain"
+    type = type.map(\.subtype) {
+      #expect($0 == "plain")
+      return "html"
+    }
+    #expect(type == "text/html")
+  }
+  
+  @Test func mapNilSubtype() {
+    var type: MediaType = "text"
+    type = type.map(\.subtype) {
+      #expect($0 == nil)
+      return "html"
+    }
+    #expect(type == "text/html")
+  }
+  
+  @Test func mapSubtypeToNil() {
+    var type: MediaType = "text/plain"
+    type = type.map(\.subtype) {
+      #expect($0 == "plain")
+      return nil
+    }
+    #expect(type == "text")
+  }
+  
+  @Test func mapSuffix() {
+    var type: MediaType = "application/ld+json"
+    type = type.map(\.suffix) {
+      #expect($0 == "json")
+      return "xml"
+    }
+    #expect(type == "application/ld+xml")
+  }
+  
+  @Test func mapNilSuffix() {
+    var type: MediaType = "application/ld"
+    type = type.map(\.suffix) {
+      #expect($0 == nil)
+      return "xml"
+    }
+    #expect(type == "application/ld+xml")
+  }
+  
+  @Test func mapSuffixToNil() {
+    var type: MediaType = "application/ld+json"
+    type = type.map(\.suffix) {
+      #expect($0 == "json")
+      return nil
+    }
+    #expect(type == "application/ld")
+  }
+  
+  @Test func mapParameters() {
+    var type: MediaType = "text/plain; charset=UTF-8"
+    type = type.map(\.parameters) {
+      #expect($0 == [ "charset" : "UTF-8" ])
+      return $0.adding("ASCII", for: "charset")
+    }
+    #expect(type == "text/plain; charset=ASCII")
+  }
+  
+  @Test func mapParametersToNone() {
+    var type: MediaType = "text/plain; charset=UTF-8"
+    type = type.map(\.parameters) {
+      #expect($0 == [ "charset" : "UTF-8" ])
+      return .none
+    }
+    #expect(type == "text/plain")
+  }
 
   // MARK: - Normalization
   
