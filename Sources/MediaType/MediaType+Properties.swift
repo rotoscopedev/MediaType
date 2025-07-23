@@ -71,19 +71,10 @@ extension MediaType {
   /// no subtype is present.
   public var tree: Tree {
     get {
-      guard let facet = self.facet else {
-        return .standards
-      }
-      switch facet.lowercased() {
-      case "vnd":
-        return .vendor
-      case "prs":
-        return .personal
-      case "x":
-        return .unregistered
-      default:
-        return .other(facet)
-      }
+      return facet
+        .map {
+          Tree(facet: $0)
+        } ?? .standards
     }
   }
   

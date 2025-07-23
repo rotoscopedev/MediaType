@@ -319,7 +319,7 @@ struct MediaTypeTests {
   
   @Test func treeCasing() {
     let type: MediaType = "application/VND.amazon.ebook"
-    #expect(type.tree == .vendor)
+    #expect(type.tree == "VND")
   }
   
   // MARK: - Suffix

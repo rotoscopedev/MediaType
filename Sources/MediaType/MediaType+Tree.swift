@@ -22,35 +22,47 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum Tree: Hashable, Sendable {
-    case standards
-    case vendor
-    case personal
-    case unregistered
-    case other(String)
+  public struct Tree: Sendable, Hashable {
+    public let facet: String?
+    
+    /// Initializes the receiver with the given raw value.
+    ///
+    /// - parameters:
+    ///   - facet: The tree's facet. Specify `nil` for the standards tree.
+    ///
+    /// - note: An empty string will be interpreted as equivalent to `nil`,
+    ///   resulting in a tree with a `nil` `facet`.
+    ///
+    public init(facet: String?) {
+      if let facet = facet?.trimmed() {
+        self.facet = !facet.isEmpty ? facet : nil
+      } else {
+        self.facet = nil
+      }
+    }
+  }
+}
+
+// MARK: -
+
+extension MediaType.Tree: ExpressibleByStringLiteral {
+
+  /// Creates an instance initialized to the given string value.
+  ///
+  /// - Parameter stringLiteral: A string literal.
+  public init(stringLiteral: StaticString) {
+    let string = stringLiteral.withUTF8Buffer {
+      String(decoding: $0, as: UTF8.self)
+    }
+    self.init(facet: string)
   }
 }
 
 // MARK: -
 
 extension MediaType.Tree {
-  
-  /// Returns the subtype facet for this registration tree. Returns `nil` for
-  /// `standards`.
-  public var facet: String? {
-    get {
-      switch self {
-      case .standards:
-        return nil
-      case .vendor:
-        return "vnd"
-      case .personal:
-        return "prs"
-      case .unregistered:
-        return "x"
-      case .other(let facet):
-        return facet
-      }
-    }
-  }
+  public static let standards: Self = ""
+  public static let vendor: Self = "vnd"
+  public static let personal: Self = "prs"
+  public static let unregistered: Self = "x"
 }
