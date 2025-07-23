@@ -127,3 +127,28 @@ extension MediaType {
     }
   }
 }
+
+// MARK: -
+
+extension MediaType {
+  
+  /// Returns the result of applying the transform to the given key path.
+  public func map<T>(_ keyPath: WritableKeyPath<Self, T>, _ transform: (T) throws -> T) rethrows -> Self {
+    var copy = self
+    copy[keyPath: keyPath] = try transform(self[keyPath: keyPath])
+    return copy
+  }
+}
+
+// MARK: -
+
+extension MediaType {
+  
+  /// Returns the result of setting the value of the given key path with the
+  /// the specified value.
+  public func replacing<T>(_ keyPath: WritableKeyPath<Self, T>, with value: T) -> Self {
+    var copy = self
+    copy[keyPath: keyPath] = value
+    return copy
+  }
+}

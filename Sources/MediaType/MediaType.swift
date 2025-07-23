@@ -130,18 +130,6 @@ extension MediaType: Sendable {}
 
 // MARK: -
 
-extension MediaType {
-  
-  /// Returns the result of applying the transform to the given key path.
-  public func map<T>(_ keyPath: WritableKeyPath<Self, T>, _ transform: (T) throws -> T) rethrows -> Self {
-    var copy = self
-    copy[keyPath: keyPath] = try transform(self[keyPath: keyPath])
-    return copy
-  }
-}
-
-// MARK: -
-
 extension MediaType: ExpressibleByStringLiteral {
 
   /// Creates an instance initialized to the given string value.

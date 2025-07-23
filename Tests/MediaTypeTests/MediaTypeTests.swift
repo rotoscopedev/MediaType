@@ -638,6 +638,33 @@ struct MediaTypeTests {
     #expect(type == "text/plain")
   }
 
+  // MARK: - Replacement
+  
+  @Test func replacingType() {
+    let type: MediaType = "text/plain"
+    #expect(type.replacing(\.type, with: "example") == "example/plain")
+  }
+
+  @Test func replacingFacet() {
+    let type: MediaType = "application/vnd.adobe.photoshop"
+    #expect(type.replacing(\.facet, with: "x") == "application/x.adobe.photoshop")
+  }
+  
+  @Test func replacingSubtype() {
+    let type: MediaType = "text/plain"
+    #expect(type.replacing(\.subtype, with: "html") == "text/html")
+  }
+  
+  @Test func replacingSuffix() {
+    let type: MediaType = "application/ld+json"
+    #expect(type.replacing(\.suffix, with: "xml") == "application/ld+xml")
+  }
+  
+  @Test func replacingParameters() {
+    let type: MediaType = "text/plain; charset=UTF-8"
+    #expect(type.replacing(\.parameters, with: .none) == "text/plain")
+  }
+
   // MARK: - Normalization
   
   @Test func normalizedType() {
