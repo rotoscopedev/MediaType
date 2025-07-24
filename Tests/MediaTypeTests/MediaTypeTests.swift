@@ -946,7 +946,7 @@ struct MediaTypeTests {
   @Test func codecsSingle() {
     let type: MediaType = .audio(.mp4)
       .map(\.parameters) {
-        $0.adding(.codecs([ "mp4a.40.2" ]))
+        $0.adding(.codecs("mp4a.40.2"))
       }
     #expect(type == "audio/mp4; codecs=mp4a.40.2")
     #expect(
@@ -961,10 +961,10 @@ struct MediaTypeTests {
   @Test func codecsMultiple() {
     let type: MediaType = .audio(.mp4)
       .map(\.parameters) {
-        $0.adding(.codecs([
+        $0.adding(.codecs(
           "avc1.42E01E",
           "mp4a.40.2",
-        ]))
+        ))
       }
     #expect(type == "audio/mp4; codecs=\"avc1.42E01E, mp4a.40.2\"")
     #expect(

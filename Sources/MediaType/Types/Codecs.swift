@@ -22,6 +22,11 @@ extension MediaType.Parameter {
           .joined(separator: ", ")
     )
   }
+  
+  /// Returns a `codecs` parameter with the given codec names.
+  public static func codecs(_ first: String, _ rest: String...) -> Self {
+    return codecs([ first ] + rest)
+  }
 }
 
 // MARK: -
