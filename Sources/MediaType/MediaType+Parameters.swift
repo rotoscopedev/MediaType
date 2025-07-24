@@ -24,7 +24,7 @@
 extension MediaType {
   
   /// A name/value parameter tuple.
-  public struct Parameter: Sendable, Equatable {
+  public struct Parameter: Sendable, Hashable {
     public let name: String
     public let value: String
     
@@ -40,7 +40,7 @@ extension MediaType {
 extension MediaType {
   
   /// A collection of parameters.
-  public struct Parameters: Sendable, Equatable {
+  public struct Parameters: Sendable, Hashable {
     public typealias Element = Parameter
     
     var elements: [Element]
