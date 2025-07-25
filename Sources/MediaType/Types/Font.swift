@@ -53,15 +53,7 @@ extension MediaType {
   /// - parameters:
   ///   - subtype: An font subtype.
   public static func font(_ subtype: FontSubtype) -> Self {
-    return font(subtype.rawValue)
-  }
-
-  /// Returns an font media type with the specified subtype string.
-  ///
-  /// - parameters:
-  ///   - subtype: An font subtype string.
-  public static func font(_ subtype: String) -> Self {
-    return Self(type: "font", subtype: subtype)
+    return Self(type: "font", subtype: subtype.rawValue)
   }
 }
 

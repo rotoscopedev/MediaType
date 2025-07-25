@@ -57,20 +57,12 @@ extension MediaType.VideoSubtype {
 
 extension MediaType {
   
-  /// Returns an text media type with the specified subtype.
+  /// Returns a video media type with the specified subtype.
   ///
   /// - parameters:
-  ///   - subtype: An text subtype.
+  ///   - subtype: A video subtype.
   public static func video(_ subtype: VideoSubtype) -> Self {
-    return video(subtype.rawValue)
-  }
-  
-  /// Returns an text media type with the specified subtype string.
-  ///
-  /// - parameters:
-  ///   - subtype: An text subtype string.
-  public static func video(_ subtype: String) -> Self {
-    return Self(type: "video", subtype: subtype)
+    return Self(type: "video", subtype: subtype.rawValue)
   }
 }
 

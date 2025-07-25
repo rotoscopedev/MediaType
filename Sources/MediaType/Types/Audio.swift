@@ -60,15 +60,7 @@ extension MediaType {
   /// - parameters:
   ///   - subtype: An audio subtype.
   public static func audio(_ subtype: AudioSubtype) -> Self {
-    return audio(subtype.rawValue)
-  }
-
-  /// Returns an audio media type with the specified subtype string.
-  ///
-  /// - parameters:
-  ///   - subtype: An audio subtype string.
-  public static func audio(_ subtype: String) -> Self {
-    return Self(type: "audio", subtype: subtype)
+    return Self(type: "audio", subtype: subtype.rawValue)
   }
 }
 

@@ -66,15 +66,7 @@ extension MediaType {
   /// - parameters:
   ///   - subtype: An text subtype.
   public static func text(_ subtype: TextSubtype) -> Self {
-    return text(subtype.rawValue)
-  }
-  
-  /// Returns an text media type with the specified subtype string.
-  ///
-  /// - parameters:
-  ///   - subtype: An text subtype string.
-  public static func text(_ subtype: String) -> Self {
-    return Self(type: "text", subtype: subtype)
+    return Self(type: "text", subtype: subtype.rawValue)
   }
 }
 

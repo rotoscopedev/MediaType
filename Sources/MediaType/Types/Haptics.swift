@@ -50,15 +50,7 @@ extension MediaType {
   /// - parameters:
   ///   - subtype: A haptics subtype.
   public static func haptics(_ subtype: HapticsSubtype) -> Self {
-    return haptics(subtype.rawValue)
-  }
-  
-  /// Returns a haptics media type with the specified subtype string.
-  ///
-  /// - parameters:
-  ///   - subtype: A haptics subtype string.
-  public static func haptics(_ subtype: String) -> Self {
-    return Self(type: "haptics", subtype: subtype)
+    return Self(type: "haptics", subtype: subtype.rawValue)
   }
 }
 

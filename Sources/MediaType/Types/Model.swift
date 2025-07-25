@@ -54,15 +54,7 @@ extension MediaType {
   /// - parameters:
   ///   - subtype: An model subtype.
   public static func model(_ subtype: ModelSubtype) -> Self {
-    return model(subtype.rawValue)
-  }
-  
-  /// Returns an model media type with the specified subtype string.
-  ///
-  /// - parameters:
-  ///   - subtype: An model subtype string.
-  public static func model(_ subtype: String) -> Self {
-    return Self(type: "model", subtype: subtype)
+    return Self(type: "model", subtype: subtype.rawValue)
   }
 }
 

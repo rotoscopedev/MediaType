@@ -62,15 +62,7 @@ extension MediaType {
   /// - parameters:
   ///   - subtype: An image subtype.
   public static func image(_ subtype: ImageSubtype) -> Self {
-    return image(subtype.rawValue)
-  }
-  
-  /// Returns an image media type with the specified subtype string.
-  ///
-  /// - parameters:
-  ///   - subtype: An image subtype string.
-  public static func image(_ subtype: String) -> Self {
-    return Self(type: "image", subtype: subtype)
+    return Self(type: "image", subtype: subtype.rawValue)
   }
 }
 

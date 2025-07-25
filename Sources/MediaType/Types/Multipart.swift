@@ -57,15 +57,7 @@ extension MediaType {
   /// - parameters:
   ///   - subtype: An multipart subtype.
   public static func multipart(_ subtype: MultipartSubtype) -> Self {
-    return multipart(subtype.rawValue)
-  }
-  
-  /// Returns an multipart media type with the specified subtype string.
-  ///
-  /// - parameters:
-  ///   - subtype: An multipart subtype string.
-  public static func multipart(_ subtype: String) -> Self {
-    return Self(type: "multipart", subtype: subtype)
+    return Self(type: "multipart", subtype: subtype.rawValue)
   }
 }
 
