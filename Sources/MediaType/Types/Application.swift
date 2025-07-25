@@ -22,76 +22,88 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum ApplicationSubtype: String, Hashable, Sendable {
-    case appleInstallerPackage = "vnd.apple.installer+xml"
-    case appleKeynote = "vnd.apple.keynote"
-    case appleKeynoteSFF = "x-iwork-keynote-sffkey"
-    case appleNumbers = "vnd.apple.numbers"
-    case appleNumbersSFF = "x-iwork-numbers-sffnumbers"
-    case applePages = "vnd.apple.pages"
-    case applePagesSFF = "x-iwork-pages-sffpages"
-    case bzipArchive = "x-bzip"
-    case bzip2Archive = "x-bzip2"
-    case cshellScript = "x-csh"
-    case dns = "dns"
-    case dnsJSON = "dns+json"
-    case dnsMessage = "dns-message"
-    case ecmascript = "ecmascript"
-    case epubBook = "epub+zip"
-    case gzip = "gzip"
-    case http = "http"
-    case javaArchive = "java-archive"
-    case javascript = "javascript"
-    case json = "json"
-    case jsonLD = "ld+json"
-    case microsoftEmbeddedFont = "vnd.ms-fontobject"
-    case microsoftExcel = "vnd.ms-excel"
-    case microsoftExcelXML = "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    case microsoftPowerpoint = "vnd.ms-powerpoint"
-    case microsoftPowerpointXML = "vnd.openxmlformats-officedocument.presentationml.presentation"
-    case microsoftProject = "vnd.ms-project"
-    case microsoftWord = "msword"
-    case microsoftWordXML = "vnd.openxmlformats-officedocument.wordprocessingml.document"
-    case octetStream = "octet-stream"
-    case ogg = "ogg"
-    case openDocumentChart = "vnd.oasis.opendocument.chart"
-    case openDocumentDatabase = "vnd.oasis.opendocument.database"
-    case openDocumentFormula = "vnd.oasis.opendocument.formula"
-    case openDocumentGraphics = "vnd.oasis.opendocument.graphics"
-    case openDocumentImage = "vnd.oasis.opendocument.image"
-    case openDocumentPresentation = "vnd.oasis.opendocument.presentation"
-    case openDocumentSpreadsheet = "vnd.oasis.opendocument.spreadsheet"
-    case openDocumentText = "vnd.oasis.opendocument.text"
-    case pdf = "pdf"
-    case pgpEncrypted = "pgp-encrypted"
-    case pgpKeys = "pgp-keys"
-    case pgpSignature = "pgp-signature"
-    case pkcs10 = "pkcs10"
-    case pkcs7MIME = "pkcs7-mime"
-    case pkcs7Signature = "pkcs7-signature"
-    case pkcs8 = "pkcs8"
-    case pkcs8Encrypted = "pkcs8-encrypted"
-    case pkcs12 = "pkcs12"
-    case postscript = "postscript"
-    case quarkXPress = "vnd.Quark.QuarkXPress"
-    case rar = "vnd.rar"
-    case rarCompressed = "x-rar-compressed"
-    case restfulJSON = "vnd.restful+json"
-    case rtf = "rtf"
-    case sgml = "SGML"
-    case soapXML = "soap+xml"
-    case sql = "sql"
-    case tar = "application/x-tar"
-    case vcardJSON = "vcard+json"
-    case vcardXML = "vcard+xml"
-    case visio = "vnd.visio"
-    case wsdlXML = "wsdl+xml"
-    case xml = "xml"
-    case xmlDTD = "xml-dtd"
-    case xsltXML = "xslt+xml"
-    case zip = "zip"
-    case zlib = "zlib"
+  public struct ApplicationSubtype: Subtype {
+    public let rawValue: String
+    
+    public init?(rawValue: String) {
+      let rawValue = rawValue.trimmed()
+      guard !rawValue.isEmpty else { return nil }
+      self.rawValue = rawValue
+    }
   }
+}
+
+// MARK: -
+
+extension MediaType.ApplicationSubtype {
+  public static let appleInstallerPackage: Self = "vnd.apple.installer+xml"
+  public static let appleKeynote: Self = "vnd.apple.keynote"
+  public static let appleKeynoteSFF: Self = "x-iwork-keynote-sffkey"
+  public static let appleNumbers: Self = "vnd.apple.numbers"
+  public static let appleNumbersSFF: Self = "x-iwork-numbers-sffnumbers"
+  public static let applePages: Self = "vnd.apple.pages"
+  public static let applePagesSFF: Self = "x-iwork-pages-sffpages"
+  public static let bzipArchive: Self = "x-bzip"
+  public static let bzip2Archive: Self = "x-bzip2"
+  public static let cshellScript: Self = "x-csh"
+  public static let dns: Self = "dns"
+  public static let dnsJSON: Self = "dns+json"
+  public static let dnsMessage: Self = "dns-message"
+  public static let ecmascript: Self = "ecmascript"
+  public static let epubBook: Self = "epub+zip"
+  public static let gzip: Self = "gzip"
+  public static let http: Self = "http"
+  public static let javaArchive: Self = "java-archive"
+  public static let javascript: Self = "javascript"
+  public static let json: Self = "json"
+  public static let jsonLD: Self = "ld+json"
+  public static let microsoftEmbeddedFont: Self = "vnd.ms-fontobject"
+  public static let microsoftExcel: Self = "vnd.ms-excel"
+  public static let microsoftExcelXML: Self = "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  public static let microsoftPowerpoint: Self = "vnd.ms-powerpoint"
+  public static let microsoftPowerpointXML: Self = "vnd.openxmlformats-officedocument.presentationml.presentation"
+  public static let microsoftProject: Self = "vnd.ms-project"
+  public static let microsoftWord: Self = "msword"
+  public static let microsoftWordXML: Self = "vnd.openxmlformats-officedocument.wordprocessingml.document"
+  public static let octetStream: Self = "octet-stream"
+  public static let ogg: Self = "ogg"
+  public static let openDocumentChart: Self = "vnd.oasis.opendocument.chart"
+  public static let openDocumentDatabase: Self = "vnd.oasis.opendocument.database"
+  public static let openDocumentFormula: Self = "vnd.oasis.opendocument.formula"
+  public static let openDocumentGraphics: Self = "vnd.oasis.opendocument.graphics"
+  public static let openDocumentImage: Self = "vnd.oasis.opendocument.image"
+  public static let openDocumentPresentation: Self = "vnd.oasis.opendocument.presentation"
+  public static let openDocumentSpreadsheet: Self = "vnd.oasis.opendocument.spreadsheet"
+  public static let openDocumentText: Self = "vnd.oasis.opendocument.text"
+  public static let pdf: Self = "pdf"
+  public static let pgpEncrypted: Self = "pgp-encrypted"
+  public static let pgpKeys: Self = "pgp-keys"
+  public static let pgpSignature: Self = "pgp-signature"
+  public static let pkcs10: Self = "pkcs10"
+  public static let pkcs7MIME: Self = "pkcs7-mime"
+  public static let pkcs7Signature: Self = "pkcs7-signature"
+  public static let pkcs8: Self = "pkcs8"
+  public static let pkcs8Encrypted: Self = "pkcs8-encrypted"
+  public static let pkcs12: Self = "pkcs12"
+  public static let postscript: Self = "postscript"
+  public static let quarkXPress: Self = "vnd.Quark.QuarkXPress"
+  public static let rar: Self = "vnd.rar"
+  public static let rarCompressed: Self = "x-rar-compressed"
+  public static let restfulJSON: Self = "vnd.restful+json"
+  public static let rtf: Self = "rtf"
+  public static let sgml: Self = "SGML"
+  public static let soapXML: Self = "soap+xml"
+  public static let sql: Self = "sql"
+  public static let tar: Self = "application/x-tar"
+  public static let vcardJSON: Self = "vcard+json"
+  public static let vcardXML: Self = "vcard+xml"
+  public static let visio: Self = "vnd.visio"
+  public static let wsdlXML: Self = "wsdl+xml"
+  public static let xml: Self = "xml"
+  public static let xmlDTD: Self = "xml-dtd"
+  public static let xsltXML: Self = "xslt+xml"
+  public static let zip: Self = "zip"
+  public static let zlib: Self = "zlib"
 }
 
 // MARK: -
@@ -103,15 +115,7 @@ extension MediaType {
   /// - parameters:
   ///   - subtype: An application subtype.
   public static func application(_ subtype: ApplicationSubtype) -> Self {
-    return application(subtype.rawValue)
-  }
-
-  /// Returns an application media type with the specified subtype string.
-  ///
-  /// - parameters:
-  ///   - subtype: An application subtype string.
-  public static func application(_ subtype: String) -> Self {
-    return Self(type: "application", subtype: subtype)
+    return Self(type: "application", subtype: subtype.rawValue)
   }
 }
 

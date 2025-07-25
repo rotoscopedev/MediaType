@@ -22,23 +22,35 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum VideoSubtype: String, Hashable, Sendable {
-    case avi = "x-msvideo"
-    case h261 = "H261"
-    case h263 = "H263"
-    case h264 = "H264"
-    case h265 = "H265"
-    case jpeg = "JPEG"
-    case jpeg2000 = "jpeg2000"
-    case mp4 = "mp4"
-    case mpeg = "mpeg"
-    case mpeg4Generic = "mpeg4-generic"
-    case ogg = "ogg"
-    case quicktime = "quicktime"
-    case raw = "raw"
-    case vp8 = "VP8"
-    case webm = "webm"
+  public struct VideoSubtype: Subtype {
+    public let rawValue: String
+    
+    public init?(rawValue: String) {
+      let rawValue = rawValue.trimmed()
+      guard !rawValue.isEmpty else { return nil }
+      self.rawValue = rawValue
+    }
   }
+}
+
+// MARK: -
+
+extension MediaType.VideoSubtype {
+  public static let avi: Self = "x-msvideo"
+  public static let h261: Self = "H261"
+  public static let h263: Self = "H263"
+  public static let h264: Self = "H264"
+  public static let h265: Self = "H265"
+  public static let jpeg: Self = "JPEG"
+  public static let jpeg2000: Self = "jpeg2000"
+  public static let mp4: Self = "mp4"
+  public static let mpeg: Self = "mpeg"
+  public static let mpeg4Generic: Self = "mpeg4-generic"
+  public static let ogg: Self = "ogg"
+  public static let quicktime: Self = "quicktime"
+  public static let raw: Self = "raw"
+  public static let vp8: Self = "VP8"
+  public static let webm: Self = "webm"
 }
 
 // MARK: -

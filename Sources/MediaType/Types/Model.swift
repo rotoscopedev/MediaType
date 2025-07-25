@@ -22,15 +22,27 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum ModelSubtype: String, Hashable, Sendable {
-    case dwf = "vnd.dwf"
-    case mesh = "mesh"
-    case mtl = "mtl"
-    case obj = "obj"
-    case stl = "stl"
-    case vrml = "vrml"
-    case x3dXML = "x3d+xml"
+  public struct ModelSubtype: Subtype {
+    public let rawValue: String
+    
+    public init?(rawValue: String) {
+      let rawValue = rawValue.trimmed()
+      guard !rawValue.isEmpty else { return nil }
+      self.rawValue = rawValue
+    }
   }
+}
+
+// MARK: -
+
+extension MediaType.ModelSubtype {
+  public static let dwf: Self = "vnd.dwf"
+  public static let mesh: Self = "mesh"
+  public static let mtl: Self = "mtl"
+  public static let obj: Self = "obj"
+  public static let stl: Self = "stl"
+  public static let vrml: Self = "vrml"
+  public static let x3dXML: Self = "x3d+xml"
 }
 
 // MARK: -

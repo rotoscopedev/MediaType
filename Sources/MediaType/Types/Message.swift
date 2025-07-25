@@ -22,11 +22,23 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum MessageSubtype: String, Hashable, Sendable {
-    case email = "rfc822"
-    case http = "http"
-    case shttp = "s-http"
+  public struct MessageSubtype: Subtype {
+    public let rawValue: String
+    
+    public init?(rawValue: String) {
+      let rawValue = rawValue.trimmed()
+      guard !rawValue.isEmpty else { return nil }
+      self.rawValue = rawValue
+    }
   }
+}
+
+// MARK: -
+
+extension MediaType.MessageSubtype {
+  public static let email: Self = "rfc822"
+  public static let http: Self = "http"
+  public static let shttp: Self = "s-http"
 }
 
 // MARK: -

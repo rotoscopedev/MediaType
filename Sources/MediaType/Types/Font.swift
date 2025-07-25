@@ -22,14 +22,26 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum FontSubtype: String, Hashable, Sendable {
-    case collection = "collection"
-    case otf = "otf"
-    case sfnt = "sfnt"
-    case ttf = "ttf"
-    case woff = "woff"
-    case woff2 = "woff2"
+  public struct FontSubtype: Subtype {
+    public let rawValue: String
+    
+    public init?(rawValue: String) {
+      let rawValue = rawValue.trimmed()
+      guard !rawValue.isEmpty else { return nil }
+      self.rawValue = rawValue
+    }
   }
+}
+
+// MARK: -
+
+extension MediaType.FontSubtype {
+  public static let collection: Self = "collection"
+  public static let otf: Self = "otf"
+  public static let sfnt: Self = "sfnt"
+  public static let ttf: Self = "ttf"
+  public static let woff: Self = "woff"
+  public static let woff2: Self = "woff2"
 }
 
 // MARK: -

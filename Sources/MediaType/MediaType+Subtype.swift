@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2024 Rotoscope GmbH
+// Copyright (c) 2025 Rotoscope GmbH
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,51 +22,36 @@
 // SOFTWARE.
 
 extension MediaType {
-  public struct HapticsSubtype: Subtype {
-    public let rawValue: String
-    
-    public init?(rawValue: String) {
-      let rawValue = rawValue.trimmed()
-      guard !rawValue.isEmpty else { return nil }
-      self.rawValue = rawValue
+  public protocol Subtype: Sendable, Hashable, RawRepresentable, CustomDebugStringConvertible, ExpressibleByStringLiteral where RawValue == String {
+  }
+}
+
+// MARK: -
+
+extension MediaType.Subtype {
+
+  /// Creates an instance initialized to the given string value.
+  ///
+  /// - Parameter stringLiteral: A string literal.
+  public init(stringLiteral: StaticString) {
+    let string = stringLiteral.withUTF8Buffer {
+      String(decoding: $0, as: UTF8.self)
+    }
+    guard let type = Self(rawValue: string) else {
+      preconditionFailure("\(string) is not a valid media subtype.")
+    }
+    self = type
+  }
+}
+
+// MARK: -
+
+extension MediaType.Subtype {
+
+  /// A textual representation of this instance, suitable for debugging.
+  public var debugDescription: String {
+    get {
+      return rawValue
     }
   }
-}
-
-// MARK: -
-
-extension MediaType.HapticsSubtype {
-  public static let ivs: Self = "ivs"
-  public static let hjif: Self = "hjif"
-  public static let hmpg: Self = "hmpg"
-}
-
-// MARK: -
-
-extension MediaType {
-  
-  /// Returns a haptics media type with the specified subtype.
-  ///
-  /// - parameters:
-  ///   - subtype: A haptics subtype.
-  public static func haptics(_ subtype: HapticsSubtype) -> Self {
-    return haptics(subtype.rawValue)
-  }
-  
-  /// Returns a haptics media type with the specified subtype string.
-  ///
-  /// - parameters:
-  ///   - subtype: A haptics subtype string.
-  public static func haptics(_ subtype: String) -> Self {
-    return Self(type: "haptics", subtype: subtype)
-  }
-}
-
-// MARK: -
-
-extension MediaType {
-  
-  /// Media type for the `haptics` top-level type. The media type does not have
-  /// a sub-type.
-  public static let haptics = Self(type: .haptics)
 }

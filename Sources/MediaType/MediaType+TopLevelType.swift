@@ -44,7 +44,7 @@ extension MediaType.TopLevelType {
   ///   - string: A top-level type string.
   public init(_ string: String) {
     guard let type = Self(rawValue: string) else {
-      preconditionFailure("\(string) is not a valid top-level type")
+      preconditionFailure("\(string) is not a valid top-level type.")
     }
     self = type
   }

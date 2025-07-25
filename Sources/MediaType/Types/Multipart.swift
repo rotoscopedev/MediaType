@@ -22,18 +22,30 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum MultipartSubtype: String, Hashable, Sendable {
-    case digest = "digest"
-    case encrypted = "encrypted"
-    case formData = "form-data"
-    case headerSet = "header-set"
-    case mixed = "mixed"
-    case multilingual = "multilingual"
-    case parallel = "parallel"
-    case related = "related"
-    case report = "report"
-    case signed = "signed"
+  public struct MultipartSubtype: Subtype {
+    public let rawValue: String
+    
+    public init?(rawValue: String) {
+      let rawValue = rawValue.trimmed()
+      guard !rawValue.isEmpty else { return nil }
+      self.rawValue = rawValue
+    }
   }
+}
+
+// MARK: -
+
+extension MediaType.MultipartSubtype {
+  public static let digest: Self = "digest"
+  public static let encrypted: Self = "encrypted"
+  public static let formData: Self = "form-data"
+  public static let headerSet: Self = "header-set"
+  public static let mixed: Self = "mixed"
+  public static let multilingual: Self = "multilingual"
+  public static let parallel: Self = "parallel"
+  public static let related: Self = "related"
+  public static let report: Self = "report"
+  public static let signed: Self = "signed"
 }
 
 // MARK: -

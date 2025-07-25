@@ -24,25 +24,37 @@
 import IANACharset
 
 extension MediaType {
-  public enum TextSubtype: String, Hashable, Sendable {
-    case calendar = "calendar"
-    case css = "css"
-    case csv = "csv"
-    case directory = "directory"
-    case dns = "dns"
-    case ecmaScript = "ecmascript"
-    case html = "html"
-    case javascript = "javascript"
-    case markdown = "markdown"
-    case parameters = "parameters"
-    case plain = "plain"
-    case richtext = "richtext"
-    case rtf = "rtf"
-    case sgml = "SGML"
-    case strings = "strings"
-    case vcard = "vcard"
-    case xml = "xml"
+  public struct TextSubtype: Subtype {
+    public let rawValue: String
+    
+    public init?(rawValue: String) {
+      let rawValue = rawValue.trimmed()
+      guard !rawValue.isEmpty else { return nil }
+      self.rawValue = rawValue
+    }
   }
+}
+
+// MARK: -
+
+extension MediaType.TextSubtype {
+  public static let calendar: Self = "calendar"
+  public static let css: Self = "css"
+  public static let csv: Self = "csv"
+  public static let directory: Self = "directory"
+  public static let dns: Self = "dns"
+  public static let ecmaScript: Self = "ecmascript"
+  public static let html: Self = "html"
+  public static let javascript: Self = "javascript"
+  public static let markdown: Self = "markdown"
+  public static let parameters: Self = "parameters"
+  public static let plain: Self = "plain"
+  public static let richtext: Self = "richtext"
+  public static let rtf: Self = "rtf"
+  public static let sgml: Self = "SGML"
+  public static let strings: Self = "strings"
+  public static let vcard: Self = "vcard"
+  public static let xml: Self = "xml"
 }
 
 // MARK: -

@@ -22,23 +22,35 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum ImageSubtype: String, Hashable, Sendable {
-    case bmp = "bmp"
-    case gif = "gif"
-    case jpeg = "jpeg"
-    case icon = "vnd.microsoft.icon"
-    case png = "png"
-    case tiff = "tiff"
-    case heif = "heif"
-    case heifSequence = "heif-sequence"
-    case heic = "heic"
-    case heicSequence = "heic-sequence"
-    case avif = "avif"
-    case avifSequence = "avif-sequence"
-    case webp = "webp"
-    case adobePhotoshop = "vnd.adobe.photoshop"
-    case svg = "svg+xml"
+  public struct ImageSubtype: Subtype {
+    public let rawValue: String
+    
+    public init?(rawValue: String) {
+      let rawValue = rawValue.trimmed()
+      guard !rawValue.isEmpty else { return nil }
+      self.rawValue = rawValue
+    }
   }
+}
+
+// MARK: -
+
+extension MediaType.ImageSubtype {
+  public static let bmp: Self = "bmp"
+  public static let gif: Self = "gif"
+  public static let jpeg: Self = "jpeg"
+  public static let icon: Self = "vnd.microsoft.icon"
+  public static let png: Self = "png"
+  public static let tiff: Self = "tiff"
+  public static let heif: Self = "heif"
+  public static let heifSequence: Self = "heif-sequence"
+  public static let heic: Self = "heic"
+  public static let heicSequence: Self = "heic-sequence"
+  public static let avif: Self = "avif"
+  public static let avifSequence: Self = "avif-sequence"
+  public static let webp: Self = "webp"
+  public static let adobePhotoshop: Self = "vnd.adobe.photoshop"
+  public static let svg: Self = "svg+xml"
 }
 
 // MARK: -

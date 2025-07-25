@@ -22,21 +22,33 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum AudioSubtype: String, Hashable, Sendable {
-    case aac = "aac"
-    case ac3 = "ac3"
-    case aiff = "aiff"
-    case caf = "x-caf"
-    case l17 = "L16"
-    case midi = "midi"
-    case mp4 = "mp4"
-    case mpeg = "mpeg"
-    case ogg = "ogg"
-    case pcma = "PCMA"
-    case vorbis = "vorbis"
-    case wav = "wav"
-    case webm = "webm"
+  public struct AudioSubtype: Subtype {
+    public let rawValue: String
+    
+    public init?(rawValue: String) {
+      let rawValue = rawValue.trimmed()
+      guard !rawValue.isEmpty else { return nil }
+      self.rawValue = rawValue
+    }
   }
+}
+
+// MARK: -
+
+extension MediaType.AudioSubtype {
+  public static let aac: Self = "aac"
+  public static let ac3: Self = "ac3"
+  public static let aiff: Self = "aiff"
+  public static let caf: Self = "x-caf"
+  public static let l17: Self = "L16"
+  public static let midi: Self = "midi"
+  public static let mp4: Self = "mp4"
+  public static let mpeg: Self = "mpeg"
+  public static let ogg: Self = "ogg"
+  public static let pcma: Self = "PCMA"
+  public static let vorbis: Self = "vorbis"
+  public static let wav: Self = "wav"
+  public static let webm: Self = "webm"
 }
 
 // MARK: -

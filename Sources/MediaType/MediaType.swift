@@ -140,7 +140,7 @@ extension MediaType: ExpressibleByStringLiteral {
       String(decoding: $0, as: UTF8.self)
     }
     guard let type = Self(rawValue: string) else {
-      preconditionFailure("\(string) is not a valid media type")
+      preconditionFailure("\(string) is not a valid media type.")
     }
     self = type
   }
