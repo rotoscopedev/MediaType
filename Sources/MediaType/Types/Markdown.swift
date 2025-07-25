@@ -22,34 +22,71 @@
 // SOFTWARE.
 
 extension MediaType {
-  public enum MarkdownVariant: String, Sendable, CaseIterable {
-    case markdown
-    case multiMarkdown = "MultiMarkdown"
-    case gfm = "GFM"
-    case pandoc = "pandoc"
-    case pandoc2RFC = "rfc7328"
-    case fountain = "Fountain"
-    case commonMark = "CommonMark"
-    case kramdown = "kramdown-rfc2629"
-    case markdownExtra = "Extra"
+  public struct MarkdownVariant: Sendable, Hashable, RawRepresentable, ExpressibleByStringLiteral, CustomDebugStringConvertible {
+    public let rawValue: String
     
-    /// Internal map of case-independent names.
-    private static let map: [String: MarkdownVariant] = {
-      allCases
-        .reduce(into: [:]) {
-          $0[$1.rawValue.lowercased()] = $1
-        }
-    }()
+    public init?(rawValue: String) {
+      let rawValue = rawValue.trimmed()
+      guard !rawValue.isEmpty else { return nil }
+      self.rawValue = rawValue
+    }
     
-    /// Initializes the receiver from the given string.
-    public init?(string: String) {
-      if let variant = Self.map[string.lowercased()] {
-        self = variant
-      } else {
-        return nil
+    /// Creates an instance initialized to the given string value.
+    ///
+    /// - Parameter stringLiteral: A string literal.
+    public init(stringLiteral: StaticString) {
+      let string = stringLiteral.withUTF8Buffer {
+        String(decoding: $0, as: UTF8.self)
+      }
+      guard let type = Self(rawValue: string) else {
+        preconditionFailure("\(string) is not a valid markdown variant.")
+      }
+      self = type
+    }
+
+    /// A textual representation of this instance, suitable for debugging.
+    public var debugDescription: String {
+      get {
+        return rawValue
       }
     }
   }
+}
+
+// MARK: -
+
+extension MediaType.MarkdownVariant {
+  public static let markdown: Self = "markdown"
+  public static let multiMarkdown: Self = "MultiMarkdown"
+  public static let gfm: Self = "GFM"
+  public static let pandoc: Self = "pandoc"
+  public static let pandoc2RFC: Self = "rfc7328"
+  public static let fountain: Self = "Fountain"
+  public static let commonMark: Self = "CommonMark"
+  public static let kramdown: Self = "kramdown-rfc2629"
+  public static let markdownExtra: Self = "Extra"
+}
+
+// MARK: -
+
+extension MediaType.MarkdownVariant {
+  fileprivate static let lowercase: [String: Self] = {
+    let variants: [Self] = [
+      .markdown,
+      .multiMarkdown,
+      .gfm,
+      .pandoc,
+      .pandoc2RFC,
+      .fountain,
+      .commonMark,
+      .kramdown,
+      .markdownExtra,
+    ]
+    return variants
+      .reduce(into: [:]) {
+        $0[$1.rawValue.lowercased()] = $1
+      }
+  }()
 }
 
 // MARK: -
@@ -76,7 +113,7 @@ extension MediaType.Parameters {
     get {
       return self["variant"]
         .flatMap {
-          MediaType.MarkdownVariant(string: $0)
+          MediaType.MarkdownVariant(rawValue: $0)
         }
     }
   }
@@ -88,7 +125,7 @@ extension MediaType {
   
   /// Normalizes the given Markdown `variant` parameter value.
   func normalize(markdownVariant variant: String) -> String {
-    if let variant = MarkdownVariant(string: variant) {
+    if let variant = MarkdownVariant.lowercase[variant.lowercased()] {
       return variant.rawValue
     } else {
       return variant

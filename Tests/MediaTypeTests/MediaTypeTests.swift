@@ -864,7 +864,7 @@ struct MediaTypeTests {
     #expect(
       MediaType("text/markdown; variant=unknown")
         .parameters
-        .markdownVariant == nil
+        .markdownVariant == "unknown"
     )
   }
   
