@@ -209,7 +209,9 @@ extension MediaType {
     /// Returns a description for the given media type. Returns `nil` if a
     /// description is not available.
     func description(for type: MediaType) -> String? {
-      if let type = UTType(mimeType: type.rawValue, conformingTo: .data), !type.isDynamic {
+      let type = UTType(mediaType: type, conformingTo: .data)
+      
+      if !type.isDynamic {
         if let description = description(for: type) {
           return description
         }
