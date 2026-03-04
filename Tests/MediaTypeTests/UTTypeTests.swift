@@ -26,7 +26,7 @@ import UniformTypeIdentifiers
 
 @testable import MediaType
 
-struct UTTypeTests {
+@Suite("UTType") struct UTTypeTests {
 
   @Test func initializeUTType() {
     #expect(UTType(mediaType: .image(.png)) == .png)

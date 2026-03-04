@@ -26,7 +26,7 @@ import Testing
 
 @testable import MediaType
 
-struct MediaTypeTests {
+@Suite("MediaType") struct MediaTypeTests {
   
   // MARK: - Initialization
   
