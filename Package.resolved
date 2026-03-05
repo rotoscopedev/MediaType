@@ -1,5 +1,5 @@
 {
-  "originHash" : "527bc9c4f0c14fa6ed80482307559da6ce0f5448d6411a15cce8aedb63d34f27",
+  "originHash" : "5a122ac83016a2beb6c025bf8fbb9a7c456f1605de20d874c064ac5f7a678219",
   "pins" : [
     {
       "identity" : "ianacharset",
@@ -7,7 +7,7 @@
       "location" : "https://github.com/rotoscopedev/IANACharset.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "2e72b5929ac772ac6aacc0468396d9046de7cf8b"
+        "revision" : "d6a104b0cf587f5b2cd67f8783f4408e7916b508"
       }
     },
     {
