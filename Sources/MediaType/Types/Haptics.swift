@@ -49,6 +49,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: A haptics subtype.
+  ///
   public static func haptics(_ subtype: HapticsSubtype) -> Self {
     return Self(type: "haptics", subtype: subtype.rawValue)
   }
@@ -60,5 +61,6 @@ extension MediaType {
   
   /// Media type for the `haptics` top-level type. The media type does not have
   /// a sub-type.
+  /// 
   public static let haptics = Self(type: .haptics)
 }

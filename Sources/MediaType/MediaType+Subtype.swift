@@ -33,6 +33,7 @@ extension MediaType.Subtype {
   /// Creates an instance initialized to the given string value.
   ///
   /// - Parameter stringLiteral: A string literal.
+  ///
   public init(stringLiteral: StaticString) {
     let string = stringLiteral.withUTF8Buffer {
       String(decoding: $0, as: UTF8.self)
@@ -49,6 +50,7 @@ extension MediaType.Subtype {
 extension MediaType.Subtype {
 
   /// A textual representation of this instance, suitable for debugging.
+  /// 
   public var debugDescription: String {
     get {
       return rawValue

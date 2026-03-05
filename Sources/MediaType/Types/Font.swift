@@ -52,6 +52,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An font subtype.
+  ///
   public static func font(_ subtype: FontSubtype) -> Self {
     return Self(type: "font", subtype: subtype.rawValue)
   }
@@ -63,5 +64,6 @@ extension MediaType {
   
   /// Media type for the `font` top-level type. The media type does not have
   /// a sub-type.
+  /// 
   public static let font = Self(type: .font)
 }

@@ -65,6 +65,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An text subtype.
+  ///
   public static func text(_ subtype: TextSubtype) -> Self {
     return Self(type: "text", subtype: subtype.rawValue)
   }
@@ -76,6 +77,7 @@ extension MediaType {
   
   /// Media type for the `text` top-level type. The media type does not have
   /// a sub-type.
+  ///
   public static let text = Self(type: .text)
 }
 
@@ -84,6 +86,7 @@ extension MediaType {
 extension MediaType.Parameter {
   
   /// Returns a parameter with the given `charset` value.
+  ///
   public static func charset(_ value: IANACharset) -> Self {
     return Self(
       name: "charset",
@@ -99,6 +102,7 @@ extension MediaType.Parameters {
   /// Returns the value of the `charset` parameter, or `nil` if no such
   /// parameter exists. Also returns `nil` if the value could not be mapped to
   /// an `IANACharset` instance.
+  ///
   public var charset: IANACharset? {
     get {
       return self["charset"]
@@ -117,6 +121,7 @@ extension MediaType.Parameters {
 extension MediaType {
   
   /// Normalizes the given charset parameter value.
+  /// 
   func normalize(charset: String) -> String {
     if let charset = IANACharset(string: charset) {
       return charset.preferredName

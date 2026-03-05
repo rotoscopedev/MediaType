@@ -12,6 +12,7 @@
 extension MediaType.Parameter {
   
   /// Returns a `codecs` parameter with the given codec names.
+  ///
   public static func codecs(_ value: [String]) -> Self {
     return Self(
       name: "codecs",
@@ -24,6 +25,7 @@ extension MediaType.Parameter {
   }
   
   /// Returns a `codecs` parameter with the given codec names.
+  ///
   public static func codecs(_ first: String, _ rest: String...) -> Self {
     return codecs([ first ] + rest)
   }
@@ -34,6 +36,7 @@ extension MediaType.Parameter {
 extension MediaType.Parameters {
   
   /// Returns the value of an audio or video type's `codecs` parameter.
+  /// 
   public var codecs: [String]? {
     get {
       return self["codecs"]

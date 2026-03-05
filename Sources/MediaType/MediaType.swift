@@ -53,6 +53,7 @@ import Foundation
 ///
 /// See The IETF [RFC 6838](https://tools.ietf.org/html/rfc6838) for more
 /// information.
+///
 public struct MediaType: RawRepresentable {
   public let rawValue: String
   
@@ -61,6 +62,7 @@ public struct MediaType: RawRepresentable {
   ///
   /// - parameters:
   ///   - rawValue: A media type string.
+  ///
   public init?(rawValue: String) {
     guard rawValue.count > 0 else {
       return nil
@@ -74,6 +76,7 @@ public struct MediaType: RawRepresentable {
 extension MediaType {
 
   /// Initializes the receiver with the given raw components.
+  ///
   init(verbatim type: some StringProtocol, facet: (some StringProtocol)?, subtype: (some StringProtocol)?, suffix: (some StringProtocol)?, parameters: (some StringProtocol)?) {
     var str = ""
     
@@ -109,6 +112,7 @@ extension MediaType {
   ///     not specified.
   ///   - parameters: An optional dictionary of parameters. The parameters are
   ///     serialized in alphanumeric order.
+  ///
   public init(type: TopLevelType, facet: String? = nil, subtype: String? = nil, suffix: String? = nil, parameters: Parameters? = nil) {
     self.init(
       verbatim: type.rawValue.trimmed(),
@@ -135,6 +139,7 @@ extension MediaType: ExpressibleByStringLiteral {
   /// Creates an instance initialized to the given string value.
   ///
   /// - Parameter stringLiteral: A string literal.
+  ///
   public init(stringLiteral: StaticString) {
     let string = stringLiteral.withUTF8Buffer {
       String(decoding: $0, as: UTF8.self)
@@ -154,6 +159,7 @@ extension MediaType: Encodable {
   ///
   /// - parameters:
   ///   - encoder: The encoder to write data to.
+  ///
   public func encode(to encoder: Encoder) throws {
     var container = encoder.singleValueContainer()
     try container.encode(rawValue)
@@ -168,6 +174,7 @@ extension MediaType: Decodable {
   ///
   /// - parameters:
   ///   - decoder: The decoder to read data from.
+  ///
   public init(from decoder: Decoder) throws {
     let container = try decoder.singleValueContainer()
     self.rawValue = try container.decode(String.self)
@@ -183,6 +190,7 @@ extension MediaType: Decodable {
 extension MediaType: CustomStringConvertible {
   
   /// Returns a humanly-readable description of the receiver.
+  /// 
   public var description: String {
     get {
       return rawValue

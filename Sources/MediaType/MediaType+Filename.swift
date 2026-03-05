@@ -28,15 +28,18 @@ import UniformTypeIdentifiers
 extension MediaType {
 
   /// Returns the file name extension to use for the given UTI.
+  ///
   private func filenameExtension(for type: UTType) -> String? {
 
-    /// First try the types's preferred file name extension.
+    // First try the types's preferred file name extension.
+    
     if let ext = type.preferredFilenameExtension, !ext.isEmpty {
       return ext
     }
       
-    /// Apple platforms don't register preferred file name extensions for
-    /// plain text types such as UTF-8, UTF-16 etc.
+    // Apple platforms don't register preferred file name extensions for
+    // plain text types such as UTF-8, UTF-16 etc.
+    
     if type.conforms(to: .plainText) {
       return "txt"
     }
@@ -44,15 +47,19 @@ extension MediaType {
   }
   
   /// Returns the preferred file extension to use for this media type.
+  ///
   public var preferredFilenameExtension: String? {
     get {
-      /// First attempt to get the file name for the equivalent UTI.
+      
+      // First attempt to get the file name for the equivalent UTI.
+      
       if let ext = filenameExtension(for: UTType(mediaType: self)) {
         return ext
       }
       
-      /// Add support for common media types not registered by default on
-      /// Apple platforms.
+      // Add support for common media types not registered by default on
+      // Apple platforms.
+      
       if matches(.text(.markdown)) {
         return "md"
       } else {
@@ -62,6 +69,7 @@ extension MediaType {
   }
 
   /// The preferred default file name for files of this type.
+  /// 
   @available(macOS 12, iOS 15, tvOS 15, watchOS 8, visionOS 1, *)
   public var preferredFilename: String {
     get {

@@ -61,6 +61,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An image subtype.
+  ///
   public static func image(_ subtype: ImageSubtype) -> Self {
     return Self(type: "image", subtype: subtype.rawValue)
   }
@@ -72,5 +73,6 @@ extension MediaType {
   
   /// Media type for the `image` top-level type. The media type does not have
   /// a sub-type.
+  /// 
   public static let image = Self(type: .image)
 }

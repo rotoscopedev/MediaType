@@ -42,6 +42,7 @@ extension MediaType.TopLevelType {
   ///
   /// - parameters:
   ///   - string: A top-level type string.
+  ///
   public init(_ string: String) {
     guard let type = Self(rawValue: string) else {
       preconditionFailure("\(string) is not a valid top-level type.")
@@ -62,6 +63,7 @@ extension MediaType.TopLevelType: ExpressibleByStringLiteral {
   /// Creates an instance initialized to the given string value.
   ///
   /// - Parameter stringLiteral: A string literal.
+  ///
   public init(stringLiteral: StaticString) {
     let string = stringLiteral.withUTF8Buffer {
       String(decoding: $0, as: UTF8.self)
@@ -75,6 +77,7 @@ extension MediaType.TopLevelType: ExpressibleByStringLiteral {
 extension MediaType.TopLevelType: CustomStringConvertible {
   
   /// Returns a humanly-readable description of the receiver.
+  /// 
   public var description: String {
     get {
       return rawValue

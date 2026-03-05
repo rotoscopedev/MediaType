@@ -53,6 +53,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An model subtype.
+  ///
   public static func model(_ subtype: ModelSubtype) -> Self {
     return Self(type: "model", subtype: subtype.rawValue)
   }
@@ -64,5 +65,6 @@ extension MediaType {
   
   /// Media type for the `model` top-level type. The media type does not have
   /// a sub-type.
+  /// 
   public static let model = Self(type: .model)
 }

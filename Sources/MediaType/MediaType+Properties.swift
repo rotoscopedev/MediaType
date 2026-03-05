@@ -24,6 +24,7 @@
 extension MediaType {
   
   /// Returns the top-level type.
+  ///
   public var type: TopLevelType {
     get {
       return TopLevelType(parse().type.trimmed())
@@ -44,6 +45,7 @@ extension MediaType {
   /// Returns the subtype facet that identifies the type's registration tree,
   /// or `nil` if no facet is present. Will also return `nil` if the type does
   /// not have a subtype.
+  ///
   public var facet: String? {
     get {
       let comps = parse()
@@ -69,6 +71,7 @@ extension MediaType {
   
   /// Returns the subtype's registration tree. Will return `standards` if
   /// no subtype is present.
+  ///
   public var tree: Tree {
     get {
       return facet
@@ -80,6 +83,7 @@ extension MediaType {
   
   /// Returns the subtype without the facet or suffix, or `nil` if the
   /// media type does not contain a subtype.
+  ///
   public var subtype: String? {
     get {
       return parse().subtype?.trimmed()
@@ -100,6 +104,7 @@ extension MediaType {
   
   /// Returns the subtype's suffix, or `nil` if the media type does not have
   /// a suffix.
+  ///
   public var suffix: String? {
     get {
       return parse().suffix?.trimmed()
@@ -124,6 +129,7 @@ extension MediaType {
 extension MediaType {
   
   /// Returns the result of applying the transform to the given key path.
+  ///
   public func map<T>(_ keyPath: WritableKeyPath<Self, T>, _ transform: (T) throws -> T) rethrows -> Self {
     var copy = self
     copy[keyPath: keyPath] = try transform(self[keyPath: keyPath])
@@ -137,6 +143,7 @@ extension MediaType {
   
   /// Returns the result of setting the value of the given key path with the
   /// the specified value.
+  ///
   public func replacing<T>(_ keyPath: WritableKeyPath<Self, T>, with value: T) -> Self {
     var copy = self
     copy[keyPath: keyPath] = value
@@ -149,6 +156,7 @@ extension MediaType {
 extension MediaType {
   
   /// Returns the result of setting the given key path to `nil`.
+  ///
   public func removing<T>(_ keyPath: WritableKeyPath<Self, T?>) -> Self {
     var copy = self
     copy[keyPath: keyPath] = nil
@@ -156,6 +164,7 @@ extension MediaType {
   }
   
   /// Returns the result of setting the parameters to `none`.
+  /// 
   public func removing(_ keyPath: WritableKeyPath<Self, Parameters>) -> Self {
     var copy = self
     copy[keyPath: keyPath] = .none

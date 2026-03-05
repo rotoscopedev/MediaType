@@ -24,6 +24,7 @@
 extension MediaType {
   
   /// Normalizes the value of the given parameter.
+  ///
   private func normalize(value: String, for name: String, type: (type: (some StringProtocol)?, facet: (some StringProtocol)?, subtype: (some StringProtocol)?, suffix: (some StringProtocol)?)) -> String {
     switch (type.type, type.facet, type.subtype, type.suffix, name) {
     case ("text", nil, _, _, "charset"):
@@ -59,6 +60,7 @@ extension MediaType {
   /// ```
   /// text/sgml; charset=UTF-8
   /// ```
+  /// 
   public func normalized() -> MediaType {
     let comps = parse()
     let parameters = comps.parameters

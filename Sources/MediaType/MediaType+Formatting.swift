@@ -35,14 +35,17 @@ fileprivate extension CharacterSet {
 extension MediaType {
   
   /// Formats a parameter value from the given string.
+  ///
   static func format(value: String) -> String {
     
     /// Escapes double quotes in the given string.
+    ///
     func escapeQuotes(in string: String) -> String {
       return value.replacingOccurrences(of: "\"", with: "\\\"")
     }
     
     /// Wraps the given string in double quotes.
+    ///
     func quote(_ string: String) -> String {
       return "\"\(string)\""
     }
@@ -57,6 +60,7 @@ extension MediaType {
   }
   
   /// Formats the given parameters.
+  ///
   static func format(parameters: some Sequence<Parameter>) -> String? {
     let string = parameters
       .sorted {
@@ -71,6 +75,7 @@ extension MediaType {
   }
   
   /// Formats the given parameters.
+  ///
   func format(parameters: some Sequence<Parameter>) -> String? {
     return Self.format(parameters: parameters)
   }
@@ -81,6 +86,7 @@ extension MediaType {
 fileprivate extension String {
   
   /// Capitalizes the string when the string contains no uppercase characters.
+  ///
   var conditionalCapitalized: Self {
     get {
       let containsUppercase = self
@@ -104,6 +110,7 @@ extension MediaType {
   /// Formats a media type as a localized description that is suitable for use
   /// as a generic description of the type, e.g. `"Image"` for image types,
   /// `"Video"` for video types, etc.
+  ///
   @available(macOS 12, iOS 15, tvOS 15, watchOS 8, visionOS 1, *)
   public struct GenericFormatStyle: FormatStyle {
     
@@ -143,6 +150,7 @@ extension MediaType {
     
     /// Returns a generic description of the given media type. Returns `nil` if
     /// a description is not available.
+    ///
     func description(for type: MediaType) -> String? {
       if let description = description(for: UTType(mediaType: type)) {
         return description
@@ -162,6 +170,7 @@ extension MediaType {
     }
 
     /// Formats a value, using this style.
+    ///
     public func format(_ type: MediaType) -> String {
       if let description = description(for: type) {
         return description
@@ -193,6 +202,7 @@ extension MediaType {
   ///
   /// If a specific description is not available then a generic description is
   /// used.
+  ///
   @available(macOS 12, iOS 15, tvOS 15, watchOS 8, visionOS 1, *)
   public struct SpecificFormatStyle: FormatStyle {
     
@@ -208,6 +218,7 @@ extension MediaType {
     
     /// Returns a description for the given media type. Returns `nil` if a
     /// description is not available.
+    ///
     func description(for type: MediaType) -> String? {
       let type = UTType(mediaType: type, conformingTo: .data)
       
@@ -220,6 +231,7 @@ extension MediaType {
     }
 
     /// Formats a value, using this style.
+    ///
     public func format(_ type: MediaType) -> String {
       if let description = description(for: type) {
         return description
@@ -247,11 +259,13 @@ extension FormatStyle where Self == MediaType.SpecificFormatStyle {
 extension MediaType {
   
   /// Formats the receiver using the given style.
+  ///
   public func formatted<S>(_ style: S) -> S.FormatOutput where S: FormatStyle, S.FormatInput == Self, S.FormatOutput == String {
     return style.format(self)
   }
   
   /// Formats the receiver using the default style.
+  /// 
   public func formatted() -> String {
     return formatted(.specific)
   }

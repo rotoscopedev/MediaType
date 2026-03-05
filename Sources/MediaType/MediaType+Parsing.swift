@@ -25,15 +25,18 @@ extension MediaType {
   
   /// Parses the given parameter value. Returns `nil` if `value` is not a valid
   /// parameter value.
+  ///
   func parse(value: String) -> String? {
 
     /// Unescapes quotes in the given string.
+    ///
     func unescapeQuotes(in value: String) -> String {
       return value.replacingOccurrences(of: "\\\"", with: "\"")
     }
     
     /// Unquotes the given string, removing double-quote characters from the
     /// start and end of the string.
+    ///
     func unquote(_ value: String) -> String {
       return String(
         value
@@ -50,6 +53,7 @@ extension MediaType {
   }
   
   /// Parses the given parameters to return a `Parameters` sequence.
+  ///
   func parse(parameters: some StringProtocol) -> [Parameter] {
     var output: [Parameter] = []
     
@@ -70,6 +74,7 @@ extension MediaType {
   }
   
   /// Parses the media type to return a set of component substrings.
+  /// 
   func parse() -> (type: Substring, facet: Substring?, subtype: Substring?, suffix: Substring?, parameters: Substring?) {
     var type = Substring(rawValue)
     var facet: Substring? = nil

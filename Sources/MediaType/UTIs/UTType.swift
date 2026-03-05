@@ -35,6 +35,7 @@ extension UTType {
   /// closest relevant UTI. For example, `application` maps to `content`. Non-
   /// document oriented types for which no clear mapping exists are mapped to
   /// `data`.
+  ///
   init(_ topLevelType: MediaType.TopLevelType) {
     self = switch topLevelType {
     case .application:    .data
@@ -77,11 +78,13 @@ extension UTType {
   /// - note: The `video` top-level type maps to `public.movie` rather than
   ///   `public.video` as `video` subtypes can generally contain audio as well
   ///   as video tracks.
+  ///
   public init(mediaType: MediaType, conformingTo supertype: UTType? = nil) {
     let normalized = mediaType.normalized()
 
     // First, look up the media type as-is, i.e. including parameters. Dynamic
     // types are ignored at this stage.
+    
     if let type = Self(mimeType: normalized.rawValue, conformingTo: supertype ?? Self(normalized.type)), !type.isDynamic {
       self = type
       return
@@ -112,6 +115,7 @@ extension UTType {
     //   unknown with a possible BOM, assuming UTF-16BE if not present),
     //   `UTF-16BE` (big-endian with optional BOM) and `UTF-16LE` (little-endian
     //   with optional BOM) to `.utf16PlainText`.
+    
     if type == .plainText, let charset = normalized.parameters.charset {
       switch charset {
       case .utf8:
@@ -129,6 +133,7 @@ extension UTType {
   
   /// The preferred MIME/media type for this type. The media type is normalized
   /// before being returned.
+  /// 
   public var preferredMediaType: MediaType? {
     get {
       return self

@@ -24,6 +24,7 @@
 extension MediaType {
   
   /// A name/value parameter tuple.
+  ///
   public struct Parameter: Sendable, Hashable {
     public let name: String
     public let value: String
@@ -40,12 +41,14 @@ extension MediaType {
 extension MediaType {
   
   /// A collection of parameters.
+  ///
   public struct Parameters: Sendable, Hashable {
     public typealias Element = Parameter
     
     var elements: [Element]
 
     /// Initializes the collection with the given elements.
+    ///
     public init(_ elements: [Element] = []) {
       self.elements = elements
         .map {
@@ -79,6 +82,7 @@ extension MediaType.Parameters: BidirectionalCollection, RandomAccessCollection 
 extension MediaType.Parameters: ExpressibleByArrayLiteral {
 
   /// Creates an instance initialized with the given elements.
+  ///
   public init(arrayLiteral elements: Element...) {
     self.elements = elements
   }
@@ -89,6 +93,7 @@ extension MediaType.Parameters: ExpressibleByArrayLiteral {
 extension MediaType.Parameters: ExpressibleByDictionaryLiteral {
 
   /// Creates an instance initialized with the given key-value pairs.
+  ///
   public init(dictionaryLiteral elements: (String, String)...) {
     self.init(
       elements
@@ -107,6 +112,7 @@ extension MediaType.Parameters {
   /// parameter was found.
   ///
   /// Names are compared in a case-insensitive manner.
+  ///
   public func index(of name: String) -> Index? {
     let name = name.trimmed()
     
@@ -119,6 +125,7 @@ extension MediaType.Parameters {
   /// Returns the value of the first parameter with the given name.
   ///
   /// Names are compared in a case-insensitive manner.
+  ///
   public subscript(_ name: String) -> String? {
     get {
       return elements
@@ -140,6 +147,7 @@ extension MediaType.Parameters {
   /// name.
   ///
   /// Names are compared in a case-insensitive manner.
+  ///
   public func contains(_ name: String) -> Bool {
     return index(of: name) != nil
   }
@@ -152,6 +160,7 @@ extension MediaType.Parameters {
   /// Adds the given parameter to the collection.
   ///
   /// If a parameter with the given name already exists then it is replaced.
+  ///
   private mutating func add(_ element: Element) {
     if let index = index(of: element.name) {
       elements[index] = element
@@ -163,6 +172,7 @@ extension MediaType.Parameters {
   /// Adds the given parameter to the collection.
   ///
   /// If a parameter with the given name already exists then it is replaced.
+  ///
   private mutating func add(_ value: String, for name: String) {
     add(Element(name: name, value: value))
   }
@@ -170,6 +180,7 @@ extension MediaType.Parameters {
   /// Returns the result of adding the given parameter.
   ///
   /// If a parameter with the given name already exists then it is replaced.
+  ///
   public func adding(_ element: Element) -> Self {
     var copy = self
     copy.add(element)
@@ -177,11 +188,13 @@ extension MediaType.Parameters {
   }
   
   /// Returns the result of adding a parameter with the given name and value.
+  ///
   public func adding(_ value: String, for name: String) -> Self {
     return adding(Element(name: name, value: value))
   }
   
   /// Returns the result of adding the given value for the specified key path.
+  ///
   public func adding<T>(_ value: T, for keyPath: WritableKeyPath<Self, T>) -> Self {
     var copy = self
     copy[keyPath: keyPath] = value
@@ -194,6 +207,7 @@ extension MediaType.Parameters {
 extension MediaType.Parameters {
   
   /// Removes the parameter with the given name.
+  ///
   public mutating func remove(_ name: String) {
     if let index = index(of: name) {
       elements.remove(at: index)
@@ -201,11 +215,13 @@ extension MediaType.Parameters {
   }
   
   /// Removes all parameters.
+  ///
   public mutating func removeAll() {
     elements.removeAll()
   }
   
   /// Returns the result of removing the parameter with the given name.
+  ///
   public func removing(_ name: String) -> Self {
     var copy = self
     copy.remove(name)
@@ -213,6 +229,7 @@ extension MediaType.Parameters {
   }
   
   /// Returns the result of removing the parameter with the given key path.
+  ///
   public func removing<T>(_ keyPath: WritableKeyPath<Self, T?>) -> Self {
     var copy = self
     copy[keyPath: keyPath] = nil
@@ -225,6 +242,7 @@ extension MediaType.Parameters {
 extension MediaType.Parameters: CustomDebugStringConvertible {
   
   /// Returns a humanly-readable description suitable for debugging.
+  ///
   public var debugDescription: String {
     get {
       return MediaType.format(parameters: elements) ?? ""
@@ -237,6 +255,7 @@ extension MediaType.Parameters: CustomDebugStringConvertible {
 extension MediaType {
   
   /// Returns the media type's parameters.
+  /// 
   public var parameters: Parameters {
     get {
       return parse()

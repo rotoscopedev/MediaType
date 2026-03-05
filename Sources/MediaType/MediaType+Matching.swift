@@ -37,6 +37,7 @@ extension MediaType {
   ///
   /// Both the receiver and the template are normalized before matching is
   /// attempted.
+  ///
   public func matches(_ template: MediaType) -> Bool {
     if self == template {
       return true
@@ -80,6 +81,7 @@ extension MediaType {
   
   /// Returns the result of calling `matches(_)` on the left-hand size, passing
   /// in the right-hand side as the template media type to match against.
+  /// 
   public static func ~= (lhs: Self, rhs: Self) -> Bool {
     return lhs.matches(rhs)
   }

@@ -114,6 +114,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An application subtype.
+  ///
   public static func application(_ subtype: ApplicationSubtype) -> Self {
     return Self(type: "application", subtype: subtype.rawValue)
   }
@@ -125,5 +126,6 @@ extension MediaType {
   
   /// Media type for the `application` top-level type. The media type does not
   /// have a sub-type.
+  /// 
   public static let application = Self(type: .application)
 }

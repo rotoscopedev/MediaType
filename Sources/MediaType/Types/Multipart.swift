@@ -56,6 +56,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An multipart subtype.
+  ///
   public static func multipart(_ subtype: MultipartSubtype) -> Self {
     return Self(type: "multipart", subtype: subtype.rawValue)
   }
@@ -67,5 +68,6 @@ extension MediaType {
   
   /// Media type for the `multipart` top-level type. The media type does not
   /// have a sub-type.
+  /// 
   public static let multipart = Self(type: .multipart)
 }

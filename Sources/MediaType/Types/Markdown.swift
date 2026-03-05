@@ -34,6 +34,7 @@ extension MediaType {
     /// Creates an instance initialized to the given string value.
     ///
     /// - Parameter stringLiteral: A string literal.
+    ///
     public init(stringLiteral: StaticString) {
       let string = stringLiteral.withUTF8Buffer {
         String(decoding: $0, as: UTF8.self)
@@ -45,6 +46,7 @@ extension MediaType {
     }
 
     /// A textual representation of this instance, suitable for debugging.
+    ///
     public var debugDescription: String {
       get {
         return rawValue
@@ -94,6 +96,7 @@ extension MediaType.MarkdownVariant {
 extension MediaType.Parameter {
   
   /// Returns a parameter with the given Markdown `variant` parameter.
+  ///
   public static func markdownVariant(_ value: MediaType.MarkdownVariant) -> Self {
     return Self(
       name: "variant",
@@ -109,6 +112,7 @@ extension MediaType.Parameters {
   /// Returns the value of the `variant` parameter, or `nil` if no such
   /// parameter exists. Also returns `nil` if the value could not be mapped to
   /// a `MarkdownVariant` instance.
+  ///
   public var markdownVariant: MediaType.MarkdownVariant? {
     get {
       return self["variant"]
@@ -124,6 +128,7 @@ extension MediaType.Parameters {
 extension MediaType {
   
   /// Normalizes the given Markdown `variant` parameter value.
+  /// 
   func normalize(markdownVariant variant: String) -> String {
     if let variant = MarkdownVariant.lowercase[variant.lowercased()] {
       return variant.rawValue

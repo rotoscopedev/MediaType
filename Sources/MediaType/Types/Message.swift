@@ -49,6 +49,7 @@ extension MediaType {
   ///
   /// - parameters:
   ///   - subtype: An message subtype.
+  ///
   public static func message(_ subtype: MessageSubtype) -> Self {
     return Self(type: "message", subtype: subtype.rawValue)
   }
@@ -60,5 +61,6 @@ extension MediaType {
   
   /// Media type for the `message` top-level type. The media type does not have
   /// a sub-type.
+  /// 
   public static let message = Self(type: .message)
 }
